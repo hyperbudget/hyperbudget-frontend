@@ -1,11 +1,18 @@
 module.exports = {
     mode: "development",
-    entry: [ 'babel-polyfill', "./src/index.tsx" ],
+    entry: ['babel-polyfill', "./src/index.tsx"],
     output: {
         filename: "bundle.js",
         path: __dirname + "/dist"
     },
-    devServer: {host: '0.0.0.0', publicPath: '/public', port: 8080},
+    devServer: {
+        host: '0.0.0.0',
+        publicPath: '/public',
+        port: 8080,
+        historyApiFallback: {
+            index: 'index.html'
+        }
+    },
 
 
     // Enable sourcemaps for debugging webpack's output.
@@ -20,15 +27,15 @@ module.exports = {
     module: {
         rules: [
             // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-            { test: /\.tsx?$/, loaders:[ "babel-loader", "awesome-typescript-loader" ]  },
+            { test: /\.tsx?$/, loaders: ["babel-loader", "awesome-typescript-loader"] },
 
             {
                 test: /\.js$/,
-                include: ['src', require.resolve('csv-parse') ],
+                include: ['src', require.resolve('csv-parse')],
                 use: {
-                  loader: 'babel-loader',
-                  options: {
-                  }
+                    loader: 'babel-loader',
+                    options: {
+                    }
                 }
             },
             {
