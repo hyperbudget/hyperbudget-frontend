@@ -1,3 +1,5 @@
+let path = require('path');
+
 module.exports = {
     mode: "development",
     entry: ['babel-polyfill', "./src/index.tsx"],
@@ -50,8 +52,20 @@ module.exports = {
                             localIdentName: '[name]__[local]__[hash:base64:5]'
                         }
                     }
-                ]
-            }
+                ],
+                include: [
+                    /src/,
+                ],
+            },
+
+            {
+                test: /\.css$/,
+                use: ['style-loader','css-loader'],
+                include: [
+                    /node_modules/,
+                ],
+
+            },
         ]
     },
 
