@@ -5,6 +5,9 @@ import moment from 'moment';
 import { Report, ReportFactory, Category, Categoriser, ReportManager, FormattedTransaction, CategoryAmounts } from '@hyperbudget/hyperbudget-core';
 import { HTMLFileManager } from '../../lib/manager/htmlfilemanager';
 import { StatementUploaderComponent } from '../StatementUploader/StatementUploaderComponent';
+import { TransactionTableComponent } from '../Transaction/TransactionTableComponent';
+
+const config = require('../../../config.json');
 
 interface ReportRouteComponentProps {
   month: string,
@@ -38,9 +41,14 @@ export class ReportComponent extends React.Component<RouteComponentProps<ReportR
     });
   };
 
+  private _get_categories() :Category[] {
+    //FIXME
+    return config.preferences.categories;
+  }
+
   private loadStatement = (csv_text: string, type: string): void => {
     const rf: ReportFactory = new ReportFactory();
-    const categories: Category[] = [];
+    const categories: Category[] = this._get_categories();
     const categoriser: Categoriser = new Categoriser(categories);
 
     rf.from_csv(csv_text, type)
@@ -66,7 +74,7 @@ export class ReportComponent extends React.Component<RouteComponentProps<ReportR
       <div className='Report'>
         <h1>Report!</h1>
         <StatementUploaderComponent onFileSelected={ this.onFileSelected } />
-        { this.state.transactions ? <div>we have a report</div> : <div>none</div> }
+        { this.state.transactions ? <TransactionTableComponent transactions={ this.state.transactions } /> : <div>none</div> }
       </div>
     );
   }
