@@ -2,7 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import moment from 'moment';
 
-import { Report, ReportFactory, Category, Categoriser } from 'hyperbudget-core';
+import { Report, ReportFactory, Category, Categoriser } from '@hyperbudget/hyperbudget-core';
 import { HTMLFileManager } from '../../lib/manager/htmlfilemanager';
 import { StatementUploaderComponent } from '../StatementUploader/StatementUploaderComponent';
 
@@ -35,7 +35,7 @@ export class ReportComponent extends React.Component<RouteComponentProps<ReportR
       this.loadStatement(txt, type);
     });
   };
-  
+
   private loadStatement = (csv_text: string, type: string): void => {
     const rf: ReportFactory = new ReportFactory();
     const categories: Category[] = [];
@@ -47,7 +47,7 @@ export class ReportComponent extends React.Component<RouteComponentProps<ReportR
         const report: Report = rf.report;
         report.filter_month(this.month);
         console.log(report.transactions);
-        
+
         this.setState({
           report: report,
         });

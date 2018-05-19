@@ -12,7 +12,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "hyperbudget-core": "git+https://github.com/hyperbudget/hyperbudget-core.git",
+    "@hyperbudget/hyperbudget-core": "^1.0.1",
     "moment": "^2.22.1",
     "react": "^16.3.2",
     "react-dom": "^16.3.2",
