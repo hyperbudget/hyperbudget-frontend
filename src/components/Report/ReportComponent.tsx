@@ -7,6 +7,9 @@ import { HTMLFileManager } from '../../lib/manager/htmlfilemanager';
 import { StatementUploaderComponent } from '../StatementUploader/StatementUploaderComponent';
 import { TransactionTableComponent } from '../Transaction/TransactionTableComponent';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 const config = require('../../../config.json');
 
 interface ReportRouteComponentProps {
