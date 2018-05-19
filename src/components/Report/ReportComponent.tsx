@@ -2,7 +2,7 @@ import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
 import moment from 'moment';
 
-import { Report, ReportFactory, Category, Categoriser } from '@hyperbudget/hyperbudget-core';
+import { Report, ReportFactory, Category, Categoriser, ReportManager, FormattedTransaction, CategoryAmounts } from '@hyperbudget/hyperbudget-core';
 import { HTMLFileManager } from '../../lib/manager/htmlfilemanager';
 import { StatementUploaderComponent } from '../StatementUploader/StatementUploaderComponent';
 
@@ -11,13 +11,15 @@ interface ReportRouteComponentProps {
 };
 
 interface ReportComponentState {
-  report: Report,
+  transactions: FormattedTransaction[],
+  categories: CategoryAmounts,
 }
 
 export class ReportComponent extends React.Component<RouteComponentProps<ReportRouteComponentProps>, ReportComponentState> {
   month: string;
   state = {
-    report: null,
+    transactions: null,
+    categories: null,
   };
 
   componentDidMount(): void {
@@ -48,8 +50,13 @@ export class ReportComponent extends React.Component<RouteComponentProps<ReportR
         report.filter_month(this.month);
         console.log(report.transactions);
 
+        report.transactions = report.transactions.sort(function(a,b) { return a.txn_date.getTime() - b.txn_date.getTime() });
+        let txns: FormattedTransaction[] = ReportManager.generate_web_frontend_report(report.transactions);
+        let cats: CategoryAmounts = ReportManager.generate_category_amounts_frontend(categoriser, report.transactions, report.transactions_org);
+
         this.setState({
-          report: report,
+          transactions: txns,
+          categories: cats,
         });
       });
   };
@@ -59,7 +66,7 @@ export class ReportComponent extends React.Component<RouteComponentProps<ReportR
       <div className='Report'>
         <h1>Report!</h1>
         <StatementUploaderComponent onFileSelected={ this.onFileSelected } />
-        { this.state.report ? <div>we have a report</div> : <div>none</div> }
+        { this.state.transactions ? <div>we have a report</div> : <div>none</div> }
       </div>
     );
   }
