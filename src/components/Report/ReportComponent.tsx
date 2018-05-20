@@ -22,11 +22,17 @@ interface ReportComponentState {
 }
 
 export class ReportComponent extends React.Component<RouteComponentProps<ReportRouteComponentProps>, ReportComponentState> {
+  reportfactory: ReportFactory;
   month: string;
   state = {
     transactions: null,
     categories: null,
   };
+
+  constructor(props: RouteComponentProps<ReportRouteComponentProps>) {
+    super(props);
+    this.reportfactory  = new ReportFactory({ unique_only: true });
+  }
 
   componentDidMount(): void {
     console.log(this.props);
@@ -50,14 +56,13 @@ export class ReportComponent extends React.Component<RouteComponentProps<ReportR
   }
 
   private loadStatement = (csv_text: string, type: string): void => {
-    const rf: ReportFactory = new ReportFactory();
     const categories: Category[] = this._get_categories();
     const categoriser: Categoriser = new Categoriser(categories);
 
-    rf.from_csv(csv_text, type)
-      .then(() => categoriser.categorise_transactions(rf.report.transactions))
+    this.reportfactory.from_csv(csv_text, type)
+      .then(() => categoriser.categorise_transactions(this.reportfactory.report.transactions))
       .then(() => {
-        const report: Report = rf.report;
+        const report: Report = this.reportfactory.report;
         report.filter_month(this.month);
         console.log(report.transactions);
 
