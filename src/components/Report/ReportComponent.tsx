@@ -1,10 +1,14 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 
 import { Report, ReportFactory, Category, Categoriser, ReportManager, FormattedTransaction, CategoryAmounts } from '@hyperbudget/hyperbudget-core';
+
 import { HTMLFileManager } from '../../lib/manager/htmlfilemanager';
 import { StatementUploaderComponent } from '../StatementUploader/StatementUploaderComponent';
+
+import { StatementMonthSelectorComponent } from '../StatementMonthSelector/StatementMonthSelectorComponent';
+
 import { TransactionTableComponent } from '../Transaction/TransactionTableComponent';
 import { NoTransactionsFoundComponent } from '../Transaction/NoTransactionsFoundComponent';
 
@@ -78,12 +82,17 @@ export class ReportComponent extends React.Component<RouteComponentProps<ReportR
   };
 
   render() {
+    let month: string = this.props.match.params.month || moment().format('YYYYMM');
+    let [, y, m] = month.match(/(\d{4})(\d{2})/);
+    let current_month_moment = moment(`${y}-${m}-01T00:00:00+00:00`);
+
     return (
       <div className='Report'>
         <h1>Report!</h1>
         <StatementUploaderComponent onFileSelected={ this.onFileSelected } />
+        <StatementMonthSelectorComponent currently_viewing={current_month_moment} />
         {
-          this.state.transactions ?
+          this.state.transactions && this.state.transactions.length != 0 ?
           <>
             <TransactionTableComponent transactions={ this.state.transactions } />
           </>
