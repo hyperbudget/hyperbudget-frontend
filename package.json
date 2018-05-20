@@ -12,7 +12,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@hyperbudget/hyperbudget-core": "^2.1.0",
+    "@hyperbudget/hyperbudget-core": "^2.1.1",
     "bootstrap": "^4.1.1",
     "moment": "^2.22.1",
     "react": "^16.3.2",
