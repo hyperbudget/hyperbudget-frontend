@@ -6,10 +6,9 @@ import { Report, ReportFactory, Category, Categoriser, ReportManager, FormattedT
 import { HTMLFileManager } from '../../lib/manager/htmlfilemanager';
 import { StatementUploaderComponent } from '../StatementUploader/StatementUploaderComponent';
 import { TransactionTableComponent } from '../Transaction/TransactionTableComponent';
-
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { NoTransactionsFoundComponent } from '../Transaction/NoTransactionsFoundComponent';
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const config = require('../../../config.json');
 

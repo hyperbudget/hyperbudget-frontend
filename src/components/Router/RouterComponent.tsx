@@ -1,15 +1,18 @@
 import * as React from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import { Hello } from '../Hello';
 import { ReportComponent } from '../Report/ReportComponent';
 import { BreakdownComponent } from '../Report/BreakdownComponent';
+import moment from 'moment';
 
 export class RouterComponent extends React.Component {
   render() {
+    const current = moment().format('YYYYMM');
     return (
       <Switch>
         <Route path="/" exact component={ Hello } />
-        <Route path="/report/:month?" exact component={ ReportComponent } />
+        <Route path="/report/" exact render={ () => <Redirect to={`/report/${current}`} /> } />
+        <Route path="/report/:month" exact component={ ReportComponent } />
         <Route path="/breakdown" exact component={ BreakdownComponent }/>
       </Switch>
     );
