@@ -40,8 +40,8 @@ export class StatementUploaderComponent extends React.Component<StatementUploade
 
         <label>
           Type:
-          <select name="type"  ref={this.typeSelectRef}>
-            <option selected value="lloyds">Lloyds Bank</option>
+          <select name="type" defaultValue='lloyds' ref={this.typeSelectRef}>
+            <option value="lloyds">Lloyds Bank</option>
             <option value="hsbc">HSBC</option>
             <option value="fairfx-corp">FairFX Corp</option>
             <option value="midata" >Midata</option>
