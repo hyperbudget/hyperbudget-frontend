@@ -6,26 +6,25 @@ interface StatementUploaderProps {
 
 
 export class StatementUploaderComponent extends React.Component<StatementUploaderProps, {}> {
-  fileInput: React.RefObject<HTMLInputElement>;
-  textInput: React.RefObject<HTMLInputElement>;
+  fileInputRef: React.RefObject<HTMLInputElement>;
+  typeSelectRef: React.RefObject<HTMLSelectElement>;
 
   constructor(props: StatementUploaderProps) {
     super(props);
-    this.fileInput = React.createRef();
-    this.textInput = React.createRef();
+    this.fileInputRef = React.createRef();
+    this.typeSelectRef = React.createRef();
   }
 
   componentDidMount() {
   }
 
-  onSubmit = ():void => {
-    console.log(this, this.fileInput);
-    let fileInputElement: HTMLInputElement = this.fileInput.current;
-    let textInputElement: HTMLInputElement = this.textInput.current;
+  onSubmit = (): void => {
+    let fileInputElement: HTMLInputElement = this.fileInputRef.current;
+    let selectElement: HTMLSelectElement = this.typeSelectRef.current;
 
     let file: File = fileInputElement.files[0];
-    let type: string = textInputElement.value;
-    
+    let type: string = selectElement.value;
+
     if (!file || !type) {
       console.log("no file or type", file, type);
       return;
@@ -37,9 +36,20 @@ export class StatementUploaderComponent extends React.Component<StatementUploade
   render() {
     return (
       <div className='StatementUploader'>
-      <label>File: <input type="file" ref={ this.fileInput } name="file" /></label>
-      <label>Type: <input type="text" ref={ this.textInput } defaultValue="lloyds" name="type" /></label>
-      <input type="submit" onClick={ this.onSubmit } />
+        <label>File: <input type="file" ref={this.fileInputRef} name="file" /></label>
+
+        <label>
+          Type:
+          <select name="type"  ref={this.typeSelectRef}>
+            <option selected value="lloyds">Lloyds Bank</option>
+            <option value="hsbc">HSBC</option>
+            <option value="fairfx-corp">FairFX Corp</option>
+            <option value="midata" >Midata</option>
+            <option value="rbs">RBS (UNTESTED)</option>
+          </select>
+        </label>
+
+        <input type="submit" onClick={this.onSubmit} />
       </div>
     );
   }

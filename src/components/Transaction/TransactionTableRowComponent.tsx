@@ -19,7 +19,7 @@ export const TransactionTableRowComponent = (props :TransactionTableRowProps) =>
     <td>{ transaction.running_total_spend }</td>
     <td>{ transaction.acc_balance_str }</td>
     <td>{transaction.category_names }</td>
-    <td>{ transaction.txn_src }</td>
+    <td className="src">{ transaction.txn_src }</td>
   </tr>
   );
 }

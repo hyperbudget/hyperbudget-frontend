@@ -8,6 +8,7 @@ import { StatementUploaderComponent } from '../StatementUploader/StatementUpload
 import { TransactionTableComponent } from '../Transaction/TransactionTableComponent';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { NoTransactionsFoundComponent } from '../Transaction/NoTransactionsFoundComponent';
 
 
 const config = require('../../../config.json');
@@ -82,7 +83,13 @@ export class ReportComponent extends React.Component<RouteComponentProps<ReportR
       <div className='Report'>
         <h1>Report!</h1>
         <StatementUploaderComponent onFileSelected={ this.onFileSelected } />
-        { this.state.transactions ? <TransactionTableComponent transactions={ this.state.transactions } /> : <div>none</div> }
+        {
+          this.state.transactions ?
+          <>
+            <TransactionTableComponent transactions={ this.state.transactions } />
+          </>
+          : <NoTransactionsFoundComponent />
+        }
       </div>
     );
   }
