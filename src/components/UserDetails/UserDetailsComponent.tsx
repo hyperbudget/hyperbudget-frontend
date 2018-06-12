@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
+import * as Actions from '../../store/actions/Actions';
 
 
 interface UserDetailsComponentProps {
@@ -27,7 +28,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        doLogin: () => dispatch({ type: 'DO_LOGIN' }),
+        doLogin: () => dispatch(Actions.do_login()),
     };
 };
 
