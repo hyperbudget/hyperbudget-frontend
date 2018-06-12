@@ -7,6 +7,8 @@ import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { App } from "./components/App";
 import { UserReducer } from "./store/reducers/UserReducer";
 
+import thunk from 'redux-thunk';
+
 const logger = store => {
     return next => {
         return action => {
@@ -26,7 +28,7 @@ const rootReducer = combineReducers({
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose;
 
 const store = createStore(rootReducer, composeEnhancers(
-    applyMiddleware(logger)
+    applyMiddleware(logger, thunk)
 ));
 
 ReactDOM.render(
