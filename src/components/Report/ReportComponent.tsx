@@ -13,6 +13,7 @@ import { TransactionTableComponent } from '../Transaction/TransactionTableCompon
 import { NoTransactionsFoundComponent } from '../Transaction/NoTransactionsFoundComponent';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import UserDetailsComponent from '../UserDetails/UserDetailsComponent';
 
 const config = require('../../../config.json');
 
@@ -105,6 +106,7 @@ export class ReportComponent extends React.Component<RouteComponentProps<ReportR
 
     return (
       <div className='Report'>
+        <UserDetailsComponent />
         <h1>Report!</h1>
         <StatementUploaderComponent onFileSelected={ this.onFileSelected } />
         <StatementMonthSelectorComponent currently_viewing={current_month_moment} />
