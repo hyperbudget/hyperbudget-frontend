@@ -7,21 +7,15 @@ import * as User from '../../lib/User/User';
 interface UserDetailsComponentProps {
     isLoggedIn: boolean;
     doLogin(): React.MouseEventHandler<HTMLButtonElement>;
+    token: string;
 };
 
 class UserDetailsComponent extends React.Component<UserDetailsComponentProps, {}> {
-    anotherLogin() {
-        User.login({
-            email: 'email@email.com',
-            password: 'passpasspass',
-        }).then(() => { console.log('logged in'); });
-    }
 
     render() {
         return (
         <>
         { this.props.isLoggedIn ? <span>Hello, user</span> : <button onClick={this.props.doLogin}>Login</button> }
-        <button onClick={this.anotherLogin}>Login 2</button>
         </>
         );
     }
@@ -32,6 +26,7 @@ const mapStateToProps = state => {
     console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
+        token: state.user.token,
     }
 };
 

@@ -8,6 +8,7 @@ export const UserReducer = ( state = initialState, action ) => {
         return {
             ...state,
             isLoggedIn: true,
+            token: action.params.token,
         };
     }
 
