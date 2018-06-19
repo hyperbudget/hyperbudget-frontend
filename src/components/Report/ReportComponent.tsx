@@ -14,6 +14,7 @@ import { NoTransactionsFoundComponent } from '../Transaction/NoTransactionsFound
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import UserDetailsComponent from '../UserDetails/UserDetailsComponent';
+import RequireAuthContainer from '../containers/RequireAuthContainer';
 
 const config = require('../../../config.json');
 
@@ -105,19 +106,21 @@ export class ReportComponent extends React.Component<RouteComponentProps<ReportR
     let current_month_moment = moment(`${y}-${m}-01T00:00:00+00:00`);
 
     return (
-      <div className='Report'>
-        <UserDetailsComponent />
-        <h1>Report!</h1>
-        <StatementUploaderComponent onFileSelected={ this.onFileSelected } />
-        <StatementMonthSelectorComponent currently_viewing={current_month_moment} />
-        {
-          this.state.transactions && this.state.transactions.length != 0 ?
-          <>
-            <TransactionTableComponent transactions={ this.state.transactions } />
-          </>
-          : <NoTransactionsFoundComponent />
-        }
-      </div>
+      <RequireAuthContainer>
+        <div className='Report'>
+          <UserDetailsComponent />
+          <h1>Report!</h1>
+          <StatementUploaderComponent onFileSelected={ this.onFileSelected } />
+          <StatementMonthSelectorComponent currently_viewing={current_month_moment} />
+          {
+            this.state.transactions && this.state.transactions.length != 0 ?
+            <>
+              <TransactionTableComponent transactions={ this.state.transactions } />
+            </>
+            : <NoTransactionsFoundComponent />
+          }
+        </div>
+      </RequireAuthContainer>
     );
   }
 }

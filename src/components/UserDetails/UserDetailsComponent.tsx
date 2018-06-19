@@ -1,12 +1,8 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import * as Actions from '../../store/actions/Actions';
-
-import * as User from '../../lib/User/User';
 
 interface UserDetailsComponentProps {
     isLoggedIn: boolean;
-    doLogin(): React.MouseEventHandler<HTMLButtonElement>;
     token: string;
 };
 
@@ -15,7 +11,7 @@ class UserDetailsComponent extends React.Component<UserDetailsComponentProps, {}
     render() {
         return (
         <>
-        { this.props.isLoggedIn ? <span>Hello, user</span> : <button onClick={this.props.doLogin}>Login</button> }
+        { this.props.isLoggedIn ? <span>Hello, user</span> : <span>not logged in</span>}
         </>
         );
     }
@@ -32,7 +28,6 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        doLogin: () => dispatch(Actions.do_login()),
     };
 };
 

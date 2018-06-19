@@ -4,6 +4,7 @@ import { Hello } from '../Hello';
 import { ReportComponent } from '../Report/ReportComponent';
 import { BreakdownComponent } from '../Report/BreakdownComponent';
 import moment from 'moment';
+import LoginComponent from '../Login/LoginComponent';
 
 export class RouterComponent extends React.Component {
   render() {
@@ -11,6 +12,7 @@ export class RouterComponent extends React.Component {
     return (
       <Switch>
         <Route path="/" exact component={ Hello } />
+        <Route path="/login" exact component={ LoginComponent } />
         <Route path="/report/" exact render={ () => <Redirect to={`/report/${current}`} /> } />
         <Route path="/report/:month" exact component={ ReportComponent } />
         <Route path="/breakdown" exact component={ BreakdownComponent }/>
