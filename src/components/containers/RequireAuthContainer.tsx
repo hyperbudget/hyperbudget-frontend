@@ -4,7 +4,6 @@ import { Redirect } from 'react-router';
 
 interface RequireAuthContainerProps {
     token: string;
-
 };
 
 

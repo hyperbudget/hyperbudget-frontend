@@ -1,6 +1,13 @@
 import * as Actions from "../actions/Actions";
+import * as Util from '../../lib/Util/Util';
 
-const initialState = {};
+const initialState = (() => {
+    let token = Util.get_token_from_session();
+    return {
+        token: token,
+        isLoggedIn: !!token,
+    };
+})();
 
 export const UserReducer = ( state = initialState, action ) => {
     switch ( action.type ) {
