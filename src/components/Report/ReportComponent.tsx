@@ -1,8 +1,11 @@
 import * as React from 'react';
+import { connect } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
-import moment, { Moment } from 'moment';
+import moment from 'moment';
 
-import { Report, ReportFactory, Category, Categoriser, ReportManager, FormattedTransaction, CategoryAmounts } from '@hyperbudget/hyperbudget-core';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+import { Report, ReportFactory, Category, Categoriser, ReportManager, FormattedTransaction, CategoryAmounts, Transaction } from '@hyperbudget/hyperbudget-core';
 
 import { HTMLFileManager } from '../../lib/manager/htmlfilemanager';
 import { StatementUploaderComponent } from '../StatementUploader/StatementUploaderComponent';
@@ -12,39 +15,44 @@ import { StatementMonthSelectorComponent } from '../StatementMonthSelector/State
 import { TransactionTableComponent } from '../Transaction/TransactionTableComponent';
 import { NoTransactionsFoundComponent } from '../Transaction/NoTransactionsFoundComponent';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
 import UserDetailsComponent from '../UserDetails/UserDetailsComponent';
 import RequireAuthContainer from '../containers/RequireAuthContainer';
-
-const config = require('../../../config.json');
+import RequireTxnPasswordContainer from '../containers/RequireTxnPasswordContainer';
 
 interface ReportRouteComponentProps {
-  month: string,
+ month: string,
 };
 
+interface ReportComponentProps extends RouteComponentProps<ReportRouteComponentProps> {
+ transactions: Transaction[],
+ categories: Category[],
+}
+
 interface ReportComponentState {
-  transactions: FormattedTransaction[],
+  formatted_transactions: FormattedTransaction[],
   categories: CategoryAmounts,
 }
 
-export class ReportComponent extends React.Component<RouteComponentProps<ReportRouteComponentProps>, ReportComponentState> {
+class ReportComponent extends React.Component<ReportComponentProps, ReportComponentState> {
   reportfactory: ReportFactory;
   categoriser: Categoriser;
 
   state = {
-    transactions: null,
+    formatted_transactions: null,
     categories: null,
   };
 
-  constructor(props: RouteComponentProps<ReportRouteComponentProps>) {
+  constructor(props: ReportComponentProps) {
     super(props);
-    this.reportfactory  = new ReportFactory({ unique_only: true });
-
-    const categories: Category[] = this._get_categories();
-    this.categoriser = new Categoriser(categories);
   }
 
   componentDidMount(): void {
+    this.reportfactory  = new ReportFactory({ unique_only: true });
+    this.categoriser = new Categoriser(this.props.categories);
+
+    if (this.props.transactions && this.props.transactions.length != 0) {
+      this.reportfactory.add_records(this.props.transactions).then(() => { this.handleStatementLoaded() });
+    }
   }
 
   componentDidUpdate(prevProps): void {
@@ -62,11 +70,6 @@ export class ReportComponent extends React.Component<RouteComponentProps<ReportR
       this.loadStatement(txt, type);
     });
   };
-
-  private _get_categories() :Category[] {
-    //FIXME
-    return config.preferences.categories;
-  }
 
   private loadStatement = (csv_text: string, type: string): void => {
     this.reportfactory.from_csv(csv_text, type)
@@ -94,7 +97,7 @@ export class ReportComponent extends React.Component<RouteComponentProps<ReportR
       let cats: CategoryAmounts = ReportManager.generate_category_amounts_frontend(this.categoriser, report.transactions, report.transactions_org);
 
       this.setState({
-        transactions: txns,
+        formatted_transactions: txns,
         categories: cats,
       })
     });
@@ -107,20 +110,31 @@ export class ReportComponent extends React.Component<RouteComponentProps<ReportR
 
     return (
       <RequireAuthContainer>
-        <div className='Report'>
-          <UserDetailsComponent />
-          <h1>Report!</h1>
-          <StatementUploaderComponent onFileSelected={ this.onFileSelected } />
-          <StatementMonthSelectorComponent currently_viewing={current_month_moment} />
-          {
-            this.state.transactions && this.state.transactions.length != 0 ?
-            <>
-              <TransactionTableComponent transactions={ this.state.transactions } />
-            </>
-            : <NoTransactionsFoundComponent />
-          }
-        </div>
+          <div className='Report'>
+            <UserDetailsComponent />
+            <h1>Report!</h1>
+            <RequireTxnPasswordContainer>
+              <StatementUploaderComponent onFileSelected={ this.onFileSelected } />
+              <StatementMonthSelectorComponent currently_viewing={current_month_moment} />
+              {
+                this.state.formatted_transactions && this.state.formatted_transactions.length != 0 ?
+                <>
+                  <TransactionTableComponent transactions={ this.state.formatted_transactions } />
+                </>
+                : <NoTransactionsFoundComponent />
+              }
+            </RequireTxnPasswordContainer>
+          </div>
       </RequireAuthContainer>
     );
   }
 }
+
+const mapStateToProps = state => {
+    return {
+      transactions: state.user.transactions,
+      categories: state.user.categories,
+    }
+};
+
+export default connect(mapStateToProps, () => ({}))(ReportComponent);

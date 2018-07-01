@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { Redirect } from 'react-router';
+import LoginComponent from '../Login/LoginComponent';
 
 interface RequireAuthContainerProps {
     token: string;
@@ -14,10 +14,7 @@ class RequireAuthContainer extends React.Component<RequireAuthContainerProps, {}
             <>
                 { this.props.children }
             </> :
-            <>
-            {/* <Redirect to={`/login`} /> */}
-            Not logged in
-            </>
+            <LoginComponent />
         );
     }
 }
