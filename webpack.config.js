@@ -33,7 +33,7 @@ module.exports = {
 
             {
                 test: /\.js$/,
-                include: ['src', require.resolve('csv-parse')],
+                include: ['src', require.resolve('csv-parse'), /node_modules\/@hyperbudget\/hyperbudget-core\/dist/ ],
                 use: {
                     loader: 'babel-loader',
                     options: {
