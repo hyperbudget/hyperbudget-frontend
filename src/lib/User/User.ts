@@ -22,6 +22,10 @@ interface GetTransactionsParams extends AuthenticatedParams {
   password: string;
 }
 
+interface SetTransactionsParams extends GetTransactionsParams {
+  transactions: Transaction[];
+}
+
 export const login = (params: LoginParams) : Promise<any> => {
   console.log(Util.api_url(''));
   return new Promise((resolve, reject) => (
@@ -69,6 +73,26 @@ export const get_transactions = (params: GetTransactionsParams) : Promise<Transa
     ).then(
       (res) => {
         return resolve(res.data.transactions);
+      }, err => {
+        return reject(err);
+      }
+    )
+  ));
+}
+
+export const set_transactions = (params: SetTransactionsParams) : Promise<void> => {
+  return new Promise((resolve, reject) => (
+    axios.post(
+      Util.api_url('/account/transactions/update'),
+      params,
+      {
+        headers: {
+          'x-jwt': params.token,
+        }
+      }
+    ).then(
+      (res) => {
+        return resolve();
       }, err => {
         return reject(err);
       }

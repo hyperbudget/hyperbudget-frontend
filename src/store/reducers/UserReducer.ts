@@ -20,7 +20,7 @@ export const UserReducer = (state = initialState, action) => {
                 ...state,
                 isLoggedIn: true,
                 token: action.params.token,
-                login_error: null,
+                login_errors: null,
             };
         case Actions.ActionTypes.SET_TRANSACTIONS_AND_CATEGORIES:
         return {
@@ -34,6 +34,7 @@ export const UserReducer = (state = initialState, action) => {
         return {
             ...state,
             login_errors: action.params.error,
+            token: !!action.params.error.find(e => e.type && e.type === 'auth') ? null : state.token,
         }
     }
 

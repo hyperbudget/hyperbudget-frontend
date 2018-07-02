@@ -18,6 +18,7 @@ import { NoTransactionsFoundComponent } from '../Transaction/NoTransactionsFound
 import UserDetailsComponent from '../UserDetails/UserDetailsComponent';
 import RequireAuthContainer from '../containers/RequireAuthContainer';
 import RequireTxnPasswordContainer from '../containers/RequireTxnPasswordContainer';
+import { set_transactions } from '../../lib/User/User';
 
 interface ReportRouteComponentProps {
  month: string,
@@ -26,11 +27,14 @@ interface ReportRouteComponentProps {
 interface ReportComponentProps extends RouteComponentProps<ReportRouteComponentProps> {
  transactions: Transaction[],
  categories: Category[],
+ txn_password: string,
+ token: string,
 }
 
 interface ReportComponentState {
   formatted_transactions: FormattedTransaction[],
   categories: CategoryAmounts,
+  saving: boolean,
 }
 
 class ReportComponent extends React.Component<ReportComponentProps, ReportComponentState> {
@@ -40,6 +44,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   state = {
     formatted_transactions: null,
     categories: null,
+    saving: false,
   };
 
   constructor(props: ReportComponentProps) {
@@ -50,15 +55,28 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     this.reportfactory  = new ReportFactory({ unique_only: true });
     this.categoriser = new Categoriser(this.props.categories);
 
+    console.log("componentDidMount", this.props.transactions);
+
     if (this.props.transactions && this.props.transactions.length != 0) {
       this.reportfactory.add_records(this.props.transactions).then(() => { this.handleStatementLoaded() });
     }
   }
 
   componentDidUpdate(prevProps): void {
-    console.log(this.props);
-    if ( this.reportfactory.report && this.props.match.params.month != prevProps.match.params.month ) {
+    console.log("componentDidUpdate", this.props);
+
+    if ( this.reportfactory.report && this.props.match.params.month !== prevProps.match.params.month ) {
       this.handleStatementLoaded();
+    }
+
+    if (
+      this.props.transactions &&
+      this.props.transactions.length != 0 &&
+      this.props.transactions !== prevProps.transactions
+    ) {
+      this.reportfactory.add_records(this.props.transactions).then(() => {
+        this.handleStatementLoaded()
+      });
     }
   }
 
@@ -74,8 +92,19 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   private loadStatement = (csv_text: string, type: string): void => {
     this.reportfactory.from_csv(csv_text, type)
       .then(() => {
+        this.saveTransactions();
         this.handleStatementLoaded();
       });
+  };
+
+  private saveTransactions = (): void => {
+    this.reportfactory.report.reset_filter();
+    this.setState({ saving: true });
+    set_transactions({
+      transactions: this.reportfactory.report.transactions,
+      password: this.props.txn_password,
+      token: this.props.token,
+    });
   };
 
   private handleStatementLoaded = (): void => {
@@ -134,6 +163,8 @@ const mapStateToProps = state => {
     return {
       transactions: state.user.transactions,
       categories: state.user.categories,
+      txn_password: state.user.txn_password,
+      token: state.user.token,
     }
 };
 
