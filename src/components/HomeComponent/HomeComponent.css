@@ -1,0 +1,43 @@
+html, body {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+
+.comingsoon-text {
+  display: block;
+  width: 60%;
+  min-height: 300px;
+  margin-left: 50px;
+  background-color: rgba(14, 14, 13, 0.77);
+  z-index: 1;
+  top: 100px;
+  position: relative;
+  color: white;
+}
+
+@media(max-width: 991.8px) {
+  .comingsoon-text {
+    top: 10px;
+    width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+.comingsoon-text h1 {
+  margin: 0;
+  text-align: center;
+  padding: 10px 0px 0 0;
+}
+
+
+.comingsoon-text div.text {
+  /*
+  padding: 0 10px;
+  text-align: center;
+  */
+  margin: 10px auto;
+  width: 80%;
+  padding: 0px 0 5px 0;
+}

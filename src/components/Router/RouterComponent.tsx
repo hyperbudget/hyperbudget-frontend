@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { Hello } from '../Hello';
+import { HomeComponent } from '../HomeComponent/HomeComponent';
 import ReportComponent from '../Report/ReportComponent';
 import { BreakdownComponent } from '../Report/BreakdownComponent';
 import moment from 'moment';
@@ -12,7 +12,7 @@ export class RouterComponent extends React.Component {
     const current = moment().format('YYYYMM');
     return (
       <Switch>
-        <Route path="/" exact component={ Hello } />
+        <Route path="/" exact component={ HomeComponent } />
         <Route path="/login" exact component={ LoginComponent } />
         <Route path="/register" exact component={ RegisterComponent } />
         <Route path="/report/" exact render={ () => <Redirect to={`/report/${current}`} /> } />

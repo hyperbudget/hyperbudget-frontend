@@ -33,5 +33,5 @@ const store = createStore(rootReducer, composeEnhancers(
 
 ReactDOM.render(
     <Provider store={store}><App /></Provider>,
-    document.getElementById("example")
+    document.getElementById("hyperbudget-frontend-app")
 );
