@@ -7,7 +7,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import { Report, ReportFactory, Category, Categoriser, ReportManager, FormattedTransaction, CategoryAmounts, Transaction } from '@hyperbudget/hyperbudget-core';
 
-import { HTMLFileManager } from '../../lib/manager/htmlfilemanager';
 import { StatementUploaderComponent } from '../StatementUploader/StatementUploaderComponent';
 
 import { StatementMonthSelectorComponent } from '../StatementMonthSelector/StatementMonthSelectorComponent';
@@ -19,6 +18,8 @@ import UserDetailsComponent from '../UserDetails/UserDetailsComponent';
 import RequireAuthContainer from '../containers/RequireAuthContainer';
 import RequireTxnPasswordContainer from '../containers/RequireTxnPasswordContainer';
 import { set_transactions } from '../../lib/User/User';
+import { HTMLFileManager } from '../../lib/Manager/HTMLFileManager';
+import { State } from '../../lib/State/State';
 
 interface ReportRouteComponentProps {
  month: string,
@@ -159,11 +160,11 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: State) => {
     return {
       transactions: state.user.transactions,
       categories: state.user.categories,
-      txn_password: state.user.txn_password,
+      txn_password: state.user.txnPassword,
       token: state.user.token,
     }
 };

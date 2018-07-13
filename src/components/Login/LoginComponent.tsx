@@ -2,11 +2,16 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../../store/actions/Actions';
 import { Redirect } from 'react-router';
+import '../HomeComponent/HomeComponent.css';
+import { State } from '../../lib/State/State';
+import { APIError } from '../../lib/APIError/APIError';
+import { ErrorComponent } from '../Error/Error';
 
 interface LoginComponentProps {
     doLogin: (username: string, password: string) => void;
     isLoggedIn: boolean,
     token: string;
+    loginErrors: APIError[],
 };
 
 class LoginComponent extends React.Component<LoginComponentProps, {}> {
@@ -41,33 +46,41 @@ class LoginComponent extends React.Component<LoginComponentProps, {}> {
             <Redirect to="/report" />
         </>
         :
-        <>
-            <div>
-                <label>
-                    Username:
-                    <input name="email" type="email" ref={this.userNameRef} />
-                </label>
+        <div className='home'>
+            <div className='home-text'>
+                <form>
+                    {
+                        (this.props.loginErrors ? <ErrorComponent errors={this.props.loginErrors} /> : '')
+                    }
+                    <div className='form-group'>
+                        <label htmlFor='email'>
+                            Username:
+                        </label>
+                        <input id='email' className='form-control' name="email" type="email" ref={this.userNameRef} />
+                    </div>
+                    <div className='form-group'>
+                        <label htmlFor='password'>
+                            Login Password:
+                        </label>
+                        <input id='password' className='form-control' type="password" name="password" ref={this.passwordRef} />
+                    </div>
+                    <div>
+                        <input className='btn btn-primary form-control' type='button'  onClick={() => this.props.doLogin(this.userNameRef.current.value, this.passwordRef.current.value) } value="Login" />
+                    </div>
+                </form>
             </div>
-            <div>
-                <label>
-                    Login Password:
-                    <input type="password" name="password" ref={this.passwordRef} />
-                </label>
-            </div>
-            <div>
-                <input type='button'  onClick={() => this.props.doLogin(this.userNameRef.current.value, this.passwordRef.current.value) } value="Login" />
-            </div>
-        </>
+        </div>
         );
     }
 }
 
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: State) => {
     console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
         token: state.user.token,
+        loginErrors: state.user.loginErrors,
     }
 };
 

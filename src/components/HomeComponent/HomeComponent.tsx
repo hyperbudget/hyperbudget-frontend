@@ -5,8 +5,8 @@ export class HomeComponent extends React.Component {
     render() {
         return (
             <>
-                <div className='comingsoon'>
-                    <div className='comingsoon-text'>
+                <div className='home'>
+                    <div className='home-text'>
                         <h1 className='d-none d-sm-block'>Hyperbudget</h1>
 
                         <div className='text'>

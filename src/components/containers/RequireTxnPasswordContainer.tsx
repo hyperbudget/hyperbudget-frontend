@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import TxnPasswordComponent from '../Login/TxnPasswordComponent';
+import { State } from '../../lib/State/State';
 
 interface RequireTxnPasswordContainerProps {
     txn_password: string;
@@ -19,9 +20,9 @@ class RequireTxnPasswordContainer extends React.Component<RequireTxnPasswordCont
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: State) => {
     return {
-        txn_password: state.user.txn_password,
+        txn_password: state.user.txnPassword,
     }
 };
 

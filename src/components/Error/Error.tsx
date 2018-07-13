@@ -1,11 +1,12 @@
 import * as React from 'react';
+import { APIError } from '../../lib/APIError/APIError';
 interface ErrorComponentProps {
-  errors: any[],
+  errors: APIError[],
 };
 
 export const ErrorComponent = (props: ErrorComponentProps) => {
     return (
-    <div className="error">
+    <div className="alert alert-danger" role="alert">
       <p>Errors:</p>
       <ul>
         {

@@ -4,7 +4,14 @@ html, body {
   overflow: hidden;
 }
 
-.comingsoon-text {
+.home {
+  background-image: url('/public/background.jpg') ;
+  background-size:     cover;
+  background-repeat:   no-repeat;
+  height: 100%;
+}
+
+.home-text {
   display: block;
   width: 60%;
   min-height: 300px;
@@ -17,22 +24,22 @@ html, body {
 }
 
 @media(max-width: 991.8px) {
-  .comingsoon-text {
-    top: 10px;
+  .home-text {
+    top: 40px;
     width: 90%;
     margin-left: auto;
     margin-right: auto;
   }
 }
 
-.comingsoon-text h1 {
+.home-text h1 {
   margin: 0;
   text-align: center;
   padding: 10px 0px 0 0;
 }
 
 
-.comingsoon-text div.text {
+.home-text div.text {
   /*
   padding: 0 10px;
   text-align: center;

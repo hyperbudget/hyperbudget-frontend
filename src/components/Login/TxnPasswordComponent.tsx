@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import * as Actions from '../../store/actions/Actions';
 import { Redirect } from 'react-router';
 import { ErrorComponent } from '../Error/Error';
+import { State } from '../../lib/State/State';
 
 interface TxnPasswordComponentProps {
   doGetTransactions?: (password: string, token: string) => void;
@@ -56,11 +57,11 @@ class LoginComponent extends React.Component<TxnPasswordComponentProps, {}> {
 }
 
 
-const mapStateToProps = (state): TxnPasswordComponentProps => {
+const mapStateToProps = (state: State): TxnPasswordComponentProps => {
   return {
-      txn_password: state.user.txn_password,
+      txn_password: state.user.txnPassword,
       token: state.user.token,
-      login_errors: state.user.login_errors,
+      login_errors: state.user.loginErrors,
   }
 };
 
@@ -69,7 +70,7 @@ const mapDispatchToProps = dispatch => {
     doGetTransactions: (password: string, token: string) => {
       return dispatch(Actions.get_transactions(
         {
-          password: password,
+          txnPassword: password,
           token: token,
         }
       ));

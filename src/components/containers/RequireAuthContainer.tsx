@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import LoginComponent from '../Login/LoginComponent';
+import { State } from '../../lib/State/State';
 
 interface RequireAuthContainerProps {
     token: string;
@@ -19,7 +20,7 @@ class RequireAuthContainer extends React.Component<RequireAuthContainerProps, {}
     }
 }
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: State) => {
     return {
         token: state.user.token,
     }

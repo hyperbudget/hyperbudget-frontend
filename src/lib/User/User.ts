@@ -32,7 +32,7 @@ export const login = (params: LoginParams) : Promise<any> => {
     axios.post(Util.api_url('/account/login'), params).then((res) => {
       Util.save_token_to_session(res.data.token);
       return resolve(res);
-    })
+    }, err => reject(err))
   ));
 }
 
