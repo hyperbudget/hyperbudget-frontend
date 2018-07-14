@@ -62,9 +62,20 @@ export const do_register = (params: RegisterParams) => {
         password: params.password,
       })
     ))
-    .then((res) => {
-      dispatch({ type: ActionTypes.DO_LOGIN, params: { token: res.data.token } });
-    });
+    .then(
+      (res) => {
+        dispatch({ type: ActionTypes.DO_LOGIN, params: { token: res.data.token } });
+      },
+      err => {
+        formatError(err);
+        dispatch({
+          type: ActionTypes.LOGIN_ERROR,
+          params: {
+            error: err.response.data.error,
+          }
+        })
+      },
+    );
   };
 };
 
@@ -80,6 +91,7 @@ export const get_transactions = (params: TransactionParams) => {
         }
       }),
       err => {
+        formatError(err);
         dispatch({
           type: ActionTypes.LOGIN_ERROR,
           params: {
