@@ -1,7 +1,8 @@
 import * as React from 'react';
+import './FooterComponent.css';
 
 const FooterComponent = () => (
-  <footer className="footer d-none d-m-block">
+  <footer className="footer d-none d-md-block">
       <div className="container">
           <p>
               <span className="text-muted">

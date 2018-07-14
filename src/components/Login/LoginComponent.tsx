@@ -9,6 +9,7 @@ import { ErrorComponent } from '../Error/Error';
 
 import '../HomeComponent/HomeComponent.css';
 import './LoginComponent.css';
+import FooterComponent from '../FooterComponent/FooterComponent';
 
 interface LoginComponentProps {
     doLogin: (username: string, password: string) => void;
@@ -49,6 +50,7 @@ class LoginComponent extends React.Component<LoginComponentProps, {}> {
             <Redirect to="/report" />
         </>
         :
+        <>
         <div className='home'>
             <div className='home-text'>
                 <form className='loginForm'>
@@ -73,6 +75,8 @@ class LoginComponent extends React.Component<LoginComponentProps, {}> {
                 </form>
             </div>
         </div>
+        <FooterComponent />
+        </>
         );
     }
 }

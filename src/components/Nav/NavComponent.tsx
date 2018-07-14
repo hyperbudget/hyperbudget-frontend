@@ -32,8 +32,6 @@ class NavComponent extends React.Component<NavComponentProps, {}> {
             }
           </ul>
         </nav>
-
-        <div className="mt-5" />
       </>
     );
   }

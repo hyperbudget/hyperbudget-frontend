@@ -1,7 +1,6 @@
 html, body {
   height: 100%;
   width: 100%;
-  overflow: hidden;
 }
 
 .home {
@@ -9,6 +8,7 @@ html, body {
   background-size:     cover;
   background-repeat:   no-repeat;
   height: 100%;
+  overflow: hidden;
 }
 
 .home-text {

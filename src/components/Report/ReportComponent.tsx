@@ -75,6 +75,12 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       this.props.transactions.length != 0 &&
       this.props.transactions !== prevProps.transactions
     ) {
+      console.log("updating report");
+
+      if (this.props.categories && this.props.categories.length) {
+        this.categoriser = new Categoriser(this.props.categories);
+      }
+
       this.reportfactory.add_records(this.props.transactions).then(() => {
         this.handleStatementLoaded()
       });
