@@ -52,6 +52,12 @@ export const UserReducer = (state: UserState = initialState, action: UserAction)
             loginErrors: action.params.error,
             token: !!action.params.error.find(e => e.type && e.type === 'auth') ? null : state.token,
         }
+        case Actions.ActionTypes.DO_LOGOUT:
+        return {
+          ...state,
+          isLoggedIn: false,
+          token: null,
+        }
     }
 
     return state;

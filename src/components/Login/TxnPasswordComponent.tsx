@@ -5,6 +5,8 @@ import { Redirect } from 'react-router';
 import { ErrorComponent } from '../Error/Error';
 import { State } from '../../lib/State/State';
 
+import './LoginComponent.css';
+
 interface TxnPasswordComponentProps {
   doGetTransactions?: (password: string, token: string) => void;
   txn_password: string;
@@ -12,8 +14,18 @@ interface TxnPasswordComponentProps {
   login_errors: any[];
 };
 
-class LoginComponent extends React.Component<TxnPasswordComponentProps, {}> {
+interface TxnPasswordComponentState {
+  explanation: boolean;
+}
+
+class LoginComponent extends React.Component<TxnPasswordComponentProps, TxnPasswordComponentState> {
   passwordRef: React.RefObject<HTMLInputElement>;
+
+  toggleExplanation() {
+    this.setState({
+      explanation: !this.state.explanation
+    });
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps !== this.props) {
@@ -30,6 +42,7 @@ class LoginComponent extends React.Component<TxnPasswordComponentProps, {}> {
   constructor(props) {
     super(props);
     this.passwordRef = React.createRef();
+    this.state = { explanation: false };
   }
 
   render() {
@@ -41,15 +54,29 @@ class LoginComponent extends React.Component<TxnPasswordComponentProps, {}> {
     </>
     :
     <>
-      <div>
-        { this.props.login_errors ? <ErrorComponent errors={this.props.login_errors} /> : ''}
-        <label>
-          Transaction password:
-          <input type="password" name="password" ref={this.passwordRef} />
-        </label>
-      </div>
-      <div>
-        <input type='button'  onClick={() => this.props.doGetTransactions(this.passwordRef.current.value, this.props.token) } value="Login" />
+    <div className="jumbotron mt-5 text-center">
+      <div className='loginForm'>
+          <h1>Enter transaction password</h1>
+          { this.props.login_errors ? <ErrorComponent errors={this.props.login_errors} /> : ''}
+          <div>
+            <span className='what' onClick={() => this.toggleExplanation()}>What is this?</span>
+          </div>
+          <div className='form-group'>
+            {
+              this.state.explanation ?
+              <div className='alert alert-info'>
+                This is the password used to show your transactions. If you've never set one, you can set one now. This password is required to decrypt your transaction data and cannot be recovered. However, you can reset the password and lose all your data.
+              </div> : ''
+            }
+            <label htmlFor='txnPassword'>
+              Transaction password:
+            </label>
+            <input className='form-control' id="txnPassword" type="password" name="password" ref={this.passwordRef} />
+          </div>
+          <div>
+            <input className='btn btn-primary form-control' type='button'  onClick={() => this.props.doGetTransactions(this.passwordRef.current.value, this.props.token) } value="Login" />
+          </div>
+        </div>
       </div>
     </>
     );

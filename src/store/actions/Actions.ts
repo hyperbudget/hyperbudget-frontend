@@ -7,6 +7,7 @@ export enum ActionTypes {
   DO_LOGIN = 'DO_LOGIN',
   SET_TRANSACTIONS_AND_CATEGORIES = 'SET_TRANSACTIONS_AND_CATEGORIES',
   LOGIN_ERROR = 'LOGIN_ERROR',
+  DO_LOGOUT = 'DO_LOGOUT',
 }
 
 export interface LoginParams {

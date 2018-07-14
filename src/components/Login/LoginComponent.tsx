@@ -2,10 +2,13 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../../store/actions/Actions';
 import { Redirect } from 'react-router';
-import '../HomeComponent/HomeComponent.css';
+
 import { State } from '../../lib/State/State';
 import { APIError } from '../../lib/APIError/APIError';
 import { ErrorComponent } from '../Error/Error';
+
+import '../HomeComponent/HomeComponent.css';
+import './LoginComponent.css';
 
 interface LoginComponentProps {
     doLogin: (username: string, password: string) => void;
@@ -48,7 +51,7 @@ class LoginComponent extends React.Component<LoginComponentProps, {}> {
         :
         <div className='home'>
             <div className='home-text'>
-                <form>
+                <form className='loginForm'>
                     {
                         (this.props.loginErrors ? <ErrorComponent errors={this.props.loginErrors} /> : '')
                     }

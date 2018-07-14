@@ -159,3 +159,8 @@ nav.main-nav > ul > li {
 form {
     padding: 10px;
 }
+
+.what {
+    text-decoration: underline dashed;
+    cursor: help;
+}
