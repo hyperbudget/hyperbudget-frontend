@@ -6,6 +6,8 @@ import { State } from '../../lib/State/State';
 import moment from 'moment';
 import { BreakdownFormatted, Transaction, ReportFactory, Report, Categoriser, Category, ReportManager } from '@hyperbudget/hyperbudget-core';
 import RequireTxnPasswordContainer from '../containers/RequireTxnPasswordContainer';
+import { BreakdownSelectionComponent } from './BreakdownSelectionComponent';
+import { BreakdownTableComponent } from './BreakdownTableComponent';
 
 interface BreakdownComponentProps {
   transactions: Transaction[],
@@ -45,67 +47,12 @@ class BreakdownComponent extends React.Component<BreakdownComponentProps, Breakd
       <div style={{ margin: '80px 10px' }}>
       <RequireTxnPasswordContainer>
       {
-      (
-      this.state.breakdown.length
-      ?
-      <table className="breakdown mt-3 table main">
-        <thead>
-        <tr>
-          <th>Month</th>
-          <th>Income (Total)</th>
-          <th>Expenses</th>
-          <th className="split">Gain</th>
-          <th className="split">Running</th>
-          <th>Income (Main)</th>
-          <th>Expenses</th>
-          <th>Gains (Main)</th>
-          <th>Running</th>
-        </tr>
-        </thead>
-        <tbody>
-        {
-          this.state.breakdown.map((item: BreakdownFormatted, idx: number) => (
-            <tr key={idx}>
-              <td><a href="/report/{{month}}/">{ item.month }</a></td>
-              <td>{ item.in }</td>
-              <td>{ item.out }</td>
-              <td className="split">{ item.gains }</td>
-              <td className="split">{ item.running }</td>
-              <td>{ item.main_in }</td>
-              <td>{ item.out }</td>
-              <td>{ item.main_gains }</td>
-              <td>{ item.running_main }</td>
-            </tr>
-          ))
-        }
-        </tbody>
-      </table>
-      :
-      <>
-        <div className="main">
-          <h1>Breakdown</h1>
-          <form>
-          <div className="form-group">
-            <label>
-              First: <input type="month" name="start" ref={this.fromRef} />
-            </label>
-          </div>
-          <div className="form-group">
-            <label>
-              Last:&nbsp; <input type="month" name="end" ref={this.toRef} />
-            </label>
-          </div>
-
-          <div className="form-group">
-            <input
-            className="btn btn-primary"
-            onClick={() => this.generateBreakdown( this.fromRef.current.value, this.toRef.current.value ) }
-            value="Get breakdown" type="button" />
-          </div>
-          </form>
-        </div>
-      </>
-      )}
+        this.state.breakdown.length
+        ?
+        <BreakdownTableComponent breakdown={this.state.breakdown} />
+        :
+        <BreakdownSelectionComponent generateBreakdown={ (start, end) => this.generateBreakdown(start,end ) } />
+      }
       </RequireTxnPasswordContainer>
       </div>
     )
