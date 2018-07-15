@@ -20,6 +20,7 @@ import RequireTxnPasswordContainer from '../containers/RequireTxnPasswordContain
 import { set_transactions } from '../../lib/User/User';
 import { HTMLFileManager } from '../../lib/Manager/HTMLFileManager';
 import { State } from '../../lib/State/State';
+import { CategoryTableComponent } from '../Category/CategoryTableComponent';
 
 interface ReportRouteComponentProps {
  month: string,
@@ -42,7 +43,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   reportfactory: ReportFactory;
   categoriser: Categoriser;
 
-  state = {
+  state: ReportComponentState = {
     formatted_transactions: null,
     categories: null,
     saving: false,
@@ -146,12 +147,16 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
 
     return (
       <RequireAuthContainer>
-          <div className='Report'>
+          <div className='main Report'>
             <UserDetailsComponent />
-            <h1>Report!</h1>
             <RequireTxnPasswordContainer>
               <StatementUploaderComponent onFileSelected={ this.onFileSelected } />
               <StatementMonthSelectorComponent currently_viewing={current_month_moment} />
+              {
+                this.state.categories && Object.keys(this.state.categories).length != 0 ?
+                <CategoryTableComponent categories={ this.state.categories } />
+                : ''
+              }
               {
                 this.state.formatted_transactions && this.state.formatted_transactions.length != 0 ?
                 <>

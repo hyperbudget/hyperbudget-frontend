@@ -2,12 +2,14 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 
 import { Provider } from 'react-redux';
-import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
+import thunk from 'redux-thunk';
 
-import { App } from "./components/App";
+import { createStore, applyMiddleware, compose, combineReducers } from 'redux';
 import { UserReducer } from "./store/reducers/UserReducer";
 
-import thunk from 'redux-thunk';
+import 'bootstrap';
+
+import { App } from "./components/App";
 
 const logger = store => {
     return next => {

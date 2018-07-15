@@ -36,11 +36,12 @@ export class StatementUploaderComponent extends React.Component<StatementUploade
   render() {
     return (
       <div className='StatementUploader'>
-        <label>File: <input type="file" ref={this.fileInputRef} name="file" /></label>
+        <label>Add a bank statement: <input type="file" ref={this.fileInputRef} name="file" /></label>
 
         <label>
-          Type:
+          Bank:
           <select name="type" defaultValue='lloyds' ref={this.typeSelectRef}>
+            <option value="">Please select</option>
             <option value="lloyds">Lloyds Bank</option>
             <option value="hsbc">HSBC</option>
             <option value="fairfx-corp">FairFX Corp</option>

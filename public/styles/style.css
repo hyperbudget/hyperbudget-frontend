@@ -155,3 +155,7 @@ form {
     text-decoration: underline dashed;
     cursor: help;
 }
+
+.main {
+    padding: 50px 10px;
+}

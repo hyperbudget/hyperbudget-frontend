@@ -8,7 +8,7 @@ interface TransactionTableProps {
 };
 
 export const TransactionTableComponent = (props: TransactionTableProps) => (
-  <table className='table table-bordered'>
+  <table className='table mt-3 table-bordered'>
     <thead>
     <tr>
       <th>Date</th>
