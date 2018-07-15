@@ -5,15 +5,15 @@ export const api_url = (path: string): string => {
 }
 
 export const get_token_from_session = (): string => {
-    return window.sessionStorage.getItem('hb-login-token');
+    return window.localStorage.getItem('hb-login-token');
 }
 
 export const save_token_to_session = (token: string) : void => {
-    window.sessionStorage.setItem('hb-login-token', token);
+    window.localStorage.setItem('hb-login-token', token);
 }
 
 export const delete_token_from_session = () : void => {
-  window.sessionStorage.removeItem('hb-login-token');
+  window.localStorage.removeItem('hb-login-token');
 }
 
 export const formatError = (error: any) => {

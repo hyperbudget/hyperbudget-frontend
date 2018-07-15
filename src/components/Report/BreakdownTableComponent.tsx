@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { BreakdownFormatted } from '@hyperbudget/hyperbudget-core';
+import { Link } from 'react-router-dom';
 
 interface BreakdownTableComponentProps {
   breakdown: BreakdownFormatted[],
@@ -24,7 +25,7 @@ export const BreakdownTableComponent = (props: BreakdownTableComponentProps) => 
       {
         props.breakdown.map((item: BreakdownFormatted, idx: number) => (
           <tr key={idx}>
-            <td><a href={`/report/${item.month}/`}>{item.month}</a></td>
+            <td><Link to={`/report/${item.month}/`}>{item.month}</Link></td>
             <td>{item.in}</td>
             <td>{item.out}</td>
             <td className="split">{item.gains}</td>
