@@ -1,12 +1,14 @@
 import * as React from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
-import { HomeComponent } from '../HomeComponent/HomeComponent';
+
+import HomeComponent from '../HomeComponent/HomeComponent';
 import ReportComponent from '../Report/ReportComponent';
-import { BreakdownComponent } from '../Report/BreakdownComponent';
-import moment from 'moment';
+import BreakdownComponent from '../Report/BreakdownComponent';
 import LoginComponent from '../Login/LoginComponent';
 import RegisterComponent from '../Register/RegisterComponent';
 import NavComponent from '../Nav/NavComponent';
+
+import moment from 'moment';
 
 export class RouterComponent extends React.Component {
   render() {

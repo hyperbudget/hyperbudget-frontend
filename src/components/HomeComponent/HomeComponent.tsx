@@ -2,7 +2,7 @@ import * as React from "react";
 import './HomeComponent.css';
 import FooterComponent from "../FooterComponent/FooterComponent";
 
-export class HomeComponent extends React.Component {
+export default class HomeComponent extends React.Component {
     render() {
         return (
             <>
