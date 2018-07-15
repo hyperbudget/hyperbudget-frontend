@@ -22,7 +22,7 @@ class NavComponent extends React.Component<NavComponentProps, {}> {
               this.props.token ?
                 <>
                   <li><NavLink role="button" className="btn btn-secondary" to="/report">Report</NavLink></li>
-                  <li><NavLink role="button" className="btn btn-secondary" to='/report/breakdown'>Breakdown</NavLink></li>
+                  <li><NavLink role="button" className="btn btn-secondary" to='/breakdown'>Breakdown</NavLink></li>
                   <li><a role="button" className="btn btn-secondary" href='javascript:;' onClick={ this.props.doLogout }>Log out</a></li>
                 </>
                 :
