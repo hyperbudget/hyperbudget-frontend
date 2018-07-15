@@ -1,13 +1,19 @@
 language: node_js
 node_js:
 - '8.11'
+install:
+  - npm install
+  - npm run build
+before_deploy:
+  - rm -rf node_modules
 deploy:
+  region: eu-west-2
   provider: s3
   access_key_id: AKIAJVVRV6TCFJIRJSLQ
   secret_access_key:
     secure: lspXdz9YTxp6Y2rBNM+GfzFY54pQnBN9JElXLtb1XSX4LdlE7+UulSc0jo8FIBUJLnOTPJDmNcIxoMJ9iqmM2bHdERgnyWQGDrmnDEH53s+poYtop40qX6UMIZjoQ4E7QcmabuZltoHNdWLka0jJuCZIjCdcAgmB7I99f6yYThcfbJvPks8pPxFxwsVMAB2b+D2a6tX9ourLKqB7xs9gkm4zSz0TXeC0IbDM0ZfhPDKQbgxm2kG6xtY/CdzK/QwlZVbLpHsRWxRKoSF+ZktBuGExP8n/mrEAh7zZHPov8ojmZ53m7FiBD06y40bV9qbxOsFsOt1fXD2cCA7UtVxyiKYgq2H82L1rlMi25pXARxqPMhWffSlKDO2FvQXj1qPGkAvHDA7v7rMRSe6jUSIc8iK0w0uiwwemR086XPA8lVHvKWLoaCotCKkq7WaAACN7jSoWCsl1E8ehSaLcAOK2AkyqsfHKJ1PwYtG6TWK3NGH6cF3QBguyoR8przpG5n5InEKqyeLBgqrxv8lkxKIn5vMJMxpkCAZtW4/r6WgaqtMdeCXIdEv9W3WtJbwZuevtZ4CmOGvbbp5IL5hxNEOrAYCCwFB0L97KJkDDMWdi4gy8rTNnKLAeaUjuPKBB6XCAoVY8oWBxMSML9bYbJp5I/mGnN9T3OPKZx/kJzHDsv3Q=
-  bucket: hyperbudget-frontend-react-app
-  local-dir: dist
+  bucket: www.hyperbudget.net
   acl: public_read
   on:
     repo: hyperbudget/hyperbudget-frontend
+  skip_cleanup: true
