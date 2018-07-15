@@ -2,17 +2,27 @@ import * as React from 'react';
 import { connect } from 'react-redux';
 import * as Actions from '../../store/actions/Actions';
 import { Redirect } from 'react-router';
+import { APIError } from '../../lib/APIError/APIError';
+import { ErrorComponent } from '../Error/Error';
+import { State } from '../../lib/State/State';
 
 interface RegisterComponentProps {
-    doRegister: (username: string, password: string, firstname: string) => void;
+    doRegister: (params: {
+        username: string,
+        firstname: string,
+        lastname: string,
+        password: string,
+    }) => void;
     isLoggedIn: boolean,
     token: string;
+    loginErrors: APIError[],
 };
 
 class RegisterComponent extends React.Component<RegisterComponentProps, {}> {
     userNameRef: React.RefObject<HTMLInputElement>;
     passwordRef: React.RefObject<HTMLInputElement>;
     nameRef: React.RefObject<HTMLInputElement>;
+    lastNameRef: React.RefObject<HTMLInputElement>;
 
     componentDidUpdate(prevProps, prevState) {
     }
@@ -34,6 +44,7 @@ class RegisterComponent extends React.Component<RegisterComponentProps, {}> {
         this.userNameRef = React.createRef();
         this.passwordRef = React.createRef();
         this.nameRef = React.createRef();
+        this.lastNameRef = React.createRef();
     }
 
     render() {
@@ -44,50 +55,70 @@ class RegisterComponent extends React.Component<RegisterComponentProps, {}> {
             <Redirect to="/report" />
         </>
         :
-        <>
-            <div>
-                <label>
-                    Username:
-                    <input name="email" type="email" ref={this.userNameRef} />
-                </label>
+        <div className="home">
+            <div className='home-text'>
+                <form className='loginForm'>
+                    {
+                        (this.props.loginErrors ? <ErrorComponent errors={this.props.loginErrors} /> : '')
+                    }
+                    <div className='form-group'>
+                        <label htmlFor="email">
+                            Email:
+                        </label>
+                        <input className='form-control' id="email" name="email" type="email" ref={this.userNameRef} />
+                    </div>
+                    <div className='form-group'>
+                        <label htmlFor="firstname">
+                            Firstname:
+                        </label>
+                        <input className='form-control' id="firstname" name="firstname" type="text" ref={this.nameRef} />
+                    </div>
+                    <div className='form-group'>
+                        <label htmlFor="lastname">
+                            Last:
+                        </label>
+                        <input className='form-control' id="last" name="lastname" type="text" ref={this.lastNameRef} />
+                    </div>
+                    <div className='form-group'>
+                        <label htmlFor="password">
+                            Login Password:
+                        </label>
+                        <input className='form-control' id="password" type="password" name="password" ref={this.passwordRef} />
+                    </div>
+                    <div className='form-group'>
+                        <input className='form-control btn btn-primary' type='button'  onClick={() => this.props.doRegister({
+                            username: this.userNameRef.current.value,
+                            firstname: this.nameRef.current.value,
+                            lastname: this.lastNameRef.current.value,
+                            password: this.passwordRef.current.value
+                        }) } value="Login" />
+                    </div>
+                </form>
             </div>
-            <div>
-                <label>
-                    Firstname:
-                    <input name="firstname" type="text" ref={this.nameRef} />
-                </label>
-            </div>
-            <div>
-                <label>
-                    Login Password:
-                    <input type="password" name="password" ref={this.passwordRef} />
-                </label>
-            </div>
-            <div>
-                <input type='button'  onClick={() => this.props.doRegister(this.userNameRef.current.value, this.nameRef.current.value, this.passwordRef.current.value) } value="Login" />
-            </div>
-        </>
+        </div>
         );
     }
 }
 
 
-const mapStateToProps = state => {
+const mapStateToProps = (state: State) => {
     console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
         token: state.user.token,
+        loginErrors: state.user.loginErrors,
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        doRegister: (username: string, firstname, password: string) => {
+        doRegister: (params) => {
             return dispatch(Actions.do_register(
                 {
-                    firstname: firstname,
-                    username: username,
-                    password: password,
+                    firstname: params.firstname,
+                    lastname: params.lastname,
+                    username: params.username,
+                    password: params.password,
                 }
             ));
         },

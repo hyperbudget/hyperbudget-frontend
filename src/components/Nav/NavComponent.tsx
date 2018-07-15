@@ -28,6 +28,7 @@ class NavComponent extends React.Component<NavComponentProps, {}> {
                 :
                 <>
                   <li><NavLink exact  className="btn btn-secondary" to="/login">Login</NavLink></li>
+                  <li><NavLink exact  className="btn btn-secondary" to="/register">Register</NavLink></li>
                 </>
             }
           </ul>

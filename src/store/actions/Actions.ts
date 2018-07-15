@@ -18,6 +18,7 @@ export interface LoginParams {
 export interface RegisterParams {
   username: string;
   firstname: string;
+  lastname: string;
   password: string;
 }
 
@@ -55,6 +56,7 @@ export const do_register = (params: RegisterParams) => {
       firstname: params.firstname,
       email: params.username,
       password: params.password,
+      lastname: params.lastname,
     })
     .then(() => (
       User.login({
