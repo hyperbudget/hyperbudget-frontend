@@ -8,6 +8,7 @@ import { BreakdownFormatted, Transaction, ReportFactory, Report, Categoriser, Ca
 import RequireTxnPasswordContainer from '../containers/RequireTxnPasswordContainer';
 import { BreakdownSelectionComponent } from './BreakdownSelectionComponent';
 import { BreakdownTableComponent } from './BreakdownTableComponent';
+import RequireAuthContainer from '../containers/RequireAuthContainer';
 
 interface BreakdownComponentProps {
   transactions: Transaction[],
@@ -45,15 +46,17 @@ class BreakdownComponent extends React.Component<BreakdownComponentProps, Breakd
   render() {
     return (
       <div style={{ margin: '80px 10px' }}>
-      <RequireTxnPasswordContainer>
-      {
-        this.state.breakdown.length
-        ?
-        <BreakdownTableComponent breakdown={this.state.breakdown} />
-        :
-        <BreakdownSelectionComponent generateBreakdown={ (start, end) => this.generateBreakdown(start,end ) } />
-      }
-      </RequireTxnPasswordContainer>
+      <RequireAuthContainer>
+        <RequireTxnPasswordContainer>
+        {
+          this.state.breakdown.length
+          ?
+          <BreakdownTableComponent breakdown={this.state.breakdown} />
+          :
+          <BreakdownSelectionComponent generateBreakdown={ (start, end) => this.generateBreakdown(start,end ) } />
+        }
+        </RequireTxnPasswordContainer>
+      </RequireAuthContainer>
       </div>
     )
   }

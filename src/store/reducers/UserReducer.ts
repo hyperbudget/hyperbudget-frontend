@@ -57,6 +57,7 @@ export const UserReducer = (state: UserState = initialState, action: UserAction)
           ...state,
           isLoggedIn: false,
           token: null,
+          txnPassword: null,
         }
     }
 
