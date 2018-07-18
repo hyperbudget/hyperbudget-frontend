@@ -50,7 +50,10 @@ module.exports = {
                 include: [
                     /node_modules/,
                 ],
-
+            },
+            {
+              test: /\.svg$/,
+              loader: 'file-loader'
             },
         ]
     },
