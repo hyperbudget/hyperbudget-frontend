@@ -11,7 +11,7 @@ interface TxnPasswordComponentProps {
   doGetTransactions?: (password: string, token: string) => void;
   txn_password: string;
   token: string;
-  login_errors: any[];
+  api_errors: any[];
 };
 
 interface TxnPasswordComponentState {
@@ -57,7 +57,7 @@ class LoginComponent extends React.Component<TxnPasswordComponentProps, TxnPassw
     <div className="jumbotron mt-5 text-center">
       <div className='loginForm'>
           <h1>Enter transaction password</h1>
-          { this.props.login_errors ? <ErrorComponent errors={this.props.login_errors} /> : ''}
+          { this.props.api_errors ? <ErrorComponent errors={this.props.api_errors} /> : ''}
           <div>
             <span className='what' onClick={() => this.toggleExplanation()}>What is this?</span>
           </div>
@@ -88,7 +88,7 @@ const mapStateToProps = (state: State): TxnPasswordComponentProps => {
   return {
       txn_password: state.user.txnPassword,
       token: state.user.token,
-      login_errors: state.user.loginErrors,
+      api_errors: state.user.APIErrors,
   }
 };
 

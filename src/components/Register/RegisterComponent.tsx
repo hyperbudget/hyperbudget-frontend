@@ -15,7 +15,7 @@ interface RegisterComponentProps {
     }) => void;
     isLoggedIn: boolean,
     token: string;
-    loginErrors: APIError[],
+    APIErrors: APIError[],
 };
 
 class RegisterComponent extends React.Component<RegisterComponentProps, {}> {
@@ -59,7 +59,7 @@ class RegisterComponent extends React.Component<RegisterComponentProps, {}> {
             <div className='home-text'>
                 <form className='loginForm'>
                     {
-                        (this.props.loginErrors ? <ErrorComponent errors={this.props.loginErrors} /> : '')
+                        (this.props.APIErrors ? <ErrorComponent errors={this.props.APIErrors} /> : '')
                     }
                     <div className='form-group'>
                         <label htmlFor="email">
@@ -106,7 +106,7 @@ const mapStateToProps = (state: State) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         token: state.user.token,
-        loginErrors: state.user.loginErrors,
+        APIErrors: state.user.APIErrors,
     }
 };
 

@@ -6,7 +6,7 @@ import { formatError } from '../../lib/Util/Util';
 export enum ActionTypes {
   DO_LOGIN = 'DO_LOGIN',
   SET_TRANSACTIONS_AND_CATEGORIES = 'SET_TRANSACTIONS_AND_CATEGORIES',
-  LOGIN_ERROR = 'LOGIN_ERROR',
+  API_ERROR = 'API_ERROR',
   DO_LOGOUT = 'DO_LOGOUT',
 }
 
@@ -41,7 +41,7 @@ export const do_login = (params: LoginParams) => {
     err => {
       formatError(err);
       dispatch({
-        type: ActionTypes.LOGIN_ERROR,
+        type: ActionTypes.API_ERROR,
         params: {
           error: err.response.data.error,
         }
@@ -71,7 +71,7 @@ export const do_register = (params: RegisterParams) => {
       err => {
         formatError(err);
         dispatch({
-          type: ActionTypes.LOGIN_ERROR,
+          type: ActionTypes.API_ERROR,
           params: {
             error: err.response.data.error,
           }
@@ -95,7 +95,7 @@ export const get_transactions = (params: TransactionParams) => {
       err => {
         formatError(err);
         dispatch({
-          type: ActionTypes.LOGIN_ERROR,
+          type: ActionTypes.API_ERROR,
           params: {
             error: err.response.data.error,
           }

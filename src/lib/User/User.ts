@@ -27,6 +27,10 @@ interface SetTransactionsParams extends GetTransactionsParams {
   transactions: Transaction[];
 }
 
+interface SetCategoriesParams extends GetTransactionsParams {
+  categories: Category[],
+};
+
 export const login = (params: LoginParams) : Promise<any> => {
   console.log(Util.api_url(''));
   return new Promise((resolve, reject) => (
@@ -85,6 +89,26 @@ export const set_transactions = (params: SetTransactionsParams) : Promise<void> 
   return new Promise((resolve, reject) => (
     axios.post(
       Util.api_url('/account/transactions/update'),
+      params,
+      {
+        headers: {
+          'x-jwt': params.token,
+        }
+      }
+    ).then(
+      (res) => {
+        return resolve();
+      }, err => {
+        return reject(err);
+      }
+    )
+  ));
+}
+
+export const set_categories = (params: SetCategoriesParams) : Promise<void> => {
+  return new Promise((resolve, reject) => (
+    axios.post(
+      Util.api_url('/account/categories/update'),
       params,
       {
         headers: {

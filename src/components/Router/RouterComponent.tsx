@@ -9,6 +9,7 @@ import RegisterComponent from '../Register/RegisterComponent';
 import NavComponent from '../Nav/NavComponent';
 
 import moment from 'moment';
+import CategoryEditorComponent from '../Category/CategoryEditorComponent';
 
 export class RouterComponent extends React.Component {
   render() {
@@ -23,6 +24,7 @@ export class RouterComponent extends React.Component {
         <Route path="/report/" exact render={ () => <Redirect to={`/report/${current}`} /> } />
         <Route path="/report/:month" exact component={ ReportComponent } />
         <Route path="/breakdown" exact component={ BreakdownComponent }/>
+        <Route path="/categories/editor" exact component={ CategoryEditorComponent } />
       </Switch>
       </>
     );
