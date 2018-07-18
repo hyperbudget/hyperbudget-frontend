@@ -13,7 +13,7 @@ const initialState: UserState = (() => {
         transactions: [],
         categories: [],
         txnPassword: '',
-        loginErrors: null,
+        APIErrors: null,
     };
 })();
 
@@ -35,7 +35,7 @@ export const UserReducer = (state: UserState = initialState, action: UserAction)
                 ...state,
                 isLoggedIn: true,
                 token: action.params.token,
-                loginErrors: null,
+                APIErrors: null,
             };
         case Actions.ActionTypes.SET_TRANSACTIONS_AND_CATEGORIES:
         return {
@@ -43,13 +43,13 @@ export const UserReducer = (state: UserState = initialState, action: UserAction)
             transactions: action.params.transactions,
             categories: action.params.categories,
             txnPassword: action.params.txnPassword,
-            loginErrors: null,
+            APIErrors: null,
         }
-        case Actions.ActionTypes.LOGIN_ERROR:
+        case Actions.ActionTypes.API_ERROR:
         console.log(action);
         return {
             ...state,
-            loginErrors: action.params.error,
+            APIErrors: action.params.error,
             token: !!action.params.error.find(e => e.type && e.type === 'auth') ? null : state.token,
         }
         case Actions.ActionTypes.DO_LOGOUT:
