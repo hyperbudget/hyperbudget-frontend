@@ -1,7 +1,7 @@
-const config = require('../../../client_config.json');
+declare const BACKEND_URL;
 
 export const api_url = (path: string): string => {
-    return `${config.server_url}${path}`;
+    return `${BACKEND_URL}${path}`;
 }
 
 export const get_token_from_session = (): string => {
