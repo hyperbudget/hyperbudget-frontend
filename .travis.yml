@@ -4,7 +4,7 @@ node_js:
 install:
   - npm install
   - BACKEND_URL=https://api.hyperbudget.net npm run build
-  - npm install -g travis-ci-cloudfront-invalidation
+  - sudo pip install awscli
 before_deploy:
   - rm -rf node_modules
 deploy:
@@ -21,4 +21,7 @@ deploy:
   skip_cleanup: true
   cache_control: "max-age=21600"
 after_deploy:
-  - travis-ci-cloudfront-invalidation -a $AWS_ACCESS_KEY -s $AWS_SECRET_KEY -c $AWS_CLOUDFRONT_DISTRIBUTION_ID -i '/*' -b $TRAVIS_BRANCH -p $TRAVIS_PULL_REQUEST -o 'master,stage'
+  # Allow `awscli` to make requests to CloudFront.
+  - aws configure set preview.cloudfront true
+  # Invalidate every object in the targeted distribution.
+  - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
