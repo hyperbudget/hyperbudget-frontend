@@ -1,4 +1,5 @@
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+var WebpackAutoInject = require('webpack-auto-inject-version');
 
 let common = require('./webpack.config.common.js');
 let merge = require('webpack-merge');
@@ -12,4 +13,12 @@ module.exports = merge(common, {
         }),
       ]
     },
+    plugins: [
+      new WebpackAutoInject({
+        components: {
+            AutoIncreaseVersion: false,
+            InjectAsComment: true,
+        },
+      }),
+    ]
 });
