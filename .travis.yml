@@ -4,7 +4,7 @@ node_js:
 install:
   - npm install
   - BACKEND_URL=https://api.hyperbudget.net npm run build
-  - pip install awscli
+  - sudo pip install awscli
 before_deploy:
   - rm -rf node_modules
 deploy:
