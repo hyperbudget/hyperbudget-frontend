@@ -3,7 +3,7 @@ node_js:
 - '8.11'
 install:
   - npm install
-  - npm run build
+  - BACKEND_URL=https://api.hyperbudget.net npm run build
 before_deploy:
   - rm -rf node_modules
 deploy:
