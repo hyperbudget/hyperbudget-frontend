@@ -16,5 +16,5 @@ deploy:
   acl: public_read
   on:
     repo: hyperbudget/hyperbudget-frontend
-    branch: master
+    tags: true
   skip_cleanup: true
