@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Button calls doRegister 1`] = `
+Array [
+  Object {
+    "firstname": "",
+    "lastname": "",
+    "password": "",
+    "username": "",
+  },
+]
+`;
+
+exports[`Button calls doRegister 2`] = `
+Array [
+  Object {
+    "firstname": "Errietta",
+    "lastname": "Kostala",
+    "password": "supersekrit",
+    "username": "errietta@errietta.me",
+  },
+]
+`;
+
+exports[`Register component renders 1`] = `
+<div
+  className="home"
+>
+  <div
+    className="home-text"
+  >
+    <form
+      className="loginForm"
+    >
+      
+      <div
+        className="form-group"
+      >
+        <label
+          htmlFor="email"
+        >
+          Email:
+        </label>
+        <input
+          className="form-control"
+          id="email"
+          name="email"
+          type="email"
+        />
+      </div>
+      <div
+        className="form-group"
+      >
+        <label
+          htmlFor="firstname"
+        >
+          Firstname:
+        </label>
+        <input
+          className="form-control"
+          id="firstname"
+          name="firstname"
+          type="text"
+        />
+      </div>
+      <div
+        className="form-group"
+      >
+        <label
+          htmlFor="lastname"
+        >
+          Last:
+        </label>
+        <input
+          className="form-control"
+          id="last"
+          name="lastname"
+          type="text"
+        />
+      </div>
+      <div
+        className="form-group"
+      >
+        <label
+          htmlFor="password"
+        >
+          Login Password:
+        </label>
+        <input
+          className="form-control"
+          id="password"
+          name="password"
+          type="password"
+        />
+      </div>
+      <div
+        className="form-group"
+      >
+        <input
+          className="form-control btn btn-primary"
+          id="registerButton"
+          onClick={[Function]}
+          type="button"
+          value="Login"
+        />
+      </div>
+    </form>
+  </div>
+</div>
+`;

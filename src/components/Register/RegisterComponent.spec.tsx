@@ -40,5 +40,16 @@ test('Button calls doRegister', () => {
 
   expect(mockRegister.mock.calls.length).toBe(1);
   expect(mockRegister.mock.calls[0]).toMatchSnapshot();
+
+  component.find('#email').instance()['value'] = 'errietta@errietta.me';
+  component.find('#firstname').instance()['value'] = 'Errietta';
+  component.find('#last').instance()['value'] = 'Kostala';
+  component.find('#password').instance()['value'] = 'supersekrit';
+
+  component.find('#registerButton').simulate('click');
+
+  expect(mockRegister.mock.calls.length).toBe(2);
+  expect(mockRegister.mock.calls[1]).toMatchSnapshot();
+
 });
 

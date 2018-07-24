@@ -8,4 +8,3 @@ db/
 config.json
 .vscode
 .cache-loader
-*/**/__snapshots__/*
