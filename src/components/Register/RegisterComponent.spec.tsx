@@ -27,7 +27,7 @@ test('Register component renders', () => {
 test('Button calls doRegister', () => {
   const mockRegister = jest.fn();
 
-  let component = enzyme.shallow(
+  let component = enzyme.mount(
     <RegisterComponent
       doRegister={mockRegister}
       isLoggedIn={false}
