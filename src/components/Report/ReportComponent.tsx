@@ -31,6 +31,7 @@ interface ReportComponentProps extends RouteComponentProps<ReportRouteComponentP
  categories: Category[],
  txn_password: string,
  token: string,
+ onUpdate?: (transactions: Transaction[]) => void,
 }
 
 interface ReportComponentState {
@@ -83,7 +84,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       }
 
       this.reportfactory.add_records(this.props.transactions).then(() => {
-        this.handleStatementLoaded()
+        this.handleStatementLoaded();
       });
     }
   }
@@ -129,6 +130,10 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       report.filter_month(this.props.match.params.month);
       console.log(report.transactions);
 
+      if (this.props.onUpdate) {
+        this.props.onUpdate(report.transactions);
+      }
+
       report.transactions = report.transactions.sort(function (a, b) { return a.txn_date.getTime() - b.txn_date.getTime() });
       let txns: FormattedTransaction[] = ReportManager.generate_web_frontend_report(report.transactions);
       let cats: CategoryAmounts = ReportManager.generate_category_amounts_frontend(this.categoriser, report.transactions, report.transactions_org);
@@ -171,12 +176,13 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   }
 }
 
-const mapStateToProps = (state: State) => {
+const mapStateToProps = (state: State, ownProps) => {
     return {
       transactions: state.user.transactions,
       categories: state.user.categories,
       txn_password: state.user.txnPassword,
       token: state.user.token,
+      ...ownProps,
     }
 };
 

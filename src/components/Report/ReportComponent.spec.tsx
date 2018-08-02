@@ -10,12 +10,54 @@ import thunk from 'redux-thunk';
 import 'jest';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+import { Transaction, Category } from '@hyperbudget/hyperbudget-core';
+import { resolve } from 'url';
 
 beforeAll(() => {
   enzyme.configure({ adapter: new Adapter() });
 });
 
-test('Report component renders', () => {
+test('Report component renders for users that has not given transaction password', () => {
+  const mockStore = configureStore([
+    thunk,
+  ]);
+
+  const store = mockStore({
+    user: {
+      transactions: [],
+      categories: [],
+      txnPassword: null,
+      token: 'abc',
+      isLoggedIn: true,
+    },
+  });
+
+  let component = enzyme.mount(
+      <Provider store={store}>
+        <BrowserRouter>
+          <ReportComponent
+          history={null}
+          location={null}
+          staticContext={null}
+          match={{
+            params: {
+              month: '201801',
+            },
+            isExact: true,
+            path: '/report/201801',
+            url: 'http://localhost:8080/',
+          }}
+          />
+        </BrowserRouter>
+      </Provider>
+  );
+
+  let tree = component.html();
+  expect(tree).toMatchSnapshot();
+});
+
+
+test('Report component renders for user that has given transaction password', () => {
   const mockStore = configureStore([
     thunk,
   ]);
@@ -52,4 +94,204 @@ test('Report component renders', () => {
 
   let tree = component.html();
   expect(tree).toMatchSnapshot();
+});
+
+test('Report component renders for transactions', () => {
+  return new Promise((resolve, reject) => {
+    const mockStore = configureStore([
+      thunk,
+    ]);
+
+    const transactions= [
+      {
+        txn_amount_credit: 0,
+        txn_amount_debit: 100,
+        txn_desc: 'Hello World',
+        txn_date: '2017-12-31T00:00:00',
+        txn_src: 'hsbc',
+        txn_type: 'DEB',
+        acc_sortcode: '',
+        acc_balance: 0,
+        acc_number: '',
+      },
+      {
+        txn_amount_credit: 0,
+        txn_amount_debit: 150,
+        txn_desc: 'Nano software',
+        txn_date: '2018-01-01T00:00:00',
+        txn_src: 'hsbc',
+        acc_sortcode: '',
+        acc_balance: 0,
+        acc_number: '',
+        txn_type: 'DEB',
+      },
+      {
+        txn_amount_credit: 0,
+        txn_amount_debit: 150,
+        txn_desc: 'Electricity',
+        txn_date: '2018-01-01T00:00',
+        txn_src: 'hsbc',
+        acc_sortcode: '',
+        acc_balance:0,
+        acc_number: '',
+        txn_type: 'DD',
+      },
+      {
+        txn_amount_credit: 0,
+        txn_amount_debit: 50,
+        txn_desc: 'Water',
+        txn_date: '2017-12-01T00:00',
+        txn_src: 'hsbc',
+        acc_sortcode: '',
+        acc_balance:0,
+        acc_number: '',
+        txn_type: 'DD',
+      },
+      {
+        txn_amount_credit: 0,
+        txn_amount_debit: 200,
+        txn_desc: 'Uplink Fee',
+        txn_date: '2018-02-01T00:00',
+        txn_src: 'hsbc',
+        acc_sortcode: '',
+        acc_balance: 0,
+        acc_number: '',
+        categories: [],
+      },
+    ];
+
+    const categories: Category[] = [
+      {
+        category_rules: {
+          txn_desc: {
+            "rules": [
+              ['=', 'Hello World']
+            ]
+          }
+        },
+        name: 'Hello',
+        id: 'hello',
+        className: '',
+        txn_month_modifier: 1,
+      },
+      {
+        category_rules: {
+          txn_type: {
+            rules: [
+              ['=', 'DD']
+            ]
+          }
+        },
+        name: 'Direct Debit',
+        id: 'directdebit',
+        className: '',
+      },
+    ];
+
+    const store = mockStore({
+      user: {
+        transactions: transactions,
+        categories: categories,
+        txnPassword: 'pass',
+        token: 'abc',
+        isLoggedIn: true,
+      },
+    });
+
+    enzyme.mount(
+      <Provider store={store}>
+        <BrowserRouter>
+          <ReportComponent
+          history={null}
+          location={null}
+          staticContext={null}
+          match={{
+            params: {
+              month: '201801',
+            },
+            isExact: true,
+            path: '/report/201801',
+            url: 'http://localhost:8080/',
+          }}
+          onUpdate={(transactions) => {
+            expect(transactions).toMatchSnapshot();
+            resolve();
+          }}
+          />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    enzyme.mount(
+      <Provider store={store}>
+        <BrowserRouter>
+          <ReportComponent
+          history={null}
+          location={null}
+          staticContext={null}
+          match={{
+            params: {
+              month: '201802',
+            },
+            isExact: true,
+            path: '/report/201802',
+            url: 'http://localhost:8080/',
+          }}
+          onUpdate={(transactions) => {
+            expect(transactions).toMatchSnapshot();
+            resolve();
+          }}
+          />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    enzyme.mount(
+      <Provider store={store}>
+        <BrowserRouter>
+          <ReportComponent
+          history={null}
+          location={null}
+          staticContext={null}
+          match={{
+            params: {
+              month: '201712',
+            },
+            isExact: true,
+            path: '/report/201712',
+            url: 'http://localhost:8080/',
+          }}
+          onUpdate={(transactions) => {
+            expect(transactions).toMatchSnapshot();
+            resolve();
+          }}
+          />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    enzyme.mount(
+      <Provider store={store}>
+        <BrowserRouter>
+          <ReportComponent
+          history={null}
+          location={null}
+          staticContext={null}
+          match={{
+            params: {
+              month: '201711',
+            },
+            isExact: true,
+            path: '/report/201711',
+            url: 'http://localhost:8080/',
+          }}
+          onUpdate={(transactions) => {
+            expect(transactions).toMatchSnapshot();
+            resolve();
+          }}
+          />
+        </BrowserRouter>
+      </Provider>
+    );
+  });
 });
