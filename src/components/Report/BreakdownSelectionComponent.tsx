@@ -1,35 +1,55 @@
 import * as React from 'react';
+import Picker from 'pickerjs';
 
-let fromRef: React.RefObject<HTMLInputElement> = React.createRef();
-let toRef: React.RefObject<HTMLInputElement> = React.createRef();
+import 'pickerjs/dist/picker.min.css';
 
 interface BreakdownSelectionComponentProps {
   generateBreakdown(start: string, end: string): void,
 };
 
-export const BreakdownSelectionComponent = (props: BreakdownSelectionComponentProps) => (
-  <>
-    <div className="main">
-      <h1>Select Breakdown</h1>
-      <form>
-        <div className="form-group">
-          <label>
-            First: <input type="month" name="start" ref={fromRef} />
-          </label>
-        </div>
-        <div className="form-group">
-          <label>
-            Last:&nbsp; <input type="month" name="end" ref={toRef} />
-          </label>
-        </div>
+export class BreakdownSelectionComponent extends React.Component<BreakdownSelectionComponentProps> {
+  fromRef: React.RefObject<HTMLInputElement>;
+  toRef: React.RefObject<HTMLInputElement>;
 
-        <div className="form-group">
-          <input
-            className="btn btn-primary"
-            onClick={() => props.generateBreakdown(fromRef.current.value, toRef.current.value)}
-            value="Get breakdown" type="button" />
-        </div>
-      </form>
-    </div>
-  </>
-);
+  constructor(props: BreakdownSelectionComponentProps) {
+    super(props);
+    this.fromRef = React.createRef();
+    this.toRef = React.createRef();
+  }
+
+  componentDidMount() {
+    const options = {
+      format: 'YYYY-MM',
+    };
+
+    new Picker(this.fromRef.current, options);
+    new Picker(this.toRef.current, options);
+  }
+
+  render() {
+    return <>
+      <div className="main">
+        <h1>Select Breakdown</h1>
+        <form>
+          <div className="form-group">
+            <label>
+              First: <input type="text" name="start" ref={this.fromRef} />
+            </label>
+          </div>
+          <div className="form-group">
+            <label>
+              Last:&nbsp; <input type="text" name="end" ref={this.toRef} />
+            </label>
+          </div>
+
+          <div className="form-group">
+            <input
+              className="btn btn-primary"
+              onClick={() => this.props.generateBreakdown(this.fromRef.current.value, this.toRef.current.value)}
+              value="Get breakdown" type="button" />
+          </div>
+        </form>
+      </div>
+    </>;
+  }
+};
