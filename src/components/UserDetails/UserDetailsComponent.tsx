@@ -19,7 +19,6 @@ class UserDetailsComponent extends React.Component<UserDetailsComponentProps, {}
 
 
 const mapStateToProps = state => {
-    console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
         token: state.user.token,

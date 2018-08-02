@@ -15,10 +15,10 @@ export const StatementMonthSelectorComponent = (props: StatementMonthSelectorPro
     <>
         <div className='clearfix mt-5'>
             <div className='float-left'>
-                <Link className='btn-outline-primary btn' role='button' to={`/report/${prev_date}`}>Previous period</Link>
+                <Link id='previousPeriod' className='btn-outline-primary btn' role='button' to={`/report/${prev_date}`}>Previous period</Link>
             </div>
             <div className='float-right'>
-                <Link className='btn-outline-primary btn' role='button' to={`/report/${next_date}`}>Next period</Link>
+                <Link id='nextPeriod' className='btn-outline-primary btn' role='button' to={`/report/${next_date}`}>Next period</Link>
             </div>
         </div>
 

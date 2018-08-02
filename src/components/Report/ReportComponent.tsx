@@ -31,6 +31,7 @@ interface ReportComponentProps extends RouteComponentProps<ReportRouteComponentP
  categories: Category[],
  txn_password: string,
  token: string,
+ onUpdate?: (transactions: Transaction[]) => void,
 }
 
 interface ReportComponentState {
@@ -57,16 +58,12 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     this.reportfactory  = new ReportFactory({ unique_only: true });
     this.categoriser = new Categoriser(this.props.categories);
 
-    console.log("componentDidMount", this.props.transactions);
-
     if (this.props.transactions && this.props.transactions.length != 0) {
       this.reportfactory.add_records(this.props.transactions).then(() => { this.handleStatementLoaded() });
     }
   }
 
   componentDidUpdate(prevProps): void {
-    console.log("componentDidUpdate", this.props);
-
     if ( this.reportfactory.report && this.props.match.params.month !== prevProps.match.params.month ) {
       this.handleStatementLoaded();
     }
@@ -76,23 +73,18 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       this.props.transactions.length != 0 &&
       this.props.transactions !== prevProps.transactions
     ) {
-      console.log("updating report");
-
       if (this.props.categories && this.props.categories.length) {
         this.categoriser = new Categoriser(this.props.categories);
       }
 
       this.reportfactory.add_records(this.props.transactions).then(() => {
-        this.handleStatementLoaded()
+        this.handleStatementLoaded();
       });
     }
   }
 
   private onFileSelected = (file: File, type: string): void => {
-    console.log(file);
-
     HTMLFileManager.read_file(file).then((txt: string) => {
-      console.log(txt);
       this.loadStatement(txt, type);
     });
   };
@@ -127,7 +119,10 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     }).then(() => {
       const report: Report = this.reportfactory.report;
       report.filter_month(this.props.match.params.month);
-      console.log(report.transactions);
+
+      if (this.props.onUpdate) {
+        this.props.onUpdate(report.transactions);
+      }
 
       report.transactions = report.transactions.sort(function (a, b) { return a.txn_date.getTime() - b.txn_date.getTime() });
       let txns: FormattedTransaction[] = ReportManager.generate_web_frontend_report(report.transactions);
@@ -171,12 +166,13 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   }
 }
 
-const mapStateToProps = (state: State) => {
+const mapStateToProps = (state: State, ownProps) => {
     return {
       transactions: state.user.transactions,
       categories: state.user.categories,
       txn_password: state.user.txnPassword,
       token: state.user.token,
+      ...ownProps,
     }
 };
 

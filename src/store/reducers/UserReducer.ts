@@ -46,7 +46,6 @@ export const UserReducer = (state: UserState = initialState, action: UserAction)
             APIErrors: null,
         }
         case Actions.ActionTypes.API_ERROR:
-        console.log(action);
         return {
             ...state,
             APIErrors: action.params.error,

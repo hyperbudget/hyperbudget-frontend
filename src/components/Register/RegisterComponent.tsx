@@ -18,7 +18,7 @@ interface RegisterComponentProps {
     APIErrors: APIError[],
 };
 
-class RegisterComponent extends React.Component<RegisterComponentProps, {}> {
+export class RegisterComponent extends React.Component<RegisterComponentProps, {}> {
     userNameRef: React.RefObject<HTMLInputElement>;
     passwordRef: React.RefObject<HTMLInputElement>;
     nameRef: React.RefObject<HTMLInputElement>;
@@ -86,7 +86,7 @@ class RegisterComponent extends React.Component<RegisterComponentProps, {}> {
                         <input className='form-control' id="password" type="password" name="password" ref={this.passwordRef} />
                     </div>
                     <div className='form-group'>
-                        <input className='form-control btn btn-primary' type='button'  onClick={() => this.props.doRegister({
+                        <input className='form-control btn btn-primary' id='registerButton' type='button'  onClick={() => this.props.doRegister({
                             username: this.userNameRef.current.value,
                             firstname: this.nameRef.current.value,
                             lastname: this.lastNameRef.current.value,
@@ -102,7 +102,6 @@ class RegisterComponent extends React.Component<RegisterComponentProps, {}> {
 
 
 const mapStateToProps = (state: State) => {
-    console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
         token: state.user.token,
