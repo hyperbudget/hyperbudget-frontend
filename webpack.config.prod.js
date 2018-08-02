@@ -19,6 +19,13 @@ module.exports = merge(common, {
             AutoIncreaseVersion: false,
             InjectAsComment: true,
         },
+        InjectByTag: {
+          fileRegex: /\.+/,
+          // regexp to find [AIV] tag inside html, if you tag contains unallowed characters you can adjust the regex
+          // but also you can change [AIV] tag to anything you want
+          AIVTagRegexp: /(\[AIV])(([a-zA-Z{} ,:;!()_@\-"'\\\/])+)(\[\/AIV])/g,
+          dateFormat: 'h:MM:ss TT'
+        }
       }),
     ]
 });

@@ -10,6 +10,7 @@ import NavComponent from '../Nav/NavComponent';
 
 import moment from 'moment';
 import CategoryEditorComponent from '../Category/CategoryEditorComponent';
+import VersionComponent from '../VersionComponent/VersionComponent';
 
 export class RouterComponent extends React.Component {
   render() {
@@ -19,6 +20,7 @@ export class RouterComponent extends React.Component {
       <NavComponent />
       <Switch>
         <Route path="/" exact component={ HomeComponent } />
+        <Route path="/version" exact component={ VersionComponent } />
         <Route path="/login" exact component={ LoginComponent } />
         <Route path="/register" exact component={ RegisterComponent } />
         <Route path="/report/" exact render={ () => <Redirect to={`/report/${current}`} /> } />
