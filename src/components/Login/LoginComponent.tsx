@@ -24,9 +24,7 @@ class LoginComponent extends React.Component<LoginComponentProps, {}> {
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps !== this.props) {
-            console.log("moo");
             if (this.props.token) {
-                console.log(this.props.token);
             }
         }
     }
@@ -83,7 +81,6 @@ class LoginComponent extends React.Component<LoginComponentProps, {}> {
 
 
 const mapStateToProps = (state: State) => {
-    console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
         token: state.user.token,

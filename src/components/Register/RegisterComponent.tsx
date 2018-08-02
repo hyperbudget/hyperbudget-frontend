@@ -102,7 +102,6 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, {
 
 
 const mapStateToProps = (state: State) => {
-    console.log(state);
     return {
         isLoggedIn: state.user.isLoggedIn,
         token: state.user.token,

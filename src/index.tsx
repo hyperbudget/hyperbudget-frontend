@@ -11,18 +11,6 @@ import 'bootstrap';
 
 import { App } from "./components/App";
 
-const logger = store => {
-    return next => {
-        return action => {
-            console.log('[Middleware] dispatching', action);
-            const result = next(action);
-            console.log('[Middleware], result', result);
-            console.log('next state', store.getState());
-            return result;
-        }
-    }
-};
-
 const rootReducer = combineReducers({
     user: UserReducer,
 });
@@ -30,7 +18,7 @@ const rootReducer = combineReducers({
 const composeEnhancers = window['__REDUX_DEVTOOLS_EXTENSION_COMPOSE__'] || compose;
 
 const store = createStore(rootReducer, composeEnhancers(
-    applyMiddleware(logger, thunk)
+    applyMiddleware(thunk)
 ));
 
 ReactDOM.render(
