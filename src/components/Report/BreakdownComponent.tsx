@@ -24,8 +24,9 @@ class BreakdownComponent extends React.Component<BreakdownComponentProps, Breakd
     breakdown: [],
   };
 
-  fromRef: React.RefObject<HTMLInputElement>;
-  toRef: React.RefObject<HTMLInputElement>;
+  constructor(props) {
+    super(props);
+  }
 
   componentDidUpdate(prevProps, prevState) {
     if (
@@ -34,13 +35,6 @@ class BreakdownComponent extends React.Component<BreakdownComponentProps, Breakd
       this.props.transactions !== prevProps.transactions
     ) {
     }
-  }
-
-  constructor(props) {
-    super(props);
-
-    this.toRef = React.createRef();
-    this.fromRef = React.createRef();
   }
 
   render() {
