@@ -5,9 +5,8 @@ export class HTMLFileManager {
     reader.readAsText(file, "UTF-8");
 
     return new Promise(function (resolve, reject) {
-      reader.onload = function (evt: FileReaderProgressEvent) {
-        let target: FileReader = evt.target;
-        resolve(target.result);
+      reader.onload = function (evt: ProgressEvent) {
+        resolve(reader.result.toString());
       }
       reader.onerror = function (evt) {
         reject(evt);
