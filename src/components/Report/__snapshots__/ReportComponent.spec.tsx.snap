@@ -1,3 +1,150 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+<<<<<<< f71d81e9bcf9a9b55a2cca7288835eb048691390
 exports[`Report component renders for user that has given transaction password 1`] = `"<div class=\\"main Report\\"><span>Hello, user</span><div class=\\"jumbotron mt-5 text-center\\"><div class=\\"loginForm\\"><h1>Enter transaction password</h1><div><span class=\\"what\\">What is this?</span></div><div class=\\"form-group\\"><label for=\\"txnPassword\\">Transaction password:</label><input class=\\"form-control\\" id=\\"txnPassword\\" type=\\"password\\" name=\\"password\\"></div><div><input class=\\"btn btn-primary form-control\\" type=\\"button\\" value=\\"Login\\"></div></div></div></div>"`;
+=======
+exports[`Report component renders for transactions 1`] = `
+Array [
+  Transaction {
+    "acc_balance": 0,
+    "acc_number": "",
+    "acc_sortcode": "",
+    "categories": Array [
+      Object {
+        "category_rules": Object {
+          "txn_desc": Object {
+            "rules": Array [
+              Array [
+                "=",
+                "Hello World",
+              ],
+            ],
+          },
+        },
+        "className": "",
+        "id": "hello",
+        "name": "Hello",
+        "txn_month_modifier": 1,
+      },
+    ],
+    "identifier": "1ca97ae1cef5b825aab1e2d2649b8db04e38a084",
+    "month": "201801",
+    "org_month": "201712",
+    "txn_amount_credit": 0,
+    "txn_amount_debit": 100,
+    "txn_date": 2017-12-31T05:00:00.000Z,
+    "txn_desc": "Hello World",
+    "txn_src": "hsbc",
+    "txn_type": "DEB",
+  },
+  Transaction {
+    "acc_balance": 0,
+    "acc_number": "",
+    "acc_sortcode": "",
+    "categories": Array [],
+    "identifier": "0d7676c80480ee74ad8aaa5b3f67b96a9ca3b9d6",
+    "month": "201801",
+    "org_month": "201801",
+    "txn_amount_credit": 0,
+    "txn_amount_debit": 150,
+    "txn_date": 2018-01-01T05:00:00.000Z,
+    "txn_desc": "Nano software",
+    "txn_src": "hsbc",
+    "txn_type": "DEB",
+  },
+  Transaction {
+    "acc_balance": 0,
+    "acc_number": "",
+    "acc_sortcode": "",
+    "categories": Array [
+      Object {
+        "category_rules": Object {
+          "txn_type": Object {
+            "rules": Array [
+              Array [
+                "=",
+                "DD",
+              ],
+            ],
+          },
+        },
+        "className": "",
+        "id": "directdebit",
+        "name": "Direct Debit",
+      },
+    ],
+    "identifier": "7abc34b39a3d521892a60b941996fae76453215f",
+    "month": "201801",
+    "org_month": "201801",
+    "txn_amount_credit": 0,
+    "txn_amount_debit": 150,
+    "txn_date": 2018-01-01T05:00:00.000Z,
+    "txn_desc": "Electricity",
+    "txn_src": "hsbc",
+    "txn_type": "DD",
+  },
+]
+`;
+
+exports[`Report component renders for transactions 2`] = `
+Array [
+  Transaction {
+    "acc_balance": 0,
+    "acc_number": "",
+    "acc_sortcode": "",
+    "categories": Array [],
+    "identifier": "32b3f2cfdacfebda8fc89de2eca7fb04753f7d09",
+    "month": "201802",
+    "org_month": "201802",
+    "txn_amount_credit": 0,
+    "txn_amount_debit": 200,
+    "txn_date": 2018-02-01T05:00:00.000Z,
+    "txn_desc": "Uplink Fee",
+    "txn_src": "hsbc",
+    "txn_type": "",
+  },
+]
+`;
+
+exports[`Report component renders for transactions 3`] = `
+Array [
+  Transaction {
+    "acc_balance": 0,
+    "acc_number": "",
+    "acc_sortcode": "",
+    "categories": Array [
+      Object {
+        "category_rules": Object {
+          "txn_type": Object {
+            "rules": Array [
+              Array [
+                "=",
+                "DD",
+              ],
+            ],
+          },
+        },
+        "className": "",
+        "id": "directdebit",
+        "name": "Direct Debit",
+      },
+    ],
+    "identifier": "84b9d5211698f852952cadd02c109953d56dc456",
+    "month": "201712",
+    "org_month": "201712",
+    "txn_amount_credit": 0,
+    "txn_amount_debit": 50,
+    "txn_date": 2017-12-01T05:00:00.000Z,
+    "txn_desc": "Water",
+    "txn_src": "hsbc",
+    "txn_type": "DD",
+  },
+]
+`;
+
+exports[`Report component renders for transactions 4`] = `Array []`;
+
+exports[`Report renders for users who have not provided a transaction password 1`] = `"<div class=\\"main Report\\"><span>Hello, user</span><div class=\\"jumbotron mt-5 text-center\\"><div class=\\"loginForm\\"><h1>Enter transaction password</h1><div><span class=\\"what\\">What is this?</span></div><div class=\\"form-group\\"><label for=\\"txnPassword\\">Transaction password:</label><input class=\\"form-control\\" id=\\"txnPassword\\" type=\\"password\\" name=\\"password\\"></div><div><input class=\\"btn btn-primary form-control\\" type=\\"button\\" value=\\"Login\\"></div></div></div></div>"`;
+
+exports[`Report renders for users who have provided a transaction password 1`] = `"<div class=\\"main Report\\"><span>Hello, user</span><div class=\\"StatementUploader\\"><label>Add a bank statement: <input type=\\"file\\" name=\\"file\\"></label><label>Bank:<select name=\\"type\\"><option value=\\"\\">Please select</option><option value=\\"lloyds\\" selected=\\"\\">Lloyds Bank</option><option value=\\"hsbc\\">HSBC</option><option value=\\"fairfx-corp\\">FairFX Corp</option><option value=\\"midata\\">Midata</option><option value=\\"rbs\\">RBS (UNTESTED)</option></select></label><input type=\\"submit\\"></div><div class=\\"clearfix mt-5\\"><div class=\\"float-left\\"><a id=\\"previousPeriod\\" class=\\"btn-outline-primary btn\\" role=\\"button\\" href=\\"/report/201711\\">Previous period</a></div><div class=\\"float-right\\"><a id=\\"nextPeriod\\" class=\\"btn-outline-primary btn\\" role=\\"button\\" href=\\"/report/201801\\">Next period</a></div></div><div class=\\"text-center\\"><a class=\\"btn-outline-primary btn\\" role=\\"button\\" href=\\"/report/201808\\">This month</a></div><div class=\\"text-center mt-2\\"><h1>Currently viewing: Dec 2017</h1></div><div class=\\"jumbotron mt-5 text-center\\"><h1 class=\\"display-3\\">Nothing here</h1><p class=\\"lead\\">You have no transactions for this period.</p><a class=\\"btn-outline-primary btn\\" role=\\"button\\" href=\\"/report/201805\\">Go back to current month</a></div></div>"`;
+>>>>>>> Mount Function Wrapping
