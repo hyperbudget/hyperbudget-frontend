@@ -23,12 +23,12 @@ import { State } from '../../lib/State/State';
 import { CategoryTableComponent } from '../Category/CategoryTableComponent';
 
 interface ReportComponentProps {
- date: Date,
- transactions: Transaction[],
- categories: Category[],
- txn_password: string,
- token: string,
- onUpdate?: (transactions: Transaction[]) => void,
+  date: Date,
+  transactions: Transaction[],
+  categories: Category[],
+  txn_password: string,
+  token: string,
+  onUpdate?: (transactions: Transaction[]) => void,
 }
 
 interface ReportComponentState {
@@ -52,7 +52,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   }
 
   componentDidMount(): void {
-    this.reportfactory  = new ReportFactory({ unique_only: true });
+    this.reportfactory = new ReportFactory({ unique_only: true });
     this.categoriser = new Categoriser(this.props.categories);
 
     if (this.props.transactions && this.props.transactions.length != 0) {
@@ -61,7 +61,11 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   }
 
   componentDidUpdate(prevProps): void {
-    if ( this.reportfactory.report && this.props.date.getTime() !== prevProps.date.getTime() ) {
+<<<<<<< ec05c2fe9c7f1d7e19f4b09e4d85ea9d7d891895
+    if (this.reportfactory.report && this.props.date.getTime() !== prevProps.date.getTime()) {
+=======
+    if (this.reportfactory.report && this.props.match.params.month !== prevProps.match.params.month) {
+>>>>>>> Indentation
       this.handleStatementLoaded();
     }
 
@@ -135,38 +139,49 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   render() {
     return (
       <RequireAuthContainer>
-          <div className='main Report'>
-            <UserDetailsComponent />
-            <RequireTxnPasswordContainer>
-              <StatementUploaderComponent onFileSelected={ this.onFileSelected } />
-              <StatementMonthSelectorComponent currentlyViewing={this.props.date} />
-              {
-                this.state.categories && Object.keys(this.state.categories).length != 0 ?
-                <CategoryTableComponent categories={ this.state.categories } />
-                : ''
-              }
-              {
-                this.state.formatted_transactions && this.state.formatted_transactions.length != 0 ?
-                <>
-                  <TransactionTableComponent transactions={ this.state.formatted_transactions } />
-                </>
-                : <NoTransactionsFoundComponent />
-              }
-            </RequireTxnPasswordContainer>
-          </div>
-      </RequireAuthContainer>
+<<<<<<< ec05c2fe9c7f1d7e19f4b09e4d85ea9d7d891895
+    <div className='main Report'>
+      <UserDetailsComponent />
+      <RequireTxnPasswordContainer>
+        <StatementUploaderComponent onFileSelected={this.onFileSelected} />
+        <StatementMonthSelectorComponent currentlyViewing={this.props.date} />
+        {
+          this.state.categories && Object.keys(this.state.categories).length != 0 ?
+            <CategoryTableComponent categories={this.state.categories} />
+=======
+        <div className='main Report'>
+          <UserDetailsComponent />
+          <RequireTxnPasswordContainer>
+            <StatementUploaderComponent onFileSelected={this.onFileSelected} />
+            <StatementMonthSelectorComponent currently_viewing={current_month_moment} />
+            {
+              this.state.categories && Object.keys(this.state.categories).length != 0 ?
+                <CategoryTableComponent categories={this.state.categories} />
+>>>>>>> Indentation
+            : ''
+        }
+        {
+          this.state.formatted_transactions && this.state.formatted_transactions.length != 0 ?
+            <>
+              <TransactionTableComponent transactions={this.state.formatted_transactions} />
+            </>
+            : <NoTransactionsFoundComponent />
+        }
+      </RequireTxnPasswordContainer>
+    </div>
+      </RequireAuthContainer >
     );
   }
 }
 
 const mapStateToProps = (state: State, ownProps) => {
-    return {
-      transactions: state.user.transactions,
-      categories: state.user.categories,
-      txn_password: state.user.txnPassword,
-      token: state.user.token,
-      ...ownProps,
-    }
+  return {
+    transactions: state.user.transactions,
+    categories: state.user.categories,
+    txn_password: state.user.txnPassword,
+    token: state.user.token,
+    ...ownProps,
+  }
 };
 
 export default connect(mapStateToProps, () => ({}))(ReportComponent);
