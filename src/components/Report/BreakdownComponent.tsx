@@ -64,8 +64,8 @@ class BreakdownComponent extends React.Component<BreakdownComponentProps, Breakd
       start = start.replace("-","");
       end = end.replace("-","");
 
-      let current_mo: moment.Moment = moment(start, 'YYYYMM');
-      let end_mo: moment.Moment = moment(end, 'YYYYMM').add(1, 'month');
+      let current_mo: moment.Moment = moment(start, 'YYYYMM').utc();
+      let end_mo: moment.Moment = moment(end, 'YYYYMM').utc().add(1, 'month');
 
       if (end_mo < current_mo) {
         console.error("gave an end month before start");

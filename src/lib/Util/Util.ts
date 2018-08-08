@@ -1,3 +1,5 @@
+import moment from "moment";
+
 declare const BACKEND_URL;
 
 export const api_url = (path: string): string => {
@@ -29,3 +31,10 @@ export const formatError = (error: any) => {
     }
   }
 };
+
+export const convertDateStringToDate = (date: string): Date => {
+  let [, y, m] = date.match(/(\d{4})(\d{2})/);
+  let currentMonthMoment = moment(`${y}-${m}-01T00:00:00+00:00`);
+  console.log(date, currentMonthMoment);
+  return currentMonthMoment.utc().toDate();
+}
