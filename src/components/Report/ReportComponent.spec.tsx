@@ -139,6 +139,17 @@ test('Report component renders for transactions', () => {
         acc_number: '',
         categories: [],
       },
+      {
+        txn_amount_credit: 500,
+        txn_amount_debit: 0,
+        txn_desc: 'Bribe',
+        txn_date: '2018-06-01T00:00',
+        txn_src: 'hsbc',
+        acc_sortcode: '',
+        acc_balance: 0,
+        acc_number: '',
+        categories: [],
+      },
     ];
 
     const categories: Category[] = [
@@ -227,6 +238,21 @@ test('Report component renders for transactions', () => {
           <ReportComponent
           date={moment('2017-11-01').utc().toDate()}
           onUpdate={(transactions) => {
+            expect(transactions).toMatchSnapshot();
+            resolve();
+          }}
+          />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    enzyme.mount(
+      <Provider store={store}>
+        <BrowserRouter>
+          <ReportComponent
+          date={moment('2018-06-01').utc().toDate()}
+          onUpdate={(transactions) => {
+            console.log(transactions);
             expect(transactions).toMatchSnapshot();
             resolve();
           }}

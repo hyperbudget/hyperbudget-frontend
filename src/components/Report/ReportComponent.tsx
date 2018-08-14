@@ -115,7 +115,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       }
     }).then(() => {
       const report: Report = this.reportfactory.report;
-      report.filter_month(moment(this.props.date).utc().format('YYYYMM'));
+      report.filter_month(moment(this.props.date).format('YYYYMM'));
 
       if (this.props.onUpdate) {
         this.props.onUpdate(report.transactions);

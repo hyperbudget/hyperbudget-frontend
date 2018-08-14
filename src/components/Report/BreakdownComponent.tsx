@@ -9,6 +9,7 @@ import RequireTxnPasswordContainer from '../containers/RequireTxnPasswordContain
 import { BreakdownSelectionComponent } from './BreakdownSelectionComponent';
 import { BreakdownTableComponent } from './BreakdownTableComponent';
 import RequireAuthContainer from '../containers/RequireAuthContainer';
+import { treatDateAsUTC } from '../../lib/Util/Util';
 
 interface BreakdownComponentProps {
   transactions: Transaction[],
@@ -55,17 +56,10 @@ class BreakdownComponent extends React.Component<BreakdownComponentProps, Breakd
     )
   }
 
-  generateBreakdown(start: string, end: string) {
+  generateBreakdown(start: Date, end: Date) {
     if (start && end) {
-      // FIXME: this is from input[type="month"]. I don't like this - we should
-      // use a library.
-
-      // For chrome at least: it's e.g. 2018-01
-      start = start.replace("-","");
-      end = end.replace("-","");
-
-      let current_mo: moment.Moment = moment(start, 'YYYYMM').utc();
-      let end_mo: moment.Moment = moment(end, 'YYYYMM').utc().add(1, 'month');
+      let current_mo: moment.Moment = moment(treatDateAsUTC(start));
+      let end_mo: moment.Moment = moment(treatDateAsUTC(end));
 
       if (end_mo < current_mo) {
         console.error("gave an end month before start");
@@ -82,7 +76,7 @@ class BreakdownComponent extends React.Component<BreakdownComponentProps, Breakd
 
           report.transactions = report.transactions.sort(function(a,b) { return a.txn_date.getTime() - b.txn_date.getTime() });
           report.transactions = report.transactions.filter(function(txn: Transaction) {
-            return txn.month >= start && txn.month <= end;
+            return txn.month >= current_mo.format('YYYYMM') && txn.month <= end_mo.format('YYYYMM');
           });
 
           let months: string[] = [];
