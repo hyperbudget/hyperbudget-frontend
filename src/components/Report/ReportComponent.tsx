@@ -61,11 +61,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   }
 
   componentDidUpdate(prevProps): void {
-<<<<<<< ec05c2fe9c7f1d7e19f4b09e4d85ea9d7d891895
     if (this.reportfactory.report && this.props.date.getTime() !== prevProps.date.getTime()) {
-=======
-    if (this.reportfactory.report && this.props.match.params.month !== prevProps.match.params.month) {
->>>>>>> Indentation
       this.handleStatementLoaded();
     }
 
@@ -139,36 +135,25 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   render() {
     return (
       <RequireAuthContainer>
-<<<<<<< ec05c2fe9c7f1d7e19f4b09e4d85ea9d7d891895
-    <div className='main Report'>
-      <UserDetailsComponent />
-      <RequireTxnPasswordContainer>
-        <StatementUploaderComponent onFileSelected={this.onFileSelected} />
-        <StatementMonthSelectorComponent currentlyViewing={this.props.date} />
-        {
-          this.state.categories && Object.keys(this.state.categories).length != 0 ?
-            <CategoryTableComponent categories={this.state.categories} />
-=======
         <div className='main Report'>
           <UserDetailsComponent />
           <RequireTxnPasswordContainer>
             <StatementUploaderComponent onFileSelected={this.onFileSelected} />
-            <StatementMonthSelectorComponent currently_viewing={current_month_moment} />
+            <StatementMonthSelectorComponent currentlyViewing={this.props.date} />
             {
               this.state.categories && Object.keys(this.state.categories).length != 0 ?
                 <CategoryTableComponent categories={this.state.categories} />
->>>>>>> Indentation
-            : ''
-        }
-        {
-          this.state.formatted_transactions && this.state.formatted_transactions.length != 0 ?
-            <>
-              <TransactionTableComponent transactions={this.state.formatted_transactions} />
-            </>
-            : <NoTransactionsFoundComponent />
-        }
-      </RequireTxnPasswordContainer>
-    </div>
+                : ''
+            }
+            {
+              this.state.formatted_transactions && this.state.formatted_transactions.length != 0 ?
+                <>
+                  <TransactionTableComponent transactions={this.state.formatted_transactions} />
+                </>
+                : <NoTransactionsFoundComponent />
+            }
+          </RequireTxnPasswordContainer>
+        </div>
       </RequireAuthContainer >
     );
   }

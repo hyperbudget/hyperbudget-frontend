@@ -13,85 +13,43 @@ import { Transaction, Category } from '@hyperbudget/hyperbudget-core';
 
 import moment from 'moment';
 
-enzyme.configure({ adapter: new Adapter() });
+const mount = (store, component) => enzyme.mount(
+  <Provider store={store}>
+    <BrowserRouter>{component}</BrowserRouter>
+  </Provider>
+);
 
-beforeEach(() => {
-  const mount = (store, component) => enzyme.mount(
-    <Provider store={store}>
-      <BrowserRouter>{component}</BrowserRouter>
-    </Provider>
-  );
-});
+const mockStore = configureStore([
+  thunk,
+]);
 
-test('Report component renders for user that has given transaction password', () => {
-  const mockStore = configureStore([
-    thunk,
-  ]);
+describe('Report', () => {
 
-  const store = mockStore({
-    user: {
-      transactions: [],
-      categories: [],
-      txnPassword: null,
-      token: 'abc',
-      isLoggedIn: true,
-    },
+  beforeAll(() => {
+    enzyme.configure({ adapter: new Adapter() });
   });
 
-  let component = enzyme.mount(
-    <Provider store={store}>
-      <BrowserRouter>
-        <ReportComponent
-          date={moment('2018-01-01').utc().toDate()}
-        />
-      </BrowserRouter>
-    </Provider>
-  );
-
-  let tree = component.html();
-  expect(tree).toMatchSnapshot();
-});
-
-test('renders for users who have provided a transaction password', () => {
-  return new Promise((resolve, reject) => {
-
-    const mockStore = configureStore([
-      thunk,
-    ]);
-
+  it('renders for users who have not provided a transaction password', () => {
     const store = mockStore({
       user: {
         transactions: [],
         categories: [],
-        txnPassword: 'pass',
+        txnPassword: null,
         token: 'abc',
         isLoggedIn: true,
       },
     });
 
-    const component = mount(store,
+    let component = mount(store,
       <ReportComponent
-        history={null}
-        location={null}
-        staticContext={null}
-        match={{
-          params: {
-            month: '201801',
-          },
-          isExact: true,
-          path: '/report/201801',
-          url: 'http://localhost:8080/',
-        }}
-      />);
+        date={moment('2018-01-01').utc().toDate()}
+      />
+    );
 
-    expect(component.html()).toMatchSnapshot();
+    expect(component.html()).toMatchSnapshot()
   });
 
   it('renders for users who have provided a transaction password', () => {
-    const mockStore = configureStore([
-      thunk,
-    ]);
-
     const store = mockStore({
       user: {
         transactions: [],
@@ -102,19 +60,9 @@ test('renders for users who have provided a transaction password', () => {
       },
     });
 
-    const component = mount(store,
+    let component = mount(store,
       <ReportComponent
-        history={null}
-        location={null}
-        staticContext={null}
-        match={{
-          params: {
-            month: '201801',
-          },
-          isExact: true,
-          path: '/report/201801',
-          url: 'http://localhost:8080/',
-        }}
+        date={moment('2018-01-01').utc().toDate()}
       />);
 
     expect(component.html()).toMatchSnapshot();
@@ -122,10 +70,6 @@ test('renders for users who have provided a transaction password', () => {
 
   it('component renders for transactions', () => {
     return new Promise((resolve, reject) => {
-      const mockStore = configureStore([
-        thunk,
-      ]);
-
       const transactions = [
         {
           txn_amount_credit: 0,
@@ -224,18 +168,8 @@ test('renders for users who have provided a transaction password', () => {
 
       mount(store,
         <ReportComponent
-          history={null}
-          location={null}
-          staticContext={null}
-          match={{
-            params: {
-              month: '201801',
-            },
-            isExact: true,
-            path: '/report/201801',
-            url: 'http://localhost:8080/',
-          }}
-          onUpdate={(transactions) => {
+          date={moment('2018-01-01').utc().toDate()}
+          onUpdate={transactions => {
             expect(transactions).toMatchSnapshot();
             resolve();
           }}
@@ -243,18 +177,8 @@ test('renders for users who have provided a transaction password', () => {
 
       mount(store,
         <ReportComponent
-          history={null}
-          location={null}
-          staticContext={null}
-          match={{
-            params: {
-              month: '201802',
-            },
-            isExact: true,
-            path: '/report/201802',
-            url: 'http://localhost:8080/',
-          }}
-          onUpdate={(transactions) => {
+          date={moment('2018-02-01').utc().toDate()}
+          onUpdate={transactions => {
             expect(transactions).toMatchSnapshot();
             resolve();
           }}
@@ -262,18 +186,8 @@ test('renders for users who have provided a transaction password', () => {
 
       mount(store,
         <ReportComponent
-          history={null}
-          location={null}
-          staticContext={null}
-          match={{
-            params: {
-              month: '201712',
-            },
-            isExact: true,
-            path: '/report/201712',
-            url: 'http://localhost:8080/',
-          }}
-          onUpdate={(transactions) => {
+          date={moment('2017-12-01').utc().toDate()}
+          onUpdate={transactions => {
             expect(transactions).toMatchSnapshot();
             resolve();
           }}
@@ -281,23 +195,21 @@ test('renders for users who have provided a transaction password', () => {
 
       mount(store,
         <ReportComponent
-          history={null}
-          location={null}
-          staticContext={null}
-          match={{
-            params: {
-              month: '201711',
-            },
-            isExact: true,
-            path: '/report/201711',
-            url: 'http://localhost:8080/',
-          }}
-          onUpdate={(transactions) => {
+          date={moment('2017-11-01').utc().toDate()}
+          onUpdate={transactions => {
             expect(transactions).toMatchSnapshot();
             resolve();
           }}
-        />
-      );
+        />);
+
+      mount(store,
+        <ReportComponent
+          date={moment('2018-06-01T00:00:00+00:00').toDate()}
+          onUpdate={transactions => {
+            expect(transactions).toMatchSnapshot();
+            resolve();
+          }}
+        />);
     });
   });
 });
