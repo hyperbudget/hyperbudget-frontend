@@ -7,7 +7,7 @@ interface StatementMonthSelectorProps {
 };
 
 export const StatementMonthSelectorComponent = (props: StatementMonthSelectorProps) => {
-    const selectedMoment = moment(props.currentlyViewing);
+    const selectedMoment = moment(props.currentlyViewing).utc();
     const prevDate = selectedMoment.clone().subtract(1, 'months').format('YYYYMM');
     const nextDate = selectedMoment.clone().add(1, 'months').format('YYYYMM');
 
@@ -29,7 +29,7 @@ export const StatementMonthSelectorComponent = (props: StatementMonthSelectorPro
         </div>
 
         <div className="text-center mt-2">
-            <h1>Currently viewing: { selectedMoment.format('MMM YYYY') }</h1>
+            <h1>Currently viewing: { selectedMoment.utc().format('MMM YYYY') }</h1>
         </div>
     </>
     );

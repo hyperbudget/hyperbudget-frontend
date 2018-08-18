@@ -9,7 +9,6 @@ import RequireTxnPasswordContainer from '../containers/RequireTxnPasswordContain
 import { BreakdownSelectionComponent } from './BreakdownSelectionComponent';
 import { BreakdownTableComponent } from './BreakdownTableComponent';
 import RequireAuthContainer from '../containers/RequireAuthContainer';
-import { treatDateAsUTC } from '../../lib/Util/Util';
 
 interface BreakdownComponentProps {
   transactions: Transaction[],
@@ -58,11 +57,10 @@ class BreakdownComponent extends React.Component<BreakdownComponentProps, Breakd
 
   generateBreakdown(start: Date, end: Date) {
     if (start && end) {
-      let current_mo: moment.Moment = moment(treatDateAsUTC(start));
-      let end_mo: moment.Moment = moment(treatDateAsUTC(end));
+      let current_mo: moment.Moment = moment(start).startOf('day');
+      let end_mo: moment.Moment = moment(end).startOf('day');
 
       if (end_mo < current_mo) {
-        console.error("gave an end month before start");
         return;
       }
 
@@ -82,7 +80,7 @@ class BreakdownComponent extends React.Component<BreakdownComponentProps, Breakd
           let months: string[] = [];
           var i = 0;
 
-          while (current_mo.toDate().getTime() != end_mo.toDate().getTime()) {
+          while (current_mo.toDate().getTime() <= end_mo.toDate().getTime()) {
             months.push(current_mo.format('YYYYMM'));
             current_mo.add(1, "month");
 

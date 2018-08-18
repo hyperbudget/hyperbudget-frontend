@@ -49,6 +49,5 @@ export const treatDateAsUTC = (date: Date): Date => moment(date).utcOffset(0).to
 export const convertDateStringToDate = (date: string): Date => {
   let [, y, m] = date.match(/(\d{4})(\d{2})/);
   let currentMonthMoment = moment(`${y}-${m}-01T00:00:00+00:00`);
-  console.log(date, currentMonthMoment);
-  return currentMonthMoment.utc().toDate();
+  return currentMonthMoment.toDate();
 }

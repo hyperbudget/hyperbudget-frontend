@@ -252,7 +252,6 @@ test('Report component renders for transactions', () => {
           <ReportComponent
           date={moment('2018-06-01T00:00:00+00:00').toDate()}
           onUpdate={(transactions) => {
-            console.log(transactions);
             expect(transactions).toMatchSnapshot();
             resolve();
           }}

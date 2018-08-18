@@ -16,7 +16,6 @@ export class BreakdownSelectionComponent extends React.Component<BreakdownSelect
   };
 
   datesSelected() {
-    console.log(this.pickers.from.getDate());
     // getDate() returns String if a true boolean is passed, otherwise it returns Date
     this.props.generateBreakdown(this.pickers.from.getDate() as Date, this.pickers.to.getDate() as Date);
   }

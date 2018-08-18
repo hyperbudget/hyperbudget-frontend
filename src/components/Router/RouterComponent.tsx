@@ -11,7 +11,7 @@ import NavComponent from '../Nav/NavComponent';
 import moment from 'moment';
 import CategoryEditorComponent from '../Category/CategoryEditorComponent';
 import VersionComponent from '../VersionComponent/VersionComponent';
-import { convertDateStringToDate, treatDateAsUTC } from '../../lib/Util/Util';
+import { convertDateStringToDate } from '../../lib/Util/Util';
 
 export class RouterComponent extends React.Component {
   render() {
@@ -26,7 +26,7 @@ export class RouterComponent extends React.Component {
         <Route path="/register" exact component={ RegisterComponent } />
         <Route path="/report/" exact render={ () => <Redirect to={`/report/${current}`} /> } />
         <Route path="/report/:month" exact render={
-          (props) => <ReportComponent date={treatDateAsUTC(convertDateStringToDate(props.match.params['month']))} />
+          (props) => <ReportComponent date={convertDateStringToDate(props.match.params['month'])} />
         } />
         <Route path="/breakdown" exact component={ BreakdownComponent }/>
         <Route path="/categories/editor" exact component={ CategoryEditorComponent } />
