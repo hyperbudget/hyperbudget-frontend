@@ -4,17 +4,30 @@ import Picker from 'pickerjs';
 import 'pickerjs/dist/picker.min.css';
 
 interface BreakdownSelectionComponentProps {
-  generateBreakdown(start: string, end: string): void,
+  generateBreakdown(start: Date, end: Date): void,
 };
 
 export class BreakdownSelectionComponent extends React.Component<BreakdownSelectionComponentProps> {
   fromRef: React.RefObject<HTMLInputElement>;
   toRef: React.RefObject<HTMLInputElement>;
+  pickers: {
+    from: Picker,
+    to: Picker,
+  };
+
+  datesSelected() {
+    // getDate() returns String if a true boolean is passed, otherwise it returns Date
+    this.props.generateBreakdown(this.pickers.from.getDate() as Date, this.pickers.to.getDate() as Date);
+  }
 
   constructor(props: BreakdownSelectionComponentProps) {
     super(props);
     this.fromRef = React.createRef();
     this.toRef = React.createRef();
+    this.pickers = {
+      from: null,
+      to: null,
+    };
   }
 
   componentDidMount() {
@@ -22,8 +35,8 @@ export class BreakdownSelectionComponent extends React.Component<BreakdownSelect
       format: 'YYYY-MM',
     };
 
-    new Picker(this.fromRef.current, options);
-    new Picker(this.toRef.current, options);
+    this.pickers.from = new Picker(this.fromRef.current, options);
+    this.pickers.to = new Picker(this.toRef.current, options);
   }
 
   render() {
@@ -45,7 +58,7 @@ export class BreakdownSelectionComponent extends React.Component<BreakdownSelect
           <div className="form-group">
             <input
               className="btn btn-primary"
-              onClick={() => this.props.generateBreakdown(this.fromRef.current.value, this.toRef.current.value)}
+              onClick={this.datesSelected.bind(this)}
               value="Get breakdown" type="button" />
           </div>
         </form>

@@ -22,11 +22,8 @@ import { HTMLFileManager } from '../../lib/Manager/HTMLFileManager';
 import { State } from '../../lib/State/State';
 import { CategoryTableComponent } from '../Category/CategoryTableComponent';
 
-interface ReportRouteComponentProps {
- month: string,
-};
-
-interface ReportComponentProps extends RouteComponentProps<ReportRouteComponentProps> {
+interface ReportComponentProps {
+ date: Date,
  transactions: Transaction[],
  categories: Category[],
  txn_password: string,
@@ -64,7 +61,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   }
 
   componentDidUpdate(prevProps): void {
-    if ( this.reportfactory.report && this.props.match.params.month !== prevProps.match.params.month ) {
+    if ( this.reportfactory.report && this.props.date.getTime() !== prevProps.date.getTime() ) {
       this.handleStatementLoaded();
     }
 
@@ -118,7 +115,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       }
     }).then(() => {
       const report: Report = this.reportfactory.report;
-      report.filter_month(this.props.match.params.month);
+      report.filter_month(moment(this.props.date).utc().format('YYYYMM'));
 
       if (this.props.onUpdate) {
         this.props.onUpdate(report.transactions);
@@ -136,17 +133,13 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   }
 
   render() {
-    let month: string = this.props.match.params.month || moment().format('YYYYMM');
-    let [, y, m] = month.match(/(\d{4})(\d{2})/);
-    let current_month_moment = moment(`${y}-${m}-01T00:00:00+00:00`);
-
     return (
       <RequireAuthContainer>
           <div className='main Report'>
             <UserDetailsComponent />
             <RequireTxnPasswordContainer>
               <StatementUploaderComponent onFileSelected={ this.onFileSelected } />
-              <StatementMonthSelectorComponent currently_viewing={current_month_moment} />
+              <StatementMonthSelectorComponent currentlyViewing={this.props.date} />
               {
                 this.state.categories && Object.keys(this.state.categories).length != 0 ?
                 <CategoryTableComponent categories={ this.state.categories } />

@@ -26,7 +26,7 @@ export class StatementUploaderComponent extends React.Component<StatementUploade
     let type: string = selectElement.value;
 
     if (!file || !type) {
-      console.log("no file or type", file, type);
+      console.error("no file or type", file, type);
       return;
     }
 

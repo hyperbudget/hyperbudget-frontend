@@ -11,7 +11,8 @@ import 'jest';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { Transaction, Category } from '@hyperbudget/hyperbudget-core';
-import { resolve } from 'url';
+
+import moment from 'moment';
 
 beforeAll(() => {
   enzyme.configure({ adapter: new Adapter() });
@@ -36,17 +37,7 @@ test('Report component renders for users that has not given transaction password
       <Provider store={store}>
         <BrowserRouter>
           <ReportComponent
-          history={null}
-          location={null}
-          staticContext={null}
-          match={{
-            params: {
-              month: '201801',
-            },
-            isExact: true,
-            path: '/report/201801',
-            url: 'http://localhost:8080/',
-          }}
+          date={moment('2018-01-01').utc().toDate()}
           />
         </BrowserRouter>
       </Provider>
@@ -76,17 +67,7 @@ test('Report component renders for user that has given transaction password', ()
       <Provider store={store}>
         <BrowserRouter>
           <ReportComponent
-          history={null}
-          location={null}
-          staticContext={null}
-          match={{
-            params: {
-              month: '201801',
-            },
-            isExact: true,
-            path: '/report/201801',
-            url: 'http://localhost:8080/',
-          }}
+          date={moment('2018-01-01').utc().toDate()}
           />
         </BrowserRouter>
       </Provider>
@@ -107,7 +88,7 @@ test('Report component renders for transactions', () => {
         txn_amount_credit: 0,
         txn_amount_debit: 100,
         txn_desc: 'Hello World',
-        txn_date: '2017-12-31T00:00:00',
+        txn_date: '2017-12-31T00:00:00+00:00',
         txn_src: 'hsbc',
         txn_type: 'DEB',
         acc_sortcode: '',
@@ -118,7 +99,7 @@ test('Report component renders for transactions', () => {
         txn_amount_credit: 0,
         txn_amount_debit: 150,
         txn_desc: 'Nano software',
-        txn_date: '2018-01-01T00:00:00',
+        txn_date: '2018-01-01T00:00:00+00:00',
         txn_src: 'hsbc',
         acc_sortcode: '',
         acc_balance: 0,
@@ -129,7 +110,7 @@ test('Report component renders for transactions', () => {
         txn_amount_credit: 0,
         txn_amount_debit: 150,
         txn_desc: 'Electricity',
-        txn_date: '2018-01-01T00:00',
+        txn_date: '2018-01-01T00:00+00:00',
         txn_src: 'hsbc',
         acc_sortcode: '',
         acc_balance:0,
@@ -140,7 +121,7 @@ test('Report component renders for transactions', () => {
         txn_amount_credit: 0,
         txn_amount_debit: 50,
         txn_desc: 'Water',
-        txn_date: '2017-12-01T00:00',
+        txn_date: '2017-12-01T00:00+00:00',
         txn_src: 'hsbc',
         acc_sortcode: '',
         acc_balance:0,
@@ -151,7 +132,18 @@ test('Report component renders for transactions', () => {
         txn_amount_credit: 0,
         txn_amount_debit: 200,
         txn_desc: 'Uplink Fee',
-        txn_date: '2018-02-01T00:00',
+        txn_date: '2018-02-01T00:00+00:00',
+        txn_src: 'hsbc',
+        acc_sortcode: '',
+        acc_balance: 0,
+        acc_number: '',
+        categories: [],
+      },
+      {
+        txn_amount_credit: 500,
+        txn_amount_debit: 0,
+        txn_desc: 'Bribe',
+        txn_date: '2018-06-01T00:00+00:00',
         txn_src: 'hsbc',
         acc_sortcode: '',
         acc_balance: 0,
@@ -202,17 +194,7 @@ test('Report component renders for transactions', () => {
       <Provider store={store}>
         <BrowserRouter>
           <ReportComponent
-          history={null}
-          location={null}
-          staticContext={null}
-          match={{
-            params: {
-              month: '201801',
-            },
-            isExact: true,
-            path: '/report/201801',
-            url: 'http://localhost:8080/',
-          }}
+          date={moment('2018-01-01').utc().toDate()}
           onUpdate={(transactions) => {
             expect(transactions).toMatchSnapshot();
             resolve();
@@ -226,17 +208,7 @@ test('Report component renders for transactions', () => {
       <Provider store={store}>
         <BrowserRouter>
           <ReportComponent
-          history={null}
-          location={null}
-          staticContext={null}
-          match={{
-            params: {
-              month: '201802',
-            },
-            isExact: true,
-            path: '/report/201802',
-            url: 'http://localhost:8080/',
-          }}
+          date={moment('2018-02-01').utc().toDate()}
           onUpdate={(transactions) => {
             expect(transactions).toMatchSnapshot();
             resolve();
@@ -250,17 +222,7 @@ test('Report component renders for transactions', () => {
       <Provider store={store}>
         <BrowserRouter>
           <ReportComponent
-          history={null}
-          location={null}
-          staticContext={null}
-          match={{
-            params: {
-              month: '201712',
-            },
-            isExact: true,
-            path: '/report/201712',
-            url: 'http://localhost:8080/',
-          }}
+          date={moment('2017-12-01').utc().toDate()}
           onUpdate={(transactions) => {
             expect(transactions).toMatchSnapshot();
             resolve();
@@ -274,17 +236,21 @@ test('Report component renders for transactions', () => {
       <Provider store={store}>
         <BrowserRouter>
           <ReportComponent
-          history={null}
-          location={null}
-          staticContext={null}
-          match={{
-            params: {
-              month: '201711',
-            },
-            isExact: true,
-            path: '/report/201711',
-            url: 'http://localhost:8080/',
+          date={moment('2017-11-01').utc().toDate()}
+          onUpdate={(transactions) => {
+            expect(transactions).toMatchSnapshot();
+            resolve();
           }}
+          />
+        </BrowserRouter>
+      </Provider>
+    );
+
+    enzyme.mount(
+      <Provider store={store}>
+        <BrowserRouter>
+          <ReportComponent
+          date={moment('2018-06-01T00:00:00+00:00').toDate()}
           onUpdate={(transactions) => {
             expect(transactions).toMatchSnapshot();
             resolve();
