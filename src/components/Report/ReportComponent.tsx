@@ -21,6 +21,8 @@ import { set_transactions } from '../../lib/User/User';
 import { HTMLFileManager } from '../../lib/Manager/HTMLFileManager';
 import { State } from '../../lib/State/State';
 import { CategoryTableComponent } from '../Category/CategoryTableComponent';
+import { deResponsifyPage, responsifyPage } from '../../lib/Util/Util';
+import { LoadingSpinner } from '../LoadingSpinner';
 
 interface ReportComponentProps {
   date: Date,
@@ -49,6 +51,12 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
 
   constructor(props: ReportComponentProps) {
     super(props);
+
+    this.state = {
+      saving: false,
+      formatted_transactions: [],
+      categories: {},
+    };
   }
 
   componentDidMount(): void {
@@ -57,14 +65,21 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
 
     if (this.props.transactions && this.props.transactions.length != 0) {
       this.reportfactory.add_records(this.props.transactions).then(() => { this.handleStatementLoaded() });
+      deResponsifyPage();
     }
   }
 
   componentDidUpdate(prevProps): void {
+    if (this.props.txn_password && !prevProps.txn_password) {
+      deResponsifyPage();
+    }
+
+    // report date changed
     if (this.reportfactory.report && this.props.date.getTime() !== prevProps.date.getTime()) {
       this.handleStatementLoaded();
     }
 
+    // transactions changed - realistically this happens after you give your password
     if (
       this.props.transactions &&
       this.props.transactions.length != 0 &&
@@ -80,7 +95,14 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     }
   }
 
+  componentWillUnmount() {
+    responsifyPage();
+  }
+
   private onFileSelected = (file: File, type: string): void => {
+    this.setState({
+      saving: true,
+    });
     HTMLFileManager.read_file(file).then((txt: string) => {
       this.loadStatement(txt, type);
     });
@@ -97,10 +119,13 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   private saveTransactions = (): void => {
     this.reportfactory.report.reset_filter();
     this.setState({ saving: true });
+
     set_transactions({
       transactions: this.reportfactory.report.transactions,
       password: this.props.txn_password,
       token: this.props.token,
+    }).then(() => {
+      this.setState({ saving: false });
     });
   };
 
@@ -138,7 +163,10 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
         <div className='main Report'>
           <UserDetailsComponent />
           <RequireTxnPasswordContainer>
-            <StatementUploaderComponent onFileSelected={this.onFileSelected} />
+            <div className='mt-3'>
+              <StatementUploaderComponent onFileSelected={this.onFileSelected} />
+            </div>
+            { this.state.saving ? <LoadingSpinner /> : '' }
             <StatementMonthSelectorComponent currentlyViewing={this.props.date} />
             {
               this.state.categories && Object.keys(this.state.categories).length != 0 ?
