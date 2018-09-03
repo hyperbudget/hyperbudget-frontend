@@ -9,6 +9,7 @@ import RequireTxnPasswordContainer from '../containers/RequireTxnPasswordContain
 import { BreakdownSelectionComponent } from './BreakdownSelectionComponent';
 import { BreakdownTableComponent } from './BreakdownTableComponent';
 import RequireAuthContainer from '../containers/RequireAuthContainer';
+import { deResponsifyPage, responsifyPage } from '../../lib/Util/Util';
 
 interface BreakdownComponentProps {
   transactions: Transaction[],
@@ -28,13 +29,8 @@ class BreakdownComponent extends React.Component<BreakdownComponentProps, Breakd
     super(props);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (
-      this.props.transactions &&
-      this.props.transactions.length != 0 &&
-      this.props.transactions !== prevProps.transactions
-    ) {
-    }
+  componentWillUnmount() {
+    responsifyPage();
   }
 
   render() {
@@ -91,6 +87,7 @@ class BreakdownComponent extends React.Component<BreakdownComponentProps, Breakd
           this.setState({
             breakdown: breakdown,
           });
+          deResponsifyPage();
         }
       );
     }

@@ -70,7 +70,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   }
 
   componentDidUpdate(prevProps): void {
-    if (this.props.transactions && !prevProps.transactions) {
+    if (this.props.txn_password && !prevProps.txn_password) {
       deResponsifyPage();
     }
 
