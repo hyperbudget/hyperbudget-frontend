@@ -10,6 +10,7 @@ import { ErrorComponent } from '../Error/Error';
 import '../HomeComponent/HomeComponent.css';
 import './LoginComponent.css';
 import FooterComponent from '../FooterComponent/FooterComponent';
+import LoadingSpinner from '../LoadingSpinner';
 
 interface LoginComponentProps {
     doLogin: (username: string, password: string) => void;
@@ -18,13 +19,20 @@ interface LoginComponentProps {
     APIErrors: APIError[],
 };
 
-class LoginComponent extends React.Component<LoginComponentProps, {}> {
+interface LoginComponentState {
+    loading: boolean;
+}
+
+class LoginComponent extends React.Component<LoginComponentProps, LoginComponentState> {
     userNameRef: React.RefObject<HTMLInputElement>;
     passwordRef: React.RefObject<HTMLInputElement>;
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps !== this.props) {
-            if (this.props.token) {
+            if (this.props.token || this.props.APIErrors) {
+                this.setState({
+                    loading: false,
+                })
             }
         }
     }
@@ -35,6 +43,10 @@ class LoginComponent extends React.Component<LoginComponentProps, {}> {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            loading: false
+        };
 
         this.userNameRef = React.createRef();
         this.passwordRef = React.createRef();
@@ -68,14 +80,22 @@ class LoginComponent extends React.Component<LoginComponentProps, {}> {
                         <input id='password' className='form-control' type="password" name="password" ref={this.passwordRef} />
                     </div>
                     <div>
-                        <input className='btn btn-primary form-control' type='button'  onClick={() => this.props.doLogin(this.userNameRef.current.value, this.passwordRef.current.value) } value="Login" />
+                        <input className='btn btn-primary form-control' type='button'  onClick={() => this.doLogin() } value="Login" />
                     </div>
+                    { this.state.loading ? <LoadingSpinner /> : '' }
                 </form>
             </div>
         </div>
         <FooterComponent />
         </>
         );
+    }
+
+    doLogin(): void {
+        this.setState({
+            loading: true,
+        })
+        this.props.doLogin(this.userNameRef.current.value, this.passwordRef.current.value);
     }
 }
 
