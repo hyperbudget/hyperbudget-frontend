@@ -6,6 +6,7 @@ import { ErrorComponent } from '../Error/Error';
 import { State } from '../../lib/State/State';
 
 import './LoginComponent.css';
+import { LoadingSpinner } from '../LoadingSpinner';
 
 interface TxnPasswordComponentProps {
   doGetTransactions?: (password: string, token: string) => void;
@@ -16,6 +17,7 @@ interface TxnPasswordComponentProps {
 
 interface TxnPasswordComponentState {
   explanation: boolean;
+  loading: boolean;
 }
 
 class LoginComponent extends React.Component<TxnPasswordComponentProps, TxnPasswordComponentState> {
@@ -29,6 +31,11 @@ class LoginComponent extends React.Component<TxnPasswordComponentProps, TxnPassw
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps !== this.props) {
+      if (this.props.txn_password || this.props.api_errors) {
+        this.setState({
+          loading: false,
+        })
+      }
     }
   }
 
@@ -42,7 +49,7 @@ class LoginComponent extends React.Component<TxnPasswordComponentProps, TxnPassw
   constructor(props) {
     super(props);
     this.passwordRef = React.createRef();
-    this.state = { explanation: false };
+    this.state = { explanation: false, loading: false };
   }
 
   render() {
@@ -74,15 +81,23 @@ class LoginComponent extends React.Component<TxnPasswordComponentProps, TxnPassw
             <input className='form-control' id="txnPassword" type="password" name="password" ref={this.passwordRef} />
           </div>
           <div>
-            <input className='btn btn-primary form-control' type='button'  onClick={() => this.props.doGetTransactions(this.passwordRef.current.value, this.props.token) } value="Login" />
+            <input className='btn btn-primary form-control' type='button'  onClick={ () => this.doGetTransactions() } value="Login" />
           </div>
+          { this.state.loading ? <LoadingSpinner /> : '' }
         </div>
       </div>
     </>
     );
   }
-}
 
+  doGetTransactions (): void {
+    this.setState({
+      loading: true
+    });
+
+    this.props.doGetTransactions(this.passwordRef.current.value, this.props.token);
+  }
+}
 
 const mapStateToProps = (state: State): TxnPasswordComponentProps => {
   return {
