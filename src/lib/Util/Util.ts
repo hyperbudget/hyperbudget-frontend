@@ -51,3 +51,21 @@ export const convertDateStringToDate = (date: string): Date => {
   let currentMonthMoment = moment(`${y}-${m}-01T00:00:00+00:00`);
   return currentMonthMoment.toDate();
 }
+
+/**
+ * Turns off responsive mode
+*/
+export const deResponsifyPage = (): void => {
+  const vp = document.querySelector('meta[name="viewport"]');
+  // hack to get rid of responsive view
+  if (vp && vp.getAttribute('content') !== '') {
+    vp.setAttribute('content', '');
+  }
+}
+
+export const responsifyPage = (): void => {
+  const vp = document.querySelector('meta[name="viewport"]');
+  if (vp) {
+    vp.setAttribute('content', 'width=device-width, initial-scale=1, shrink-to-fit=no');
+  }
+}

@@ -21,6 +21,7 @@ import { set_transactions } from '../../lib/User/User';
 import { HTMLFileManager } from '../../lib/Manager/HTMLFileManager';
 import { State } from '../../lib/State/State';
 import { CategoryTableComponent } from '../Category/CategoryTableComponent';
+import { deResponsifyPage, responsifyPage } from '../../lib/Util/Util';
 
 interface ReportComponentProps {
   date: Date,
@@ -57,14 +58,21 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
 
     if (this.props.transactions && this.props.transactions.length != 0) {
       this.reportfactory.add_records(this.props.transactions).then(() => { this.handleStatementLoaded() });
+      deResponsifyPage();
     }
   }
 
   componentDidUpdate(prevProps): void {
+    if (this.props.transactions || this.reportfactory.report) {
+      deResponsifyPage();
+    }
+
+    // report date changed
     if (this.reportfactory.report && this.props.date.getTime() !== prevProps.date.getTime()) {
       this.handleStatementLoaded();
     }
 
+    // transactions changed, e.g. more transactions were added
     if (
       this.props.transactions &&
       this.props.transactions.length != 0 &&
@@ -78,6 +86,10 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
         this.handleStatementLoaded();
       });
     }
+  }
+
+  componentWillUnmount() {
+    responsifyPage();
   }
 
   private onFileSelected = (file: File, type: string): void => {
@@ -138,7 +150,9 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
         <div className='main Report'>
           <UserDetailsComponent />
           <RequireTxnPasswordContainer>
-            <StatementUploaderComponent onFileSelected={this.onFileSelected} />
+            <div className='mt-3'>
+              <StatementUploaderComponent onFileSelected={this.onFileSelected} />
+            </div>
             <StatementMonthSelectorComponent currentlyViewing={this.props.date} />
             {
               this.state.categories && Object.keys(this.state.categories).length != 0 ?
