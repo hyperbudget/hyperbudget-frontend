@@ -60,11 +60,11 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   }
 
   componentDidMount(): void {
-    this.reportfactory = new ReportFactory({ unique_only: true });
+    this.reportfactory = new ReportFactory({ unique: true });
     this.categoriser = new Categoriser(this.props.categories);
 
     if (this.props.transactions && this.props.transactions.length != 0) {
-      this.reportfactory.add_records(this.props.transactions).then(() => { this.handleStatementLoaded() });
+      this.reportfactory.addRecords(this.props.transactions).then(() => { this.handleStatementLoaded() });
       deResponsifyPage();
     }
   }
@@ -89,7 +89,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
         this.categoriser = new Categoriser(this.props.categories);
       }
 
-      this.reportfactory.add_records(this.props.transactions).then(() => {
+      this.reportfactory.addRecords(this.props.transactions).then(() => {
         this.handleStatementLoaded();
       });
     }
@@ -109,7 +109,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   };
 
   private loadStatement = (csv_text: string, type: string): void => {
-    this.reportfactory.from_csv(csv_text, type)
+    this.reportfactory.fromCSV(csv_text, type)
       .then(() => {
         this.saveTransactions();
         this.handleStatementLoaded();
@@ -117,7 +117,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   };
 
   private saveTransactions = (): void => {
-    this.reportfactory.report.reset_filter();
+    this.reportfactory.report.resetFilter();
     this.setState({ saving: true });
 
     set_transactions({
@@ -131,7 +131,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
 
   private handleStatementLoaded = (): void => {
     new Promise((resolve, reject) => {
-      this.reportfactory.report.reset_filter();
+      this.reportfactory.report.resetFilter();
 
       if (this.reportfactory.report.transactions.length) {
         this.categoriser.categorise_transactions(this.reportfactory.report.transactions).then(() => resolve());
@@ -140,15 +140,15 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       }
     }).then(() => {
       const report: Report = this.reportfactory.report;
-      report.filter_month(moment(this.props.date).utc().format('YYYYMM'));
+      report.filterMonth(moment(this.props.date).utc().format('YYYYMM'));
 
       if (this.props.onUpdate) {
         this.props.onUpdate(report.transactions);
       }
 
-      report.transactions = report.transactions.sort(function (a, b) { return a.txn_date.getTime() - b.txn_date.getTime() });
+      report.transactions = report.transactions.sort(function (a, b) { return a.date.getTime() - b.date.getTime() });
       let txns: FormattedTransaction[] = ReportManager.generate_web_frontend_report(report.transactions);
-      let cats: CategoryAmounts = ReportManager.generate_category_amounts_frontend(this.categoriser, report.transactions, report.transactions_org);
+      let cats: CategoryAmounts = ReportManager.generate_category_amounts_frontend(this.categoriser, report.transactions, report.transactionsInCalendarMonth);
 
       this.setState({
         formatted_transactions: txns,

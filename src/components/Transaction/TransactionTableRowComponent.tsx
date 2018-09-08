@@ -10,16 +10,16 @@ export const TransactionTableRowComponent = (props :TransactionTableRowProps) =>
   let transaction :FormattedTransaction = props.transaction;
 
   return (
-  <tr className={ transaction.cat_class }>
-    <td>{ transaction.txn_date }</td>
-    <td>{ transaction.txn_type }</td>
-    <td>{ transaction.txn_desc }</td>
-    <td>{ transaction.txn_amount_debit_str }</td>
-    <td>{ transaction.txn_amount_credit_str }</td>
-    <td>{ transaction.running_total_spend }</td>
-    <td>{ transaction.acc_balance_str }</td>
-    <td>{transaction.category_names }</td>
-    <td className="src">{ transaction.txn_src }</td>
+  <tr className={ transaction.catClass }>
+    <td>{ transaction.date }</td>
+    <td>{ transaction.type }</td>
+    <td>{ transaction.description }</td>
+    <td>{ transaction.debitAmountStr }</td>
+    <td>{ transaction.creditAmountStr }</td>
+    <td>{ transaction.runningTotalSpend }</td>
+    <td>{ transaction.accountBalanceStr }</td>
+    <td>{transaction.categoryNames }</td>
+    <td className="src">{ transaction.source }</td>
   </tr>
   );
 }
