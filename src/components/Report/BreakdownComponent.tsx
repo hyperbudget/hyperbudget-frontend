@@ -62,16 +62,16 @@ class BreakdownComponent extends React.Component<BreakdownComponentProps, Breakd
 
       const categoriser = new Categoriser(this.props.categories);
 
-      let rf = new ReportFactory({ unique_only: true });
-      rf.add_records(this.props.transactions)
+      let rf = new ReportFactory({ unique: true });
+      rf.addRecords(this.props.transactions)
       .then(() => {
           let report: Report = rf.report;
           categoriser.categorise_transactions(report.transactions);
 
-          report.transactions = report.transactions.sort(function(a,b) { return a.txn_date.getTime() - b.txn_date.getTime() });
-          report.transactions = report.transactions.filter(function(txn: Transaction) {
-            return txn.month >= current_mo.format('YYYYMM') && txn.month <= end_mo.format('YYYYMM');
-          });
+          report.transactions = report.transactions.sort((a,b) => a.date.getTime() - b.date.getTime());
+          report.transactions = report.transactions.filter((txn: Transaction) => (
+            txn.calculatedMonth >= current_mo.format('YYYYMM') && txn.calculatedMonth <= end_mo.format('YYYYMM')
+          ));
 
           let months: string[] = [];
           var i = 0;

@@ -71,57 +71,57 @@ describe('Report', () => {
   it('component renders for transactions', async () => {
     const transactions = [
       {
-        txn_amount_credit: 0,
-        txn_amount_debit: 100,
-        txn_desc: 'Hello World',
-        txn_date: '2017-12-31T00:00:00Z',
-        txn_src: 'hsbc',
-        txn_type: 'DEB',
-        acc_sortcode: '',
-        acc_balance: 0,
+        creditAmount: 0,
+        debitAmount: 100,
+        description: 'Hello World',
+        date: '2017-12-31T00:00:00Z',
+        source: 'hsbc',
+        type: 'DEB',
+        accountSortCode: '',
+        accountBalance: 0,
         acc_number: '',
       },
       {
-        txn_amount_credit: 0,
-        txn_amount_debit: 150,
-        txn_desc: 'Nano software',
-        txn_date: '2018-01-01T00:00:00Z',
-        txn_src: 'hsbc',
-        acc_sortcode: '',
-        acc_balance: 0,
+        creditAmount: 0,
+        debitAmount: 150,
+        description: 'Nano software',
+        date: '2018-01-01T00:00:00Z',
+        source: 'hsbc',
+        accountSortCode: '',
+        accountBalance: 0,
         acc_number: '',
-        txn_type: 'DEB',
+        type: 'DEB',
       },
       {
-        txn_amount_credit: 0,
-        txn_amount_debit: 150,
-        txn_desc: 'Electricity',
-        txn_date: '2018-01-01T00:00:00Z',
-        txn_src: 'hsbc',
-        acc_sortcode: '',
-        acc_balance: 0,
+        creditAmount: 0,
+        debitAmount: 150,
+        description: 'Electricity',
+        date: '2018-01-01T00:00:00Z',
+        source: 'hsbc',
+        accountSortCode: '',
+        accountBalance: 0,
         acc_number: '',
-        txn_type: 'DD',
+        type: 'DD',
       },
       {
-        txn_amount_credit: 0,
-        txn_amount_debit: 50,
-        txn_desc: 'Water',
-        txn_date: '2017-12-01T00:00:00Z',
-        txn_src: 'hsbc',
-        acc_sortcode: '',
-        acc_balance: 0,
+        creditAmount: 0,
+        debitAmount: 50,
+        description: 'Water',
+        date: '2017-12-01T00:00:00Z',
+        source: 'hsbc',
+        accountSortCode: '',
+        accountBalance: 0,
         acc_number: '',
-        txn_type: 'DD',
+        type: 'DD',
       },
       {
-        txn_amount_credit: 0,
-        txn_amount_debit: 200,
-        txn_desc: 'Uplink Fee',
-        txn_date: '2018-02-01T00:00:00Z',
-        txn_src: 'hsbc',
-        acc_sortcode: '',
-        acc_balance: 0,
+        creditAmount: 0,
+        debitAmount: 200,
+        description: 'Uplink Fee',
+        date: '2018-02-01T00:00:00Z',
+        source: 'hsbc',
+        accountSortCode: '',
+        accountBalance: 0,
         acc_number: '',
         categories: [],
       },
@@ -130,7 +130,7 @@ describe('Report', () => {
     const categories: Category[] = [
       {
         category_rules: {
-          txn_desc: {
+          description: {
             "rules": [
               ['=', 'Hello World']
             ]
@@ -143,7 +143,7 @@ describe('Report', () => {
       },
       {
         category_rules: {
-          txn_type: {
+          type: {
             rules: [
               ['=', 'DD']
             ]

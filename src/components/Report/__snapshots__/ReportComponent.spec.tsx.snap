@@ -3,13 +3,16 @@
 exports[`Report component renders for transactions 1`] = `
 Array [
   Transaction {
-    "acc_balance": 0,
     "acc_number": "",
-    "acc_sortcode": "",
+    "accountBalance": 0,
+    "accountNumber": "",
+    "accountSortCode": "",
+    "calculatedMonth": "201801",
+    "calendarMonth": "201712",
     "categories": Array [
       Object {
         "category_rules": Object {
-          "txn_desc": Object {
+          "description": Object {
             "rules": Array [
               Array [
                 "=",
@@ -24,39 +27,41 @@ Array [
         "txn_month_modifier": 1,
       },
     ],
+    "creditAmount": 0,
+    "date": 2017-12-31T00:00:00.000Z,
+    "debitAmount": 100,
+    "description": "Hello World",
     "identifier": "5610e0034901cc40fe5b277d7107f0b636bcb915",
-    "month": "201801",
-    "org_month": "201712",
-    "txn_amount_credit": 0,
-    "txn_amount_debit": 100,
-    "txn_date": 2017-12-31T00:00:00.000Z,
-    "txn_desc": "Hello World",
-    "txn_src": "hsbc",
-    "txn_type": "DEB",
+    "source": "hsbc",
+    "type": "DEB",
   },
   Transaction {
-    "acc_balance": 0,
     "acc_number": "",
-    "acc_sortcode": "",
+    "accountBalance": 0,
+    "accountNumber": "",
+    "accountSortCode": "",
+    "calculatedMonth": "201801",
+    "calendarMonth": "201801",
     "categories": Array [],
+    "creditAmount": 0,
+    "date": 2018-01-01T00:00:00.000Z,
+    "debitAmount": 150,
+    "description": "Nano software",
     "identifier": "16529057aebb08b7709ad0da2b83cfa57efdff7e",
-    "month": "201801",
-    "org_month": "201801",
-    "txn_amount_credit": 0,
-    "txn_amount_debit": 150,
-    "txn_date": 2018-01-01T00:00:00.000Z,
-    "txn_desc": "Nano software",
-    "txn_src": "hsbc",
-    "txn_type": "DEB",
+    "source": "hsbc",
+    "type": "DEB",
   },
   Transaction {
-    "acc_balance": 0,
     "acc_number": "",
-    "acc_sortcode": "",
+    "accountBalance": 0,
+    "accountNumber": "",
+    "accountSortCode": "",
+    "calculatedMonth": "201801",
+    "calendarMonth": "201801",
     "categories": Array [
       Object {
         "category_rules": Object {
-          "txn_type": Object {
+          "type": Object {
             "rules": Array [
               Array [
                 "=",
@@ -70,15 +75,13 @@ Array [
         "name": "Direct Debit",
       },
     ],
+    "creditAmount": 0,
+    "date": 2018-01-01T00:00:00.000Z,
+    "debitAmount": 150,
+    "description": "Electricity",
     "identifier": "142fb434b3703c95cbf778974aa951570dfd114d",
-    "month": "201801",
-    "org_month": "201801",
-    "txn_amount_credit": 0,
-    "txn_amount_debit": 150,
-    "txn_date": 2018-01-01T00:00:00.000Z,
-    "txn_desc": "Electricity",
-    "txn_src": "hsbc",
-    "txn_type": "DD",
+    "source": "hsbc",
+    "type": "DD",
   },
 ]
 `;
@@ -86,19 +89,20 @@ Array [
 exports[`Report component renders for transactions 2`] = `
 Array [
   Transaction {
-    "acc_balance": 0,
     "acc_number": "",
-    "acc_sortcode": "",
+    "accountBalance": 0,
+    "accountNumber": "",
+    "accountSortCode": "",
+    "calculatedMonth": "201802",
+    "calendarMonth": "201802",
     "categories": Array [],
+    "creditAmount": 0,
+    "date": 2018-02-01T00:00:00.000Z,
+    "debitAmount": 200,
+    "description": "Uplink Fee",
     "identifier": "c55c1c8291add6b4ab353b57e5a538d7ad9a4cdc",
-    "month": "201802",
-    "org_month": "201802",
-    "txn_amount_credit": 0,
-    "txn_amount_debit": 200,
-    "txn_date": 2018-02-01T00:00:00.000Z,
-    "txn_desc": "Uplink Fee",
-    "txn_src": "hsbc",
-    "txn_type": "",
+    "source": "hsbc",
+    "type": "",
   },
 ]
 `;
@@ -106,13 +110,16 @@ Array [
 exports[`Report component renders for transactions 3`] = `
 Array [
   Transaction {
-    "acc_balance": 0,
     "acc_number": "",
-    "acc_sortcode": "",
+    "accountBalance": 0,
+    "accountNumber": "",
+    "accountSortCode": "",
+    "calculatedMonth": "201712",
+    "calendarMonth": "201712",
     "categories": Array [
       Object {
         "category_rules": Object {
-          "txn_type": Object {
+          "type": Object {
             "rules": Array [
               Array [
                 "=",
@@ -126,15 +133,13 @@ Array [
         "name": "Direct Debit",
       },
     ],
+    "creditAmount": 0,
+    "date": 2017-12-01T00:00:00.000Z,
+    "debitAmount": 50,
+    "description": "Water",
     "identifier": "3e6eb63d91086f503c8437a55847956764964d91",
-    "month": "201712",
-    "org_month": "201712",
-    "txn_amount_credit": 0,
-    "txn_amount_debit": 50,
-    "txn_date": 2017-12-01T00:00:00.000Z,
-    "txn_desc": "Water",
-    "txn_src": "hsbc",
-    "txn_type": "DD",
+    "source": "hsbc",
+    "type": "DD",
   },
 ]
 `;
