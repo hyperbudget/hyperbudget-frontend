@@ -53,8 +53,8 @@ export class NextBillComponent extends React.Component<NextBillComponentProps, N
       {
         this.state.dismissed ? '' :
         <div className='alert alert-info'>
-        { !!nextSO.length && <BillInfoComponent transactions={nextSO} type='Standing Order' />}
-        { !!nextDD.length && <BillInfoComponent transactions={nextDD} type='Direct Debit' />}
+        { !!nextSO.length && <BillInfoComponent transactions={nextSO} type='Standing Orders' />}
+        { !!nextDD.length && <BillInfoComponent transactions={nextDD} type='Direct Debits' />}
         <a href='' onClick={() => this.setState({ dismissed: true })}>Dismiss</a>
         </div>
       }
