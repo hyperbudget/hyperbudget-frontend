@@ -4,7 +4,13 @@ import { CategoryAmounts } from '@hyperbudget/hyperbudget-core';
 import { CategoryTableVisibilityComponent } from './CategoryTableVisibilityComponent';
 
 interface CategoryTableProps {
-  categories: CategoryAmounts,
+  categories: {
+    total: string|number,
+    name: string,
+    count: number,
+    id?: string,
+    className: string,
+  }[];
 };
 
 export const CategoryTableComponent = (props: CategoryTableProps) => (
@@ -13,8 +19,7 @@ export const CategoryTableComponent = (props: CategoryTableProps) => (
     <table className="table mt-3 collapse show categories" id='categories-table'>
       <tbody>
         {
-          Object.keys(props.categories).map((catName, idx) => {
-            let cat = props.categories[catName];
+          props.categories.map((cat, idx) => {
             return <tr key={idx} className={cat.className}>
               <td>{cat.name}</td><td>{cat.total}</td><td>{cat.count}</td>
             </tr>;
