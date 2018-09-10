@@ -45,8 +45,12 @@ export class NextBillComponent extends React.Component<NextBillComponentProps, N
   render() {
     let groups = filterOldTransactions(reportManager.groupByType(this.props.transactions, ['DD', 'SO']));
 
-    const nextDD = findNextBills(groups['DD']);
-    const nextSO = findNextBills(groups['SO']);
+    if (!groups) {
+      return <></>;
+    }
+
+    const nextDD = groups['DD'] ? findNextBills(groups['DD']) : [];
+    const nextSO = groups['SO'] ? findNextBills(groups['SO']) : [];
 
     return (
     <>
