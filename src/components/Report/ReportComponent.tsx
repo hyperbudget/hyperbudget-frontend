@@ -22,6 +22,7 @@ import { State } from '../../lib/State/State';
 import { CategoryTableComponent } from '../Category/CategoryTableComponent';
 import { deResponsifyPage, responsifyPage } from '../../lib/Util/Util';
 import { LoadingSpinner } from '../LoadingSpinner';
+import { NextBillComponent } from '../NextBill/NextBillComponent';
 
 interface ReportComponentProps {
   date: Date,
@@ -181,6 +182,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
             {
               this.state.formatted_transactions && this.state.formatted_transactions.length != 0 ?
                 <>
+                  <NextBillComponent transactions={this.reportfactory.report.unfilteredTransactions} />
                   <TransactionTableComponent transactions={this.state.formatted_transactions} />
                 </>
                 : <NoTransactionsFoundComponent />
