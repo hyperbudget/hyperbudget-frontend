@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router';
 import moment from 'moment';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -35,7 +34,13 @@ interface ReportComponentProps {
 
 interface ReportComponentState {
   formatted_transactions: FormattedTransaction[],
-  categories: CategoryAmounts,
+  categories: {
+    total: string|number,
+    name: string,
+    count: number,
+    id?: string,
+    className: string,
+  }[];
   saving: boolean,
 }
 
@@ -55,7 +60,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     this.state = {
       saving: false,
       formatted_transactions: [],
-      categories: {},
+      categories: [],
     };
   }
 
@@ -147,8 +152,8 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       }
 
       report.transactions = report.transactions.sort(function (a, b) { return a.date.getTime() - b.date.getTime() });
-      let txns: FormattedTransaction[] = ReportManager.generate_web_frontend_report(report.transactions);
-      let cats: CategoryAmounts = ReportManager.generate_category_amounts_frontend(this.categoriser, report.transactions, report.transactionsInCalendarMonth);
+      let txns: FormattedTransaction[] = ReportManager.generateWebFrontendReport(report.transactions);
+      let cats = ReportManager.generateCategoryAmountsFrontend(this.categoriser, report.transactions, report.transactionsInCalendarMonth);
 
       this.setState({
         formatted_transactions: txns,

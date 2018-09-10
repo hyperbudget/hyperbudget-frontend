@@ -83,7 +83,7 @@ class BreakdownComponent extends React.Component<BreakdownComponentProps, Breakd
             if (i++>100) { break; }
           }
 
-          let breakdown: BreakdownFormatted[] = ReportManager.generate_monthly_breakdown_frontend(report.transactions, months);
+          let breakdown: BreakdownFormatted[] = ReportManager.generateMonthlyBreakdownFrontend(report.transactions, months);
           this.setState({
             breakdown: breakdown,
           });
