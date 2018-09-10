@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { State } from '../../lib/State/State';
 
 import moment from 'moment';
-import { BreakdownFormatted, Transaction, ReportFactory, Report, Categoriser, Category, ReportManager } from '@hyperbudget/hyperbudget-core';
+import { BreakdownFormatted, Transaction, ReportFactory, Report, Categoriser, Category, reportManager } from '@hyperbudget/hyperbudget-core';
 import RequireTxnPasswordContainer from '../containers/RequireTxnPasswordContainer';
 import { BreakdownSelectionComponent } from './BreakdownSelectionComponent';
 import { BreakdownTableComponent } from './BreakdownTableComponent';
@@ -83,7 +83,7 @@ class BreakdownComponent extends React.Component<BreakdownComponentProps, Breakd
             if (i++>100) { break; }
           }
 
-          let breakdown: BreakdownFormatted[] = ReportManager.generateMonthlyBreakdownFrontend(report.transactions, months);
+          let breakdown: BreakdownFormatted[] = reportManager.generateMonthlyBreakdownFrontend(report.transactions, months);
           this.setState({
             breakdown: breakdown,
           });

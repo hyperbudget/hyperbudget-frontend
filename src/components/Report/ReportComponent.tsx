@@ -4,7 +4,7 @@ import moment from 'moment';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Report, ReportFactory, Category, Categoriser, ReportManager, FormattedTransaction, CategoryAmounts, Transaction } from '@hyperbudget/hyperbudget-core';
+import { Report, ReportFactory, Category, Categoriser, reportManager, FormattedTransaction, Transaction } from '@hyperbudget/hyperbudget-core';
 
 import { StatementUploaderComponent } from '../StatementUploader/StatementUploaderComponent';
 
@@ -152,8 +152,8 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       }
 
       report.transactions = report.transactions.sort(function (a, b) { return a.date.getTime() - b.date.getTime() });
-      let txns: FormattedTransaction[] = ReportManager.generateWebFrontendReport(report.transactions);
-      let cats = ReportManager.generateCategoryAmountsFrontend(this.categoriser, report.transactions, report.transactionsInCalendarMonth);
+      let txns: FormattedTransaction[] = reportManager.generateWebFrontendReport(report.transactions);
+      let cats = reportManager.generateCategoryAmountsFrontend(this.categoriser, report.transactions, report.transactionsInCalendarMonth);
 
       this.setState({
         formatted_transactions: txns,
