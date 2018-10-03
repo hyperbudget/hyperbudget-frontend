@@ -11,6 +11,8 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import { Transaction, Category } from '@hyperbudget/hyperbudget-core';
 
+import { advanceTo, clear } from 'jest-date-mock';
+
 import moment from 'moment';
 
 const mount = (store, component) => enzyme.mount(
@@ -27,6 +29,10 @@ describe('Report', () => {
 
   beforeAll(() => {
     enzyme.configure({ adapter: new Adapter() });
+    advanceTo(new Date('2018-09-03').getTime());
+  });
+  afterAll(() => {
+    clear();
   });
 
   it('renders for users who have not provided a transaction password', () => {
