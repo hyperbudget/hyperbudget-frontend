@@ -163,6 +163,12 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     });
   }
 
+  private onDelete (txnId): void {
+    this.reportfactory.removeRecords([txnId]);
+    this.handleStatementLoaded();
+    this.saveTransactions();
+  }
+
   render() {
     return (
       <RequireAuthContainer>
@@ -183,7 +189,10 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
               this.state.formatted_transactions && this.state.formatted_transactions.length != 0 ?
                 <>
                   <NextBillComponent transactions={this.reportfactory.report.unfilteredTransactions} />
-                  <TransactionTableComponent transactions={this.state.formatted_transactions} />
+
+                  <TransactionTableComponent transactions={this.state.formatted_transactions}
+                  onDelete={ this.onDelete.bind(this) }
+                  />
                 </>
                 : <NoTransactionsFoundComponent />
             }

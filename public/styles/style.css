@@ -51,7 +51,7 @@ input.ng-invalid.ng-touched {
     background-color: #00FF00;
 }
 
-.cat-bills, .cat-rent {
+.cat-bills, .cat-rent, .cat-dd {
     background-color: #FFCCFF;
 }
 
@@ -158,4 +158,8 @@ form {
 
 .main {
     padding: 50px 10px;
+}
+
+.pointer {
+    cursor: pointer;
 }

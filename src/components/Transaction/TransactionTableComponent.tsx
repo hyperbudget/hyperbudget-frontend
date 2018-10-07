@@ -7,6 +7,7 @@ const tablesort = require('tablesort');
 
 interface TransactionTableProps {
   transactions: FormattedTransaction[],
+  onDelete: (txnId: string) => void,
 };
 
 export class TransactionTableComponent extends React.Component<TransactionTableProps> {
@@ -21,6 +22,7 @@ export class TransactionTableComponent extends React.Component<TransactionTableP
     return <table className='table mt-3 table-bordered' ref={this.tableRef}>
       <thead>
       <tr>
+        <th>&nbsp;</th>
         <th>Date</th>
         <th>Type</th>
         <th>Description</th>
@@ -33,7 +35,7 @@ export class TransactionTableComponent extends React.Component<TransactionTableP
       </tr>
       </thead>
       <tbody>
-        {this.props.transactions.map((txn, idx) => <TransactionTableRowComponent transaction={txn} key={idx} />)}
+        {this.props.transactions.map((txn, idx) => <TransactionTableRowComponent transaction={txn} key={idx} onDelete={ this.props.onDelete } />)}
       </tbody>
     </table>;
   }
