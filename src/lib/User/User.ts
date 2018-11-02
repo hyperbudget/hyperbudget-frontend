@@ -16,7 +16,7 @@ interface RegisterParams {
 }
 
 interface AuthenticatedParams {
-  token: string;
+  email: string;
 }
 
 interface GetTransactionsParams extends AuthenticatedParams {
@@ -31,15 +31,6 @@ interface SetCategoriesParams extends GetTransactionsParams {
   categories: Category[],
 };
 
-export const login = (params: LoginParams) : Promise<any> => {
-  return new Promise((resolve, reject) => (
-    axios.post(Util.api_url('/account/login'), params).then((res) => {
-      Util.save_token_to_session(res.data.email);
-      return resolve(res);
-    }, err => reject(err))
-  ));
-}
-
 export const register = (params: RegisterParams) : Promise<any> => {
   return axios.post(Util.api_url('/account/register'), params);
 }
@@ -50,7 +41,7 @@ export const get_categories = (params: GetTransactionsParams) : Promise<Category
       Util.api_url('/account/categories/list'),
       {
         ...params,
-        'email': params.token,
+        'email': params.email,
       }
     ).then(
       (res) => {
@@ -68,7 +59,7 @@ export const get_transactions = (params: GetTransactionsParams) : Promise<Transa
       Util.api_url('/account/transactions/list'),
       {
         ...params,
-          email: params.token,
+          email: params.email,
       }
     ).then(
       (res) => {
@@ -86,7 +77,7 @@ export const set_transactions = (params: SetTransactionsParams) : Promise<void> 
       Util.api_url('/account/transactions/update'),
       {
         ...params,
-        email: params.token,
+        email: params.email,
       }
     ).then(
       (res) => {
@@ -104,7 +95,7 @@ export const set_categories = (params: SetCategoriesParams) : Promise<void> => {
       Util.api_url('/account/categories/update'),
       {
         ...params,
-        email: params.token,
+        email: params.email,
       },
     ).then(
       (res) => {

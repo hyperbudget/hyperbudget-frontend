@@ -6,10 +6,9 @@ import { Transaction, Category } from "@hyperbudget/hyperbudget-core";
 import { APIError } from "../../lib/APIError/APIError";
 
 const initialState: UserState = (() => {
-    let token = Util.get_token_from_session();
     return {
-        token: token,
-        isLoggedIn: !!token,
+        email: null,
+        isLoggedIn: false,
         transactions: [],
         categories: [],
         txnPassword: '',
@@ -19,7 +18,7 @@ const initialState: UserState = (() => {
 
 export interface UserAction extends Action  {
     params: {
-        token?: string,
+        email?: string,
         transactions?: Transaction[],
         categories?: Category[],
         password?: string,
@@ -34,7 +33,7 @@ export const UserReducer = (state: UserState = initialState, action: UserAction)
             return {
                 ...state,
                 isLoggedIn: true,
-                token: action.params.token,
+                email: action.params.email,
                 APIError: null,
             };
         case Actions.ActionTypes.SET_TRANSACTION_PASSWORD:
@@ -54,14 +53,16 @@ export const UserReducer = (state: UserState = initialState, action: UserAction)
         return {
             ...state,
             APIError: action.params.error,
-            token: state.APIError && state.APIError.type === 'auth' ? null : state.token,
+            email: state.APIError && state.APIError.type === 'auth' ? null : state.email,
         }
         case Actions.ActionTypes.DO_LOGOUT:
         return {
           ...state,
           isLoggedIn: false,
-          token: null,
+          email: null,
           txnPassword: null,
+          transactions: [],
+          categories: [],
         }
     }
 

@@ -18,7 +18,7 @@ import * as User from '../../lib/User/User';
 interface EditorProps {
   categories: Category[],
   txnPassword: string,
-  token: string,
+  email: string,
 };
 
 interface EditorState {
@@ -39,7 +39,7 @@ class CategoryEditorComponent extends React.Component<EditorProps, EditorState> 
     User.set_categories({
       categories: params.categories,
       password: this.props.txnPassword,
-      token: this.props.token,
+      email: this.props.email,
     }).then(
       () => {
         this.setState({
@@ -77,7 +77,7 @@ const mapStateToProps = (state: State): EditorProps => {
   return {
     categories: state.user.categories,
     txnPassword: state.user.txnPassword,
-    token: state.user.token,
+    email: state.user.email,
   }
 };
 

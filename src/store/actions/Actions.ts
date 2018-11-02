@@ -23,7 +23,7 @@ export interface RegisterParams {
 }
 
 export interface AuthenticatedParams {
-  token: string;
+  email: string;
 }
 
 export interface TransactionParams extends AuthenticatedParams {
@@ -39,13 +39,13 @@ export const do_register = (params: RegisterParams) => {
       lastname: params.lastname,
     })
     .then(() => (
-      User.get_categories_and_transactions({ password: params.password, token: params.username })
+      User.get_categories_and_transactions({ password: params.password, email: params.username })
       .then(
         catandtxn => {
           dispatch({
             type: ActionTypes.DO_LOGIN,
             params: {
-              token: params.username
+              email: params.username
             }
           });
           dispatch({
@@ -72,13 +72,13 @@ export const do_register = (params: RegisterParams) => {
 
 export const get_transactions = (params: TransactionParams) => {
   return (dispatch: Dispatch<UserAction>) => {
-    User.get_categories_and_transactions({ password: params.txnPassword, token: params.token })
+    User.get_categories_and_transactions({ password: params.txnPassword, email: params.email })
     .then(
       catandtxn => {
         dispatch({
           type: ActionTypes.DO_LOGIN,
           params: {
-            token: params.token
+            email: params.email
           }
         });
         dispatch({

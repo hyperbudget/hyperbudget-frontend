@@ -41,7 +41,7 @@ describe('Report', () => {
         transactions: [],
         categories: [],
         txnPassword: null,
-        token: 'abc',
+        email: 'abc',
         isLoggedIn: true,
       },
     });
@@ -61,7 +61,7 @@ describe('Report', () => {
         transactions: [],
         categories: [],
         txnPassword: 'pass',
-        token: 'abc',
+        email: 'abc',
         isLoggedIn: true,
       },
     });
@@ -166,7 +166,7 @@ describe('Report', () => {
         transactions: transactions,
         categories: categories,
         txnPassword: 'pass',
-        token: 'abc',
+        email: 'abc',
         isLoggedIn: true,
       },
     });

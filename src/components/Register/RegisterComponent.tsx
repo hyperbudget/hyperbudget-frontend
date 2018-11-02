@@ -14,7 +14,7 @@ interface RegisterComponentProps {
         password: string,
     }) => void;
     isLoggedIn: boolean,
-    token: string;
+    email: string;
     APIError: APIError,
 };
 
@@ -49,7 +49,7 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, {
 
     render() {
         return (
-        this.props.token
+        this.props.email
         ?
         <>
             <Redirect to="/report" />
@@ -104,7 +104,7 @@ export class RegisterComponent extends React.Component<RegisterComponentProps, {
 const mapStateToProps = (state: State) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
-        token: state.user.token,
+        email: state.user.email,
         APIError: state.user.APIError,
     }
 };

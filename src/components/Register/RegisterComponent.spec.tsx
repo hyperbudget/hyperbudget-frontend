@@ -16,7 +16,7 @@ test('Register component renders', () => {
     <RegisterComponent
       doRegister={() => {}}
       isLoggedIn={false}
-      token={null}
+      email={null}
       APIError={null}
     />
   );
@@ -31,7 +31,7 @@ test('Button calls doRegister', () => {
     <RegisterComponent
       doRegister={mockRegister}
       isLoggedIn={false}
-      token={null}
+      email={null}
       APIError={null}
     />
   );

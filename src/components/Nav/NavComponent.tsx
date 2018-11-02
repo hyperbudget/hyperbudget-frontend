@@ -7,7 +7,7 @@ import { ActionTypes } from '../../store/actions/Actions';
 import * as Util from '../../lib/Util/Util';
 
 interface NavComponentProps {
-  token: string,
+  email: string,
   doLogout(),
 };
 
@@ -19,7 +19,7 @@ class NavComponent extends React.Component<NavComponentProps, {}> {
           <ul >
             <li><NavLink exact className="btn btn-secondary" to="/">Home</NavLink></li>
             {
-              this.props.token ?
+              this.props.email ?
                 <>
                   <li><NavLink role="button" className="btn btn-secondary" to="/report">Report</NavLink></li>
                   <li><NavLink role="button" className="btn btn-secondary" to='/breakdown'>Breakdown</NavLink></li>
@@ -41,14 +41,13 @@ class NavComponent extends React.Component<NavComponentProps, {}> {
 
 const mapStateToProps = (state: State) => {
     return {
-        token: state.user.token,
+        email: state.user.email,
     }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     doLogout: () => {
-      Util.delete_token_from_session();
       return dispatch({ type: ActionTypes.DO_LOGOUT });
     },
   };

@@ -111,7 +111,7 @@ const mapDispatchToProps = dispatch => {
         doLogin: (email: string, password: string) => {
             return dispatch(Actions.get_transactions(
                 {
-                    token: email,
+                    email: email,
                     txnPassword: password,
                 }
             ));

@@ -29,7 +29,7 @@ interface ReportComponentProps {
   transactions: Transaction[],
   categories: Category[],
   txn_password: string,
-  token: string,
+  email: string,
   onUpdate?: (transactions: Transaction[]) => void,
 }
 
@@ -129,7 +129,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     set_transactions({
       transactions: this.reportfactory.report.transactions,
       password: this.props.txn_password,
-      token: this.props.token,
+      email: this.props.email,
     }).then(() => {
       this.setState({ saving: false });
     });
@@ -208,7 +208,7 @@ const mapStateToProps = (state: State, ownProps) => {
     transactions: state.user.transactions,
     categories: state.user.categories,
     txn_password: state.user.txnPassword,
-    token: state.user.token,
+    email: state.user.email,
     ...ownProps,
   }
 };

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 interface UserDetailsComponentProps {
     isLoggedIn: boolean;
-    token: string;
+    email: string;
 };
 
 class UserDetailsComponent extends React.Component<UserDetailsComponentProps, {}> {
@@ -21,7 +21,7 @@ class UserDetailsComponent extends React.Component<UserDetailsComponentProps, {}
 const mapStateToProps = state => {
     return {
         isLoggedIn: state.user.isLoggedIn,
-        token: state.user.token,
+        email: state.user.email,
     }
 };
 

@@ -10,9 +10,9 @@ import { LoadingSpinner } from '../LoadingSpinner';
 import './LoginComponent.css';
 
 interface TxnPasswordComponentProps {
-  doGetTransactions?: (password: string, token: string) => void;
+  doGetTransactions?: (password: string, email: string) => void;
   txn_password: string;
-  token: string;
+  email: string;
   api_error: APIError
 };
 
@@ -96,25 +96,25 @@ class LoginComponent extends React.Component<TxnPasswordComponentProps, TxnPassw
       loading: true
     });
 
-    this.props.doGetTransactions(this.passwordRef.current.value, this.props.token);
+    this.props.doGetTransactions(this.passwordRef.current.value, this.props.email);
   }
 }
 
 const mapStateToProps = (state: State): TxnPasswordComponentProps => {
   return {
       txn_password: state.user.txnPassword,
-      token: state.user.token,
+      email: state.user.email,
       api_error: state.user.APIError,
   }
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    doGetTransactions: (password: string, token: string) => {
+    doGetTransactions: (password: string, email: string) => {
       return dispatch(Actions.get_transactions(
         {
           txnPassword: password,
-          token: token,
+          email: email,
         }
       ));
     },

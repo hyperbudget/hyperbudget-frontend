@@ -6,18 +6,6 @@ export const api_url = (path: string): string => {
     return `${BACKEND_URL}${path}`;
 }
 
-export const get_token_from_session = (): string => {
-    return window.localStorage.getItem('hb-login-token');
-}
-
-export const save_token_to_session = (token: string) : void => {
-    window.localStorage.setItem('hb-login-token', token);
-}
-
-export const delete_token_from_session = () : void => {
-  window.localStorage.removeItem('hb-login-token');
-}
-
 /**
  * Treats a date as if it were a UTC date; drop the timezone, or assume the
  * timezone is +00:00. This is helpful as clients that do `new Date('some
