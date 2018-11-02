@@ -15,8 +15,7 @@ import LoadingSpinner from '../LoadingSpinner';
 interface LoginComponentProps {
     doLogin: (username: string, password: string) => void;
     isLoggedIn: boolean,
-    token: string;
-    APIErrors: APIError[],
+    APIError: APIError,
 };
 
 interface LoginComponentState {
@@ -29,7 +28,7 @@ class LoginComponent extends React.Component<LoginComponentProps, LoginComponent
 
     componentDidUpdate(prevProps, prevState) {
         if (prevProps !== this.props) {
-            if (this.props.token || this.props.APIErrors) {
+            if (this.props.isLoggedIn || this.props.APIError) {
                 this.setState({
                     loading: false,
                 })
@@ -54,7 +53,7 @@ class LoginComponent extends React.Component<LoginComponentProps, LoginComponent
 
     render() {
         return (
-        this.props.token
+        this.props.isLoggedIn
         ?
         <>
             <Redirect to="/report" />
@@ -65,7 +64,7 @@ class LoginComponent extends React.Component<LoginComponentProps, LoginComponent
             <div className='home-text'>
                 <form className='loginForm'>
                     {
-                        (this.props.APIErrors ? <ErrorComponent errors={this.props.APIErrors} /> : '')
+                        (this.props.APIError ? <ErrorComponent error={this.props.APIError} /> : '')
                     }
                     <div className='form-group'>
                         <label htmlFor='email'>
@@ -103,18 +102,17 @@ class LoginComponent extends React.Component<LoginComponentProps, LoginComponent
 const mapStateToProps = (state: State) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
-        token: state.user.token,
-        APIErrors: state.user.APIErrors,
+        APIError: state.user.APIError,
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        doLogin: (username: string, password: string) => {
-            return dispatch(Actions.do_login(
+        doLogin: (email: string, password: string) => {
+            return dispatch(Actions.get_transactions(
                 {
-                    username: username,
-                    password: password,
+                    token: email,
+                    txnPassword: password,
                 }
             ));
         },

@@ -17,7 +17,7 @@ test('Register component renders', () => {
       doRegister={() => {}}
       isLoggedIn={false}
       token={null}
-      APIErrors={null}
+      APIError={null}
     />
   );
   let tree = component.toJSON();
@@ -32,7 +32,7 @@ test('Button calls doRegister', () => {
       doRegister={mockRegister}
       isLoggedIn={false}
       token={null}
-      APIErrors={null}
+      APIError={null}
     />
   );
 

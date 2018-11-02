@@ -34,7 +34,7 @@ interface SetCategoriesParams extends GetTransactionsParams {
 export const login = (params: LoginParams) : Promise<any> => {
   return new Promise((resolve, reject) => (
     axios.post(Util.api_url('/account/login'), params).then((res) => {
-      Util.save_token_to_session(res.data.token);
+      Util.save_token_to_session(res.data.email);
       return resolve(res);
     }, err => reject(err))
   ));
@@ -48,11 +48,9 @@ export const get_categories = (params: GetTransactionsParams) : Promise<Category
   return new Promise((resolve, reject) => (
     axios.post(
       Util.api_url('/account/categories/list'),
-      params,
       {
-        headers: {
-          'x-jwt': params.token,
-        }
+        ...params,
+        'email': params.token,
       }
     ).then(
       (res) => {
@@ -68,11 +66,9 @@ export const get_transactions = (params: GetTransactionsParams) : Promise<Transa
   return new Promise((resolve, reject) => (
     axios.post(
       Util.api_url('/account/transactions/list'),
-      params,
       {
-        headers: {
-          'x-jwt': params.token,
-        }
+        ...params,
+          email: params.token,
       }
     ).then(
       (res) => {
@@ -88,11 +84,9 @@ export const set_transactions = (params: SetTransactionsParams) : Promise<void> 
   return new Promise((resolve, reject) => (
     axios.post(
       Util.api_url('/account/transactions/update'),
-      params,
       {
-        headers: {
-          'x-jwt': params.token,
-        }
+        ...params,
+        email: params.token,
       }
     ).then(
       (res) => {
@@ -108,12 +102,10 @@ export const set_categories = (params: SetCategoriesParams) : Promise<void> => {
   return new Promise((resolve, reject) => (
     axios.post(
       Util.api_url('/account/categories/update'),
-      params,
       {
-        headers: {
-          'x-jwt': params.token,
-        }
-      }
+        ...params,
+        email: params.token,
+      },
     ).then(
       (res) => {
         return resolve();

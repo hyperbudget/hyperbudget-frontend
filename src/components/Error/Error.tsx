@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { APIError } from '../../lib/APIError/APIError';
 interface ErrorComponentProps {
-  errors: APIError[],
+  error: APIError,
 };
 
 export const ErrorComponent = (props: ErrorComponentProps) => {
@@ -9,9 +9,7 @@ export const ErrorComponent = (props: ErrorComponentProps) => {
     <div className="alert alert-danger" role="alert">
       <p>Errors:</p>
       <ul>
-        {
-          props.errors.map((err, idx) => <li key={idx}>{ err.msg }</li>)
-        }
+        { props.error.message || 'An error occurred, please try again later' }
       </ul>
     </div>
     );

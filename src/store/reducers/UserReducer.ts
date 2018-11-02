@@ -13,7 +13,7 @@ const initialState: UserState = (() => {
         transactions: [],
         categories: [],
         txnPassword: '',
-        APIErrors: null,
+        APIError: null,
     };
 })();
 
@@ -24,7 +24,7 @@ export interface UserAction extends Action  {
         categories?: Category[],
         password?: string,
         txnPassword?: string,
-        error?: APIError[],
+        error?: APIError,
     }
 };
 
@@ -35,21 +35,26 @@ export const UserReducer = (state: UserState = initialState, action: UserAction)
                 ...state,
                 isLoggedIn: true,
                 token: action.params.token,
-                APIErrors: null,
+                APIError: null,
             };
+        case Actions.ActionTypes.SET_TRANSACTION_PASSWORD:
+        return {
+          ...state,
+          txnPassword: action.params.txnPassword
+        }
         case Actions.ActionTypes.SET_TRANSACTIONS_AND_CATEGORIES:
         return {
             ...state,
             transactions: action.params.transactions,
             categories: action.params.categories,
             txnPassword: action.params.txnPassword,
-            APIErrors: null,
+            APIError: null,
         }
         case Actions.ActionTypes.API_ERROR:
         return {
             ...state,
-            APIErrors: action.params.error,
-            token: !!action.params.error.find(e => e.type && e.type === 'auth') ? null : state.token,
+            APIError: action.params.error,
+            token: state.APIError && state.APIError.type === 'auth' ? null : state.token,
         }
         case Actions.ActionTypes.DO_LOGOUT:
         return {

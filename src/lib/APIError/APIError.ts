@@ -1,4 +1,5 @@
 export type APIError = {
-  msg: string;
+  message: string;
   type?: string;
+  invalid?: object[],
 };

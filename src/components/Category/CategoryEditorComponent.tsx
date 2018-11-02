@@ -14,7 +14,6 @@ import { ErrorComponent } from '../Error/Error';
 import { Category } from '@hyperbudget/hyperbudget-core';
 
 import * as User from '../../lib/User/User';
-import { formatError } from '../../lib/Util/Util';
 
 interface EditorProps {
   categories: Category[],
@@ -23,7 +22,7 @@ interface EditorProps {
 };
 
 interface EditorState {
-  errors: APIError[],
+  error: APIError,
   success: boolean,
 };
 
@@ -31,7 +30,7 @@ class CategoryEditorComponent extends React.Component<EditorProps, EditorState> 
   constructor(props) {
     super(props);
     this.state = {
-      errors: [],
+      error: null,
       success: null,
     };
   }
@@ -45,15 +44,15 @@ class CategoryEditorComponent extends React.Component<EditorProps, EditorState> 
       () => {
         this.setState({
           success: true,
-          errors: [],
-        });
+          error: null,
+        })
       },
       (err) => {
         this.setState({
           success: null,
-          errors: [{
-            msg: 'Error updating categories',
-          }]
+          error: {
+            message: 'Error updating categories',
+          }
         })
       }
     )
@@ -64,7 +63,7 @@ class CategoryEditorComponent extends React.Component<EditorProps, EditorState> 
       <div style={{ margin: '80px 10px' }}>
       <RequireAuthContainer>
         <RequireTxnPasswordContainer>
-          { this.state.errors.length ? <ErrorComponent errors={this.state.errors} /> : '' }
+          { this.state.error ? <ErrorComponent error={this.state.error} /> : '' }
           { this.state.success ? <div className='alert alert-success'>Success</div> : '' }
           <JSONEditorComponent categories={this.props.categories} onUpdate={this.doUpdate.bind(this)} />
         </RequireTxnPasswordContainer>

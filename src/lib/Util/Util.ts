@@ -18,20 +18,6 @@ export const delete_token_from_session = () : void => {
   window.localStorage.removeItem('hb-login-token');
 }
 
-export const formatError = (error: any) => {
-  if (!error.response && error.message) {
-    error.response = {
-      data: {
-        error: [
-          {
-            msg: error.message,
-          }
-        ]
-      }
-    }
-  }
-};
-
 /**
  * Treats a date as if it were a UTC date; drop the timezone, or assume the
  * timezone is +00:00. This is helpful as clients that do `new Date('some

@@ -7,5 +7,5 @@ export type UserState = {
   transactions: Transaction[],
   categories: Category[],
   txnPassword: string,
-  APIErrors: APIError[],
+  APIError: APIError,
 };

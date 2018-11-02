@@ -4,15 +4,16 @@ import * as Actions from '../../store/actions/Actions';
 import { Redirect } from 'react-router';
 import { ErrorComponent } from '../Error/Error';
 import { State } from '../../lib/State/State';
+import { APIError } from '../../lib/APIError/APIError';
 
-import './LoginComponent.css';
 import { LoadingSpinner } from '../LoadingSpinner';
+import './LoginComponent.css';
 
 interface TxnPasswordComponentProps {
   doGetTransactions?: (password: string, token: string) => void;
   txn_password: string;
   token: string;
-  api_errors: any[];
+  api_error: APIError
 };
 
 interface TxnPasswordComponentState {
@@ -31,7 +32,7 @@ class LoginComponent extends React.Component<TxnPasswordComponentProps, TxnPassw
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps !== this.props) {
-      if (this.props.txn_password || this.props.api_errors) {
+      if (this.props.txn_password || this.props.api_error) {
         this.setState({
           loading: false,
         })
@@ -64,7 +65,7 @@ class LoginComponent extends React.Component<TxnPasswordComponentProps, TxnPassw
     <div className="jumbotron mt-5 text-center">
       <div className='loginForm'>
           <h1>Enter transaction password</h1>
-          { this.props.api_errors ? <ErrorComponent errors={this.props.api_errors} /> : ''}
+          { this.props.api_error ? <ErrorComponent error={this.props.api_error} /> : ''}
           <div>
             <span className='what' onClick={() => this.toggleExplanation()}>What is this?</span>
           </div>
@@ -103,7 +104,7 @@ const mapStateToProps = (state: State): TxnPasswordComponentProps => {
   return {
       txn_password: state.user.txnPassword,
       token: state.user.token,
-      api_errors: state.user.APIErrors,
+      api_error: state.user.APIError,
   }
 };
 
