@@ -59,7 +59,7 @@ module.exports = {
 
     plugins: [
       new webpack.DefinePlugin({
-        'BACKEND_URL': JSON.stringify(process.env.BACKEND_URL || 'http://localhost:3000'),
+        'BACKEND_URL': JSON.stringify(process.env.BACKEND_URL || 'http://localhost:8000'),
       }),
     ],
 };
