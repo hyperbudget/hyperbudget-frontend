@@ -22,6 +22,12 @@ export interface RegisterParams {
   password: string;
 }
 
+export interface ResetPasswordParams {
+  userId: string;
+  password: string;
+  token: string;
+}
+
 export interface AuthenticatedParams {
   email: string;
 }
@@ -98,5 +104,44 @@ export const get_transactions = (params: TransactionParams) => {
         })
       },
     );
+  };
+};
+
+export const reset_password = (params: ResetPasswordParams) => {
+  return (dispatch: Dispatch<UserAction>) => {
+    User.reset_password({
+      userId: params.userId,
+      token: params.token,
+      password: params.password,
+    })
+    .then((user) => (
+      User.get_categories_and_transactions({ password: params.password, email: user.email })
+      .then(
+        catandtxn => {
+          dispatch({
+            type: ActionTypes.DO_LOGIN,
+            params: {
+              email: user.email
+            }
+          });
+          dispatch({
+            type: ActionTypes.SET_TRANSACTIONS_AND_CATEGORIES,
+            params: {
+              ...catandtxn,
+              txnPassword: params.password
+            }
+          });
+        },
+      )
+    ))
+    .catch(err => {
+        dispatch({
+          type: ActionTypes.API_ERROR,
+          params: {
+            error: err.response.data.error,
+          }
+        })
+      }
+    )
   };
 };
