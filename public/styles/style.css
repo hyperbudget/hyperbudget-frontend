@@ -163,3 +163,14 @@ form {
 .pointer {
     cursor: pointer;
 }
+
+.loginForm a {
+    color: white;
+    text-decoration: underline;
+}
+
+.loginForm a:hover, .loginForm a:active {
+    font-weight: bold;
+    color: white;
+    text-decoration: underline;
+}
