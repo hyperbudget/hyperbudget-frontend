@@ -31,6 +31,12 @@ interface SetCategoriesParams extends GetTransactionsParams {
   categories: Category[],
 };
 
+interface ResetPasswordParams {
+  userId: string;
+  password: string;
+  token: string;
+};
+
 export const register = (params: RegisterParams) : Promise<any> => {
   return axios.post(Util.api_url('/account/register'), params);
 }
@@ -112,4 +118,20 @@ export const get_categories_and_transactions = (params: GetTransactionsParams) :
         get_transactions(params),
         get_categories(params),
     ]).then(result => ({ transactions: result[0], categories: result[1] }));
+}
+
+export const reset_password = (params: ResetPasswordParams): Promise<any> => {
+  return new Promise((resolve, reject) => {
+    axios.post(
+      Util.api_url('/account/confirm-reset-password'),
+      {
+        password: params.password,
+        user_id: params.userId,
+        token: params.token
+      }
+    )
+    .then(res => {
+      resolve(res.data.user);
+    }, reject);
+  });
 }

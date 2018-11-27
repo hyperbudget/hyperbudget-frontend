@@ -6,6 +6,7 @@ import ReportComponent from '../Report/ReportComponent';
 import BreakdownComponent from '../Report/BreakdownComponent';
 import LoginComponent from '../Login/LoginComponent';
 import RegisterComponent from '../Register/RegisterComponent';
+import ResetPasswordComponent from '../ResetPassword/ResetPasswordComponent';
 import NavComponent from '../Nav/NavComponent';
 
 import moment from 'moment';
@@ -30,6 +31,10 @@ export class RouterComponent extends React.Component {
         } />
         <Route path="/breakdown" exact component={ BreakdownComponent }/>
         <Route path="/categories/editor" exact component={ CategoryEditorComponent } />
+        <Route path="/reset-password/:userId/:token" exact render={
+          (props) => <ResetPasswordComponent userId={props.match.params['userId']}
+                      token={props.match.params['token']} />
+        } />
       </Switch>
       </>
     );
