@@ -81,6 +81,9 @@ class LoginComponent extends React.Component<LoginComponentProps, LoginComponent
                     <div>
                         <input className='btn btn-primary form-control' type='button'  onClick={() => this.doLogin() } value="Login" />
                     </div>
+                    <div style={{paddingTop: '10px'}}>
+                        Forgot your password? <a href='/reset-password'>Request a password reset email</a>.
+                    </div>
                     { this.state.loading ? <LoadingSpinner /> : '' }
                 </form>
             </div>

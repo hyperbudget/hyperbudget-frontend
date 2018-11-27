@@ -34,10 +34,6 @@ class ResetPasswordComponent extends React.Component<ResetPasswordComponentProps
         }
     }
 
-    disableButton() {
-        return !(this.passwordRef.current && this.passwordRef.current.value);
-    }
-
     constructor(props) {
         super(props);
 
@@ -73,7 +69,7 @@ class ResetPasswordComponent extends React.Component<ResetPasswordComponentProps
                   <input id='password' className='form-control' type="password" name="password" ref={this.passwordRef} />
               </div>
               <div>
-                  <input className='btn btn-primary form-control' type='button'  onClick={() => this.doResetPassword() } value="Reset Password" />
+                  <input className='btn btn-primary form-control' type='button' onClick={() => this.doResetPassword() } value="Reset Password" />
               </div>
               { this.state.loading ? <LoadingSpinner /> : '' }
           </form>

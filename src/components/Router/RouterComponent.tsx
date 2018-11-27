@@ -6,13 +6,16 @@ import ReportComponent from '../Report/ReportComponent';
 import BreakdownComponent from '../Report/BreakdownComponent';
 import LoginComponent from '../Login/LoginComponent';
 import RegisterComponent from '../Register/RegisterComponent';
+import RequestResetComponent from '../ResetPassword/RequestResetComponent';
 import ResetPasswordComponent from '../ResetPassword/ResetPasswordComponent';
-import NavComponent from '../Nav/NavComponent';
-
-import moment from 'moment';
 import CategoryEditorComponent from '../Category/CategoryEditorComponent';
 import VersionComponent from '../VersionComponent/VersionComponent';
+
+import NavComponent from '../Nav/NavComponent';
+
 import { convertDateStringToDate } from '../../lib/Util/Util';
+
+import moment from 'moment';
 
 export class RouterComponent extends React.Component {
   render() {
@@ -35,6 +38,7 @@ export class RouterComponent extends React.Component {
           (props) => <ResetPasswordComponent userId={props.match.params['userId']}
                       token={props.match.params['token']} />
         } />
+        <Route path="/reset-password" exact component={RequestResetComponent} />
       </Switch>
       </>
     );
