@@ -11,7 +11,7 @@ export const BreakdownChartComponent = (props: BreakdownChartComponentProps) => 
     {
       label: "Income",
       data: props.breakdown.map((item: BreakdownFormatted) => (
-          [ item.month, item.main_in ]
+          [ item.month, item.in ]
       ))
     },
     {
