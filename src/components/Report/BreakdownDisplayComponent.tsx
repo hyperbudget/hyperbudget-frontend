@@ -20,8 +20,8 @@ class BreakdownDisplayComponent extends React.Component<BreakdownDisplayComponen
   render() {
     return (
       <>
-        <input type="button" onClick={() => this.setType('table')} value="Table" />
-        <input type="button" onClick={() => this.setType('chart')} value="Chart" />
+        <button className='mr-2' type="button" onClick={() => this.setType('table')}><i className='fa fa-table fa-2x' /></button>
+        <button type="button" onClick={() => this.setType('chart')}><i className='fa fa-line-chart fa-2x' /></button>
         { this.state.type === 'table' ?
           <BreakdownTableComponent breakdown={this.props.breakdown} /> :
           <BreakdownChartComponent breakdown={this.props.breakdown} />

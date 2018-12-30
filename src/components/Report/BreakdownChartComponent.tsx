@@ -28,6 +28,7 @@ export const BreakdownChartComponent = (props: BreakdownChartComponentProps) => 
         width: "400px",
         height: "300px"
       }}
+      className='mt-3'
     >
       <Chart
         data={data}
@@ -36,7 +37,9 @@ export const BreakdownChartComponent = (props: BreakdownChartComponentProps) => 
           { type: "linear", position: "left" }
         ]}
         tooltip
-
+        getSeriesStyle={series => ({
+          color: series.index === 0 ? '#60BD68' : '#fc6868',
+        })}
       />
     </div>
   );
