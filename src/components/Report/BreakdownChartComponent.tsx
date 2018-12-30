@@ -25,8 +25,8 @@ export const BreakdownChartComponent = (props: BreakdownChartComponentProps) => 
   return (
     <div
       style={{
-        width: "400px",
-        height: "300px"
+        width: "80%",
+        height: "60vh"
       }}
       className='mt-3'
     >
