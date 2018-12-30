@@ -4,12 +4,15 @@ import { connect } from 'react-redux';
 import { State } from '../../lib/State/State';
 
 import moment from 'moment';
+
 import { BreakdownFormatted, Transaction, ReportFactory, Report, Categoriser, Category, reportManager } from '@hyperbudget/hyperbudget-core';
+
 import RequireTxnPasswordContainer from '../containers/RequireTxnPasswordContainer';
-import { BreakdownSelectionComponent } from './BreakdownSelectionComponent';
-import { BreakdownTableComponent } from './BreakdownTableComponent';
 import RequireAuthContainer from '../containers/RequireAuthContainer';
+
 import { deResponsifyPage, responsifyPage } from '../../lib/Util/Util';
+import { BreakdownDisplayComponent } from './BreakdownDisplayComponent';
+import { BreakdownSelectionComponent } from './BreakdownSelectionComponent';
 
 interface BreakdownComponentProps {
   transactions: Transaction[],
@@ -41,7 +44,7 @@ class BreakdownComponent extends React.Component<BreakdownComponentProps, Breakd
         {
           this.state.breakdown.length
           ?
-          <BreakdownTableComponent breakdown={this.state.breakdown} />
+          <BreakdownDisplayComponent breakdown={this.state.breakdown} />
           :
           <BreakdownSelectionComponent generateBreakdown={ (start, end) => this.generateBreakdown(start,end ) } />
         }
