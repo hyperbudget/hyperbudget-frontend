@@ -11,8 +11,8 @@ before_deploy:
   - rm -rf node_modules
   - rm -rf src
   - rm -rf test
-  - rm dist/*.map
-  - rm .babelrc .editorconfig .gitconfig .travis.yml jest.config.js package* README.md tsconfig.json webpack*
+  - rm -f dist/*.map
+  - rm -f .babelrc .editorconfig .gitconfig .travis.yml jest.config.js package* README.md tsconfig.json webpack*
 deploy:
   region: eu-west-2
   provider: s3
