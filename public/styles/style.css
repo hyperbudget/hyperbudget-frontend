@@ -174,3 +174,7 @@ form {
     color: white;
     text-decoration: underline;
 }
+
+.mt10 {
+    margin-top: 10px;
+}

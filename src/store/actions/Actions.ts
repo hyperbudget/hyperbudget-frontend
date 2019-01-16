@@ -34,6 +34,7 @@ export interface AuthenticatedParams {
 
 export interface TransactionParams extends AuthenticatedParams {
   txnPassword: string;
+  remember?: boolean;
 }
 
 export const do_register = (params: RegisterParams) => {
@@ -78,6 +79,12 @@ export const do_register = (params: RegisterParams) => {
 
 export const get_transactions = (params: TransactionParams) => {
   return (dispatch: Dispatch<UserAction>) => {
+    if (params.remember) {
+      window.localStorage.setItem('email', params.email);
+    } else {
+      window.sessionStorage.setItem('email', params.email);
+    }
+
     User.get_categories_and_transactions({ password: params.txnPassword, email: params.email })
     .then(
       catandtxn => {
@@ -145,3 +152,12 @@ export const reset_password = (params: ResetPasswordParams) => {
     )
   };
 };
+
+export const logout = () => {
+  return (dispatch: Dispatch<UserAction>) => {
+    window.localStorage.removeItem('email');
+    window.sessionStorage.removeItem('email');
+
+    return dispatch({ type: ActionTypes.DO_LOGOUT })
+  };
+}
