@@ -7,7 +7,7 @@ import { APIError } from "../../lib/APIError/APIError";
 
 const initialState: UserState = (() => {
     return {
-        email: null,
+        email: window.localStorage.getItem('email') || window.sessionStorage.getItem('email') || null,
         isLoggedIn: false,
         transactions: [],
         categories: [],
@@ -17,7 +17,7 @@ const initialState: UserState = (() => {
 })();
 
 export interface UserAction extends Action  {
-    params: {
+    params?: {
         email?: string,
         transactions?: Transaction[],
         categories?: Category[],

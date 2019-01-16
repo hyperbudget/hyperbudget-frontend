@@ -4,7 +4,7 @@ import { NavLink } from 'react-router-dom';
 import { Dispatch } from 'react-redux';
 
 import { State } from '../../lib/State/State';
-import { ActionTypes } from '../../store/actions/Actions';
+import * as Actions from '../../store/actions/Actions';
 
 interface NavComponentProps {
   email?: string,
@@ -45,10 +45,10 @@ const mapStateToProps = (state: State) => {
     }
 };
 
-const mapDispatchToProps = (dispatch: Dispatch<{ type: ActionTypes }>) => {
+const mapDispatchToProps = dispatch => {
   return {
     doLogout: () => {
-      return dispatch({ type: ActionTypes.DO_LOGOUT });
+      return dispatch(Actions.logout());
     },
   };
 };

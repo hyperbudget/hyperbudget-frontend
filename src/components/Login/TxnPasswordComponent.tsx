@@ -17,18 +17,11 @@ interface TxnPasswordComponentProps {
 };
 
 interface TxnPasswordComponentState {
-  explanation: boolean;
   loading: boolean;
 }
 
 class LoginComponent extends React.Component<TxnPasswordComponentProps, TxnPasswordComponentState> {
   passwordRef: React.RefObject<HTMLInputElement>;
-
-  toggleExplanation() {
-    this.setState({
-      explanation: !this.state.explanation
-    });
-  }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevProps !== this.props) {
@@ -50,7 +43,7 @@ class LoginComponent extends React.Component<TxnPasswordComponentProps, TxnPassw
   constructor(props) {
     super(props);
     this.passwordRef = React.createRef();
-    this.state = { explanation: false, loading: false };
+    this.state = { loading: false };
   }
 
   render() {
@@ -62,30 +55,25 @@ class LoginComponent extends React.Component<TxnPasswordComponentProps, TxnPassw
     </>
     :
     <>
-    <div className="jumbotron mt-5 text-center">
-      <div className='loginForm'>
-          <h1>Enter transaction password</h1>
+      <div className="jumbotron mt-5 text-center">
+        <div className='loginForm'>
+          <h1>Enter your password</h1>
+          <p>For your security, we require your password after refreshing the page.</p>
+
           { this.props.api_error ? <ErrorComponent error={this.props.api_error} /> : ''}
-          <div>
-            <span className='what' onClick={() => this.toggleExplanation()}>What is this?</span>
-          </div>
-          <div className='form-group'>
-            {
-              this.state.explanation ?
-              <div className='alert alert-info'>
-                This is the password used to show your transactions. If you've never set one, you can set one now. This password is required to decrypt your transaction data and cannot be recovered. However, you can reset the password and lose all your data.
-              </div> : ''
-            }
-            <label htmlFor='txnPassword'>
-              Transaction password:
-            </label>
-            <input className='form-control' id="txnPassword" type="password" name="password" ref={this.passwordRef} />
-          </div>
-          <div>
+
+          <label htmlFor='txnPassword'>
+            Password:
+          </label>
+
+          <input className='form-control' id="txnPassword" type="password" name="password" ref={this.passwordRef} />
+
+          <div className='mt10'>
             <input className='btn btn-primary form-control' type='button'  onClick={ () => this.doGetTransactions() } value="Login" />
           </div>
-          { this.state.loading ? <LoadingSpinner /> : '' }
+
         </div>
+        { this.state.loading ? <LoadingSpinner /> : '' }
       </div>
     </>
     );

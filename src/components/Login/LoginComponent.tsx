@@ -13,13 +13,15 @@ import FooterComponent from '../FooterComponent/FooterComponent';
 import LoadingSpinner from '../LoadingSpinner';
 
 interface LoginComponentProps {
-    doLogin: (username: string, password: string) => void;
+    doLogin: (username: string, password: string, remember: boolean) => void;
     isLoggedIn: boolean,
     APIError: APIError,
+    email: string,
 };
 
 interface LoginComponentState {
     loading: boolean;
+    remember: boolean;
 }
 
 class LoginComponent extends React.Component<LoginComponentProps, LoginComponentState> {
@@ -44,7 +46,8 @@ class LoginComponent extends React.Component<LoginComponentProps, LoginComponent
         super(props);
 
         this.state = {
-            loading: false
+            loading: false,
+            remember: !!this.props.email,
         };
 
         this.userNameRef = React.createRef();
@@ -70,7 +73,7 @@ class LoginComponent extends React.Component<LoginComponentProps, LoginComponent
                         <label htmlFor='email'>
                             Username:
                         </label>
-                        <input id='email' className='form-control' name="email" type="email" ref={this.userNameRef} />
+                        <input id='email' defaultValue={this.props.email||''} className='form-control' name="email" type="email" ref={this.userNameRef} />
                     </div>
                     <div className='form-group'>
                         <label htmlFor='password'>
@@ -78,7 +81,13 @@ class LoginComponent extends React.Component<LoginComponentProps, LoginComponent
                         </label>
                         <input id='password' className='form-control' type="password" name="password" ref={this.passwordRef} />
                     </div>
-                    <div>
+                    <div className='form-check'>
+                        <input onChange={ () => this.toggleRemember() } id='remember' className='form-check-input' type="checkbox" name="remember" />
+                        <label htmlFor='remember' className='form-check-label'>
+                            Remember me?
+                        </label>
+                    </div>
+                    <div className='mt10'>
                         <input className='btn btn-primary form-control' type='button'  onClick={() => this.doLogin() } value="Login" />
                     </div>
                     <div style={{paddingTop: '10px'}}>
@@ -93,11 +102,17 @@ class LoginComponent extends React.Component<LoginComponentProps, LoginComponent
         );
     }
 
+    toggleRemember() : void {
+        this.setState({
+            remember: !this.state.remember,
+        });
+    }
+
     doLogin(): void {
         this.setState({
             loading: true,
         })
-        this.props.doLogin(this.userNameRef.current.value, this.passwordRef.current.value);
+        this.props.doLogin(this.userNameRef.current.value, this.passwordRef.current.value, this.state.remember);
     }
 }
 
@@ -106,15 +121,17 @@ const mapStateToProps = (state: State) => {
     return {
         isLoggedIn: state.user.isLoggedIn,
         APIError: state.user.APIError,
+        email: state.user.email,
     }
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        doLogin: (email: string, password: string) => {
+        doLogin: (email: string, password: string, remember:boolean=false) => {
             return dispatch(Actions.get_transactions(
                 {
-                    email: email,
+                    email,
+                    remember,
                     txnPassword: password,
                 }
             ));
