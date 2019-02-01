@@ -5,7 +5,7 @@ script:
   - npm run test
 install:
   - npm install
-  - BACKEND_URL=https://api.hyperbudget.net npm run build
+  - NODE_ENV=production BACKEND_URL=https://api.hyperbudget.net npm run build
   - sudo pip install awscli
 before_deploy:
   - rm -rf node_modules
