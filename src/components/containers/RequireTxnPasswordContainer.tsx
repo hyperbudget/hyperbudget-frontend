@@ -4,14 +4,14 @@ import TxnPasswordComponent from '../Login/TxnPasswordComponent';
 import { State } from '../../lib/State/State';
 
 interface RequireTxnPasswordContainerProps {
-    txn_password: string;
+    has_txn_password: boolean;
 };
 
 
 class RequireTxnPasswordContainer extends React.Component<RequireTxnPasswordContainerProps, {}> {
     render() {
         return (
-            this.props.txn_password ?
+            this.props.has_txn_password ?
             <>
                 { this.props.children }
             </> :
@@ -22,7 +22,7 @@ class RequireTxnPasswordContainer extends React.Component<RequireTxnPasswordCont
 
 const mapStateToProps = (state: State) => {
     return {
-        txn_password: state.user.txnPassword,
+        has_txn_password: !!state.user.txnPassword,
     }
 };
 

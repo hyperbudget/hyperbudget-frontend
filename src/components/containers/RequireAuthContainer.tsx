@@ -4,14 +4,14 @@ import { State } from '../../lib/State/State';
 import { Redirect } from 'react-router';
 
 interface RequireAuthContainerProps {
-    email: string;
+    has_email: boolean;
 };
 
 
 class RequireAuthContainer extends React.Component<RequireAuthContainerProps, {}> {
     render() {
         return (
-            this.props.email ?
+            this.props.has_email ?
             <>
                 { this.props.children }
             </> :
@@ -22,7 +22,7 @@ class RequireAuthContainer extends React.Component<RequireAuthContainerProps, {}
 
 const mapStateToProps = (state: State) => {
     return {
-        email: state.user.email,
+        has_email: !!state.user.email,
     }
 };
 

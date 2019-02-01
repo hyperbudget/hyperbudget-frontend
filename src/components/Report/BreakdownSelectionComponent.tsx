@@ -33,6 +33,8 @@ export class BreakdownSelectionComponent extends React.Component<BreakdownSelect
   componentDidMount() {
     const options = {
       format: 'YYYY-MM',
+      controls: true,
+      title: 'Select month',
     };
 
     this.pickers.from = new Picker(this.fromRef.current, options);
