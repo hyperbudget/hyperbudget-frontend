@@ -1,18 +1,27 @@
 import * as React from 'react';
+
 import { connect } from 'react-redux';
-import * as Actions from '../../store/actions/Actions';
 import { Redirect } from 'react-router';
+
+import { RouteComponentProps } from 'react-router-dom';
+
+import * as Actions from '../../store/actions/Actions';
 
 import { State } from '../../lib/State/State';
 import { APIError } from '../../lib/APIError/APIError';
 import { ErrorComponent } from '../Error/Error';
+
 
 import '../HomeComponent/HomeComponent.css';
 import './LoginComponent.css';
 import FooterComponent from '../FooterComponent/FooterComponent';
 import LoadingSpinner from '../LoadingSpinner';
 
-interface LoginComponentProps {
+interface LoginRouterProps {
+  next?: string;
+}
+
+interface LoginComponentProps extends RouteComponentProps<LoginRouterProps> {
     doLogin: (username: string, password: string, remember: boolean) => void;
     isLoggedIn: boolean,
     APIError: APIError,
@@ -31,9 +40,12 @@ class LoginComponent extends React.Component<LoginComponentProps, LoginComponent
     componentDidUpdate(prevProps, prevState) {
         if (prevProps !== this.props) {
             if (this.props.isLoggedIn || this.props.APIError) {
-                this.setState({
-                    loading: false,
-                })
+              this.setState({
+                loading: false,
+              });
+              if (this.props.location.state && this.props.location.state.next) {
+                this.props.history.push(this.props.location.state.next);
+              }
             }
         }
     }
