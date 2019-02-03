@@ -4,7 +4,7 @@ import { State } from '../../lib/State/State';
 import { Redirect } from 'react-router';
 
 interface RequireAuthContainerProps {
-    has_email: boolean;
+  has_email: boolean;
 };
 
 
@@ -15,7 +15,7 @@ class RequireAuthContainer extends React.Component<RequireAuthContainerProps, {}
             <>
                 { this.props.children }
             </> :
-            <Redirect to="/login" />
+            <Redirect to={{ pathname: "/login", state: { 'next': window.location.pathname } }} />
         );
     }
 }
