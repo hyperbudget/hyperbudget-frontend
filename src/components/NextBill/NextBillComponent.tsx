@@ -36,7 +36,7 @@ const findNextBills = (group, currentTxn) => (
   ))
 );
 
-findCurrent = txns => (
+const findCurrent = txns => (
   txns.filter(txn => txn.calculatedMonth === moment().utc().format('YYYYMM'))
 );
 
@@ -51,7 +51,7 @@ export class NextBillComponent extends React.Component<NextBillComponentProps, N
 
   render() {
     let groups = filterOldTransactions(reportManager.groupByType(this.props.transactions, ['DD', 'SO']));
-    let current = reportManager.groupByType(findCurrent(this.props.transactions, ['DD', 'SO']));
+    let current = reportManager.groupByType(findCurrent(this.props.transactions), ['DD', 'SO']);
 
     if (!groups) {
       return <></>;
