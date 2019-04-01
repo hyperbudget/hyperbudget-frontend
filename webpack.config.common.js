@@ -28,12 +28,13 @@ module.exports = {
     module: {
         rules: [
             // All files with a '.ts' or '.tsx' extension will be handled by 'awesome-typescript-loader'.
-            { test: /\.tsx?$/, loaders: [ "babel-loader", "awesome-typescript-loader"] },
+            { test: /\.tsx?$/, loaders: [ "babel-loader", "ts-loader"] },
 
             {
                 test: /\.js$/,
-                include: ['src', require.resolve('csv-parse'), /node_modules\/@hyperbudget\/hyperbudget-core\/dist/ ],
+                include: ['src',  /node_modules\/@hyperbudget\/hyperbudget-core\/dist/ ],
                 loaders: ['babel-loader'],
+                exclude: ['node_modules']
             },
             {
                 test: /\.css$/,
