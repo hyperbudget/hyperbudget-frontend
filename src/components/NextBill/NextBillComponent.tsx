@@ -27,10 +27,17 @@ const filterOldTransactions = (groups) => {
   return groups;
 }
 
-const findNextBills = (group) => (
+const findNextBills = (group, currentTxn) => (
   group.transactions.filter(txn => (
     moment(txn.date).startOf('day').isSame(moment(group.transactions[0].date).startOf('day'))
   ))
+  .filter(txn => (
+    !currentTxn.find(t => t.description.toLowerCase() === txn.description.toLowerCase())
+  ))
+);
+
+findCurrent = txns => (
+  txns.filter(txn => txn.calculatedMonth === moment().utc().format('YYYYMM'))
 );
 
 export class NextBillComponent extends React.Component<NextBillComponentProps, NextBillComponentState> {
@@ -44,13 +51,14 @@ export class NextBillComponent extends React.Component<NextBillComponentProps, N
 
   render() {
     let groups = filterOldTransactions(reportManager.groupByType(this.props.transactions, ['DD', 'SO']));
+    let current = reportManager.groupByType(findCurrent(this.props.transactions, ['DD', 'SO']));
 
     if (!groups) {
       return <></>;
     }
 
-    const nextDD = groups['DD'] ? findNextBills(groups['DD']) : [];
-    const nextSO = groups['SO'] ? findNextBills(groups['SO']) : [];
+    const nextDD = groups['DD'] ? findNextBills(groups['DD'], current) : [];
+    const nextSO = groups['SO'] ? findNextBills(groups['SO'], current) : [];
 
     return (
     <>
