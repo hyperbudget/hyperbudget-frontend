@@ -57,8 +57,16 @@ export class NextBillComponent extends React.Component<NextBillComponentProps, N
       return <></>;
     }
 
-    const nextDD = groups['DD'] ? findNextBills(groups['DD'], current) : [];
-    const nextSO = groups['SO'] ? findNextBills(groups['SO'], current) : [];
+    const nextDD = groups['DD'] ?
+          findNextBills(
+              groups['DD'],
+              current['DD'] ? (current['DD'].transactions || []) : []
+          ) : [];
+    const nextSO = groups['SO'] ?
+          findNextBills(
+              groups['SO'],
+              current['SO'] ? (current['SO'].transactions || []) : []
+          ): [];
 
     return (
     <>
