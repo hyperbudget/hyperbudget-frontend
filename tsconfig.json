@@ -13,7 +13,7 @@
         },
         "jsx": "react",
         "esModuleInterop": true,
-        "noImplicitThis": true,
+        "noImplicitThis": true
     },
     "include": [
         "src/**/*"
