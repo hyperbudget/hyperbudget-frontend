@@ -178,3 +178,8 @@ form {
 .mt10 {
     margin-top: 10px;
 }
+
+.fa-transparent, .fa-transparent::before {
+  background: transparent !important;
+  border: none !important;
+}

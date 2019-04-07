@@ -201,7 +201,10 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
                     : '')
                   }
 
-                  <ToggleNextBillComponent onShow={() => this.toggleNextBill()} />
+                  <ToggleNextBillComponent
+                    onShow={() => this.toggleNextBill()}
+                    shown={this.state.showNextBill}
+                  />
 
                   <TransactionTableComponent transactions={this.state.formattedTransactions}
                   onDelete={ this.onDelete.bind(this) }
