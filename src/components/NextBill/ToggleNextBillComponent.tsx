@@ -8,16 +8,16 @@ interface ToggleProps {
   shown: boolean;
 }
 
-export const ToggleNextBillComponent = (props: ToggleProps) => {
-  return (
-    <button onClick={props.onShow} className={classNames(
+export class ToggleNextBillComponent extends React.Component<ToggleProps, {}> {
+  render() {
+    return <button onClick={this.props.onShow} className={classNames(
       {
         'toggle-next-bill': true,
-        'active': props.shown,
+        'active': this.props.shown,
         'btn-light': true,
         'btn': true,
       })}>
       <i className="fa-transparent fa fa-calendar btn btn-light" /> Pending transactions
-    </button>
-  );
+    </button>;
+  }
 }

@@ -24,7 +24,6 @@ import { deResponsifyPage, responsifyPage } from '../../lib/Util/Util';
 import { LoadingSpinner } from '../LoadingSpinner';
 
 import { NextBillComponent } from '../NextBill/NextBillComponent';
-import { ToggleNextBillComponent } from '../NextBill/ToggleNextBillComponent';
 
 interface ReportComponentProps {
   date: Date,
@@ -45,7 +44,6 @@ interface ReportComponentState {
     className: string,
   }[];
   saving: boolean,
-  showNextBill: boolean,
 }
 
 class ReportComponent extends React.Component<ReportComponentProps, ReportComponentState> {
@@ -59,7 +57,6 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       saving: false,
       formattedTransactions: [],
       categories: [],
-      showNextBill: false,
     };
   }
 
@@ -167,12 +164,6 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     this.saveTransactions();
   }
 
-  toggleNextBill(show: boolean = !this.state.showNextBill) {
-    this.setState({
-      showNextBill: show,
-    });
-  }
-
   render() {
     return (
       <RequireAuthContainer>
@@ -192,25 +183,14 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
             {
               this.state.formattedTransactions && this.state.formattedTransactions.length != 0 ?
                 <>
-                  {
-                    (this.state.showNextBill ?
-                    <NextBillComponent
-                      onHide={() => this.toggleNextBill(false)}
-                      transactions={this.reportfactory.report.unfilteredTransactions}
-                    />
-                    : '')
-                  }
-
-                  <ToggleNextBillComponent
-                    onShow={() => this.toggleNextBill()}
-                    shown={this.state.showNextBill}
+                  <NextBillComponent
+                    transactions={this.reportfactory.report.unfilteredTransactions}
                   />
 
                   <TransactionTableComponent transactions={this.state.formattedTransactions}
                   onDelete={ this.onDelete.bind(this) }
                   />
-                </>
-                : <NoTransactionsFoundComponent />
+                </> : <NoTransactionsFoundComponent />
             }
           </RequireTxnPasswordContainer>
         </div>
