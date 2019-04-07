@@ -8,9 +8,9 @@ Development server:
 
 ```
 npm install
-npm run start:dev
+npm run dev
 ```
 
 For a production build: `npm run build`
 
-You can set the backend url by tweaking the `BACKEND_URL` variable at either `npm run build` or `npm run start:dev`
+You can set the backend url by tweaking the `BACKEND_URL` variable at either `npm run build` or `npm run dev`

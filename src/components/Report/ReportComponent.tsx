@@ -22,7 +22,9 @@ import { State } from '../../lib/State/State';
 import { CategoryTableComponent } from '../Category/CategoryTableComponent';
 import { deResponsifyPage, responsifyPage } from '../../lib/Util/Util';
 import { LoadingSpinner } from '../LoadingSpinner';
+
 import { NextBillComponent } from '../NextBill/NextBillComponent';
+import { ToggleNextBillComponent } from '../NextBill/ToggleNextBillComponent';
 
 interface ReportComponentProps {
   date: Date,
@@ -34,7 +36,7 @@ interface ReportComponentProps {
 }
 
 interface ReportComponentState {
-  formatted_transactions: FormattedTransaction[],
+  formattedTransactions: FormattedTransaction[],
   categories: {
     total: string|number,
     name: string,
@@ -43,25 +45,21 @@ interface ReportComponentState {
     className: string,
   }[];
   saving: boolean,
+  showNextBill: boolean,
 }
 
 class ReportComponent extends React.Component<ReportComponentProps, ReportComponentState> {
   reportfactory: ReportFactory;
   categoriser: Categoriser;
 
-  state: ReportComponentState = {
-    formatted_transactions: null,
-    categories: null,
-    saving: false,
-  };
-
   constructor(props: ReportComponentProps) {
     super(props);
 
     this.state = {
       saving: false,
-      formatted_transactions: [],
+      formattedTransactions: [],
       categories: [],
+      showNextBill: false,
     };
   }
 
@@ -157,7 +155,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       let cats = reportManager.generateCategoryAmountsFrontend(this.categoriser, report.transactions, report.transactionsInCalendarMonth);
 
       this.setState({
-        formatted_transactions: txns,
+        formattedTransactions: txns,
         categories: cats,
       })
     });
@@ -167,6 +165,12 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     this.reportfactory.removeRecords([txnId]);
     this.handleStatementLoaded();
     this.saveTransactions();
+  }
+
+  toggleNextBill(show: boolean = !this.state.showNextBill) {
+    this.setState({
+      showNextBill: show,
+    });
   }
 
   render() {
@@ -186,11 +190,23 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
                 : ''
             }
             {
-              this.state.formatted_transactions && this.state.formatted_transactions.length != 0 ?
+              this.state.formattedTransactions && this.state.formattedTransactions.length != 0 ?
                 <>
-                  <NextBillComponent transactions={this.reportfactory.report.unfilteredTransactions} />
+                  {
+                    (this.state.showNextBill ?
+                    <NextBillComponent
+                      onHide={() => this.toggleNextBill(false)}
+                      transactions={this.reportfactory.report.unfilteredTransactions}
+                    />
+                    : '')
+                  }
 
-                  <TransactionTableComponent transactions={this.state.formatted_transactions}
+                  <ToggleNextBillComponent
+                    onShow={() => this.toggleNextBill()}
+                    shown={this.state.showNextBill}
+                  />
+
+                  <TransactionTableComponent transactions={this.state.formattedTransactions}
                   onDelete={ this.onDelete.bind(this) }
                   />
                 </>
