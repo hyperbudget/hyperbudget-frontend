@@ -6,10 +6,7 @@ import { BillInfoComponent } from './BillInfoComponent';
 
 interface NextBillComponentProps {
   transactions: Transaction[],
-}
-
-interface NextBillComponentState {
-  dismissed: boolean,
+  onHide: () => void,
 }
 
 const filterOldTransactions = (groups) => {
@@ -40,13 +37,9 @@ const findCurrent = txns => (
   txns.filter(txn => txn.calculatedMonth === moment().utc().format('YYYYMM'))
 );
 
-export class NextBillComponent extends React.Component<NextBillComponentProps, NextBillComponentState> {
+export class NextBillComponent extends React.Component<NextBillComponentProps, {}> {
   constructor(props: NextBillComponentProps) {
     super(props);
-
-    this.state = {
-      dismissed: false,
-    };
   }
 
   render() {
@@ -71,11 +64,11 @@ export class NextBillComponent extends React.Component<NextBillComponentProps, N
     return (
     <>
       {
-        this.state.dismissed || (!nextSO.length && !nextDD.length) ? '' :
-        <div className='alert alert-info'>
+        !nextSO.length && !nextDD.length ? '' :
+        <div className='alert alert-info mt10'>
         { !!nextSO.length && <BillInfoComponent transactions={nextSO} type='Standing Orders' />}
         { !!nextDD.length && <BillInfoComponent transactions={nextDD} type='Direct Debits' />}
-        <a href='javascript:;' onClick={() => this.setState({ dismissed: true })}>Dismiss</a>
+        <a href='javascript:;' onClick={this.props.onHide}>Dismiss</a>
         </div>
       }
     </>
