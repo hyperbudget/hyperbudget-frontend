@@ -1,6 +1,6 @@
 # hyperbudget-frontend
 
-[![Build Status](https://travis-ci.org/hyperbudget/hyperbudget-frontend.svg?branch=master)](https://travis-ci.org/hyperbudget/hyperbudget-frontend)
+[![Build Status](https://travis-ci.com/hyperbudget/hyperbudget-frontend.svg?branch=master)](https://travis-ci.com/hyperbudget/hyperbudget-frontend)
 
 Hyperbudget - react frontend
 
