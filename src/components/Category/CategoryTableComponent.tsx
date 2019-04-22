@@ -32,7 +32,6 @@ export class CategoryTableComponent extends React.Component <CategoryTableProps,
                      document.documentElement.clientHeight ||
                      document.body.clientHeight;
 
-      console.log(height);
       if (height < 800) {
         this.setState({ hidden: true });
       } else {
