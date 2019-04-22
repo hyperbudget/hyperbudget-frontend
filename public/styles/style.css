@@ -183,3 +183,7 @@ form {
   background: transparent !important;
   border: none !important;
 }
+
+.hidden {
+  display: none !important;
+}
