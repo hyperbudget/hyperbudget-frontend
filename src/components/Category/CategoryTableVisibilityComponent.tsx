@@ -11,7 +11,7 @@ export const CategoryTableVisibilityComponent = (props: VisibilityProps) => {
 
   return (
     <button
-      className={`btn ${hidden ? 'btn-light' : 'btn-secondary'}`}
+      className={`block btn ${hidden ? 'btn-light' : 'btn-secondary'}`}
       type="button"
       onClick={onToggle}
     >

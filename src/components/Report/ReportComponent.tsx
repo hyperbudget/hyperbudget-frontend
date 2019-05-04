@@ -24,6 +24,7 @@ import { deResponsifyPage, responsifyPage } from '../../lib/Util/Util';
 import { LoadingSpinner } from '../LoadingSpinner';
 
 import { NextBillComponent } from '../NextBill/NextBillComponent';
+import { BillFilterBtnComponent } from './BillFilterBtnComponent';
 
 interface ReportComponentProps {
   date: Date,
@@ -44,6 +45,7 @@ interface ReportComponentState {
     className: string,
   }[];
   saving: boolean,
+  billsOnly: boolean,
 }
 
 class ReportComponent extends React.Component<ReportComponentProps, ReportComponentState> {
@@ -57,6 +59,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       saving: false,
       formattedTransactions: [],
       categories: [],
+      billsOnly: false,
     };
   }
 
@@ -130,6 +133,21 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     });
   };
 
+  private handleFilterApplied = (report): void => {
+      if (this.props.onUpdate) {
+        this.props.onUpdate(report.transactions);
+      }
+
+      report.transactions = report.transactions.sort(function (a, b) { return a.date.getTime() - b.date.getTime() });
+      let txns: FormattedTransaction[] = reportManager.generateWebFrontendReport(report.transactions);
+      let cats = reportManager.generateCategoryAmountsFrontend(this.categoriser, report.transactions, report.transactionsInCalendarMonth);
+
+      this.setState({
+        formattedTransactions: txns,
+        categories: cats,
+      })
+  };
+
   private handleStatementLoaded = (): void => {
     new Promise((resolve, reject) => {
       this.reportfactory.report.resetFilter();
@@ -143,18 +161,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       const report: Report = this.reportfactory.report;
       report.filterMonth(moment(this.props.date).utc().format('YYYYMM'));
 
-      if (this.props.onUpdate) {
-        this.props.onUpdate(report.transactions);
-      }
-
-      report.transactions = report.transactions.sort(function (a, b) { return a.date.getTime() - b.date.getTime() });
-      let txns: FormattedTransaction[] = reportManager.generateWebFrontendReport(report.transactions);
-      let cats = reportManager.generateCategoryAmountsFrontend(this.categoriser, report.transactions, report.transactionsInCalendarMonth);
-
-      this.setState({
-        formattedTransactions: txns,
-        categories: cats,
-      })
+      this.handleFilterApplied(report);
     });
   }
 
@@ -162,6 +169,24 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     this.reportfactory.removeRecords([txnId]);
     this.handleStatementLoaded();
     this.saveTransactions();
+  }
+
+  private toggleBillsOnly() {
+    this.setState((prevState, _prevProps) => {
+      return {
+        ...prevState,
+        billsOnly: !prevState.billsOnly
+      };
+    }, () => {
+      if (this.state.billsOnly) {
+        this.reportfactory.report.filterType('DD');
+      } else {
+        this.reportfactory.report.filterType(null);
+        this.reportfactory.report.applyFilter();
+      }
+
+      this.handleFilterApplied(this.reportfactory.report);
+    });
   }
 
   render() {
@@ -180,13 +205,15 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
                 <CategoryTableComponent categories={this.state.categories} />
                 : ''
             }
+
+            <BillFilterBtnComponent onToggle={this.toggleBillsOnly.bind(this)} toggled={this.state.billsOnly} />
+
             {
               this.state.formattedTransactions && this.state.formattedTransactions.length != 0 ?
                 <>
                   <NextBillComponent
                     transactions={this.reportfactory.report.unfilteredTransactions}
                   />
-
                   <TransactionTableComponent transactions={this.state.formattedTransactions}
                   onDelete={ this.onDelete.bind(this) }
                   />
@@ -196,6 +223,9 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
         </div>
       </RequireAuthContainer >
     );
+  }
+  toggleNextBill(): any {
+    throw new Error("Method not implemented.");
   }
 }
 

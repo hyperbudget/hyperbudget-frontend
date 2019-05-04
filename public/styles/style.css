@@ -179,6 +179,18 @@ form {
     margin-top: 10px;
 }
 
+.ml10 {
+  margin-left: 10px;
+}
+
+.mr10 {
+  margin-right: 10px;
+}
+
+.block {
+  display: block !important;
+}
+
 .fa-transparent, .fa-transparent::before {
   background: transparent !important;
   border: none !important;
