@@ -24,6 +24,9 @@ import { deResponsifyPage, responsifyPage } from '../../lib/Util/Util';
 import { LoadingSpinner } from '../LoadingSpinner';
 
 import { NextBillComponent } from '../NextBill/NextBillComponent';
+import { BillFilterBtnComponent } from './BillFilterBtnComponent';
+
+import queryString from 'query-string';
 
 interface ReportComponentProps {
   date: Date,
@@ -44,19 +47,25 @@ interface ReportComponentState {
     className: string,
   }[];
   saving: boolean,
+  billsOnly: boolean,
 }
 
 class ReportComponent extends React.Component<ReportComponentProps, ReportComponentState> {
   reportfactory: ReportFactory;
   categoriser: Categoriser;
+  shouldObscureTransactions: boolean;
 
   constructor(props: ReportComponentProps) {
     super(props);
+
+    const parsed = queryString.parse(location.search);
+    this.shouldObscureTransactions = 'demo' in parsed;
 
     this.state = {
       saving: false,
       formattedTransactions: [],
       categories: [],
+      billsOnly: false,
     };
   }
 
@@ -130,6 +139,49 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     });
   };
 
+  private obscureTransactions(transactions: Transaction[]): Transaction[] {
+    const obscured = transactions.map((txn, idx) => {
+      const creditAmount = txn.creditAmount ? 9999 : 0;
+      const debitAmount = txn.debitAmount ? Math.round(Math.random()*50000) / 100 : 0;
+
+      return new Transaction({
+        ...txn,
+        description: `txn ${idx}`,
+        creditAmount,
+        debitAmount,
+        date: moment(txn.date).format('YYYY-MM-DDTHH:mmZ'),
+        accountBalance: 0,
+        accountNumber: 'XXX',
+        accountSortCode: 'XXX',
+      })
+    });
+
+    return obscured;
+  }
+
+  private handleFilterApplied = (report: Report): void => {
+      if (this.props.onUpdate) {
+        this.props.onUpdate(report.transactions);
+      }
+
+      report.transactions = report.transactions.sort(function (a, b) { return a.date.getTime() - b.date.getTime() });
+
+      let transactions: Transaction[] = report.transactions;
+
+      if (this.shouldObscureTransactions) {
+        transactions = this.obscureTransactions(transactions);
+        this.categoriser.categorise_transactions(transactions);
+      }
+
+      let txns: FormattedTransaction[] = reportManager.generateWebFrontendReport(transactions);
+      let cats = reportManager.generateCategoryAmountsFrontend(this.categoriser, transactions, report.transactionsInCalendarMonth);
+
+      this.setState({
+        formattedTransactions: txns,
+        categories: cats,
+      })
+  };
+
   private handleStatementLoaded = (): void => {
     new Promise((resolve, reject) => {
       this.reportfactory.report.resetFilter();
@@ -143,18 +195,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       const report: Report = this.reportfactory.report;
       report.filterMonth(moment(this.props.date).utc().format('YYYYMM'));
 
-      if (this.props.onUpdate) {
-        this.props.onUpdate(report.transactions);
-      }
-
-      report.transactions = report.transactions.sort(function (a, b) { return a.date.getTime() - b.date.getTime() });
-      let txns: FormattedTransaction[] = reportManager.generateWebFrontendReport(report.transactions);
-      let cats = reportManager.generateCategoryAmountsFrontend(this.categoriser, report.transactions, report.transactionsInCalendarMonth);
-
-      this.setState({
-        formattedTransactions: txns,
-        categories: cats,
-      })
+      this.handleFilterApplied(report);
     });
   }
 
@@ -162,6 +203,24 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     this.reportfactory.removeRecords([txnId]);
     this.handleStatementLoaded();
     this.saveTransactions();
+  }
+
+  private toggleBillsOnly() {
+    this.setState((prevState, _prevProps) => {
+      return {
+        ...prevState,
+        billsOnly: !prevState.billsOnly
+      };
+    }, () => {
+      if (this.state.billsOnly) {
+        this.reportfactory.report.filterType('DD');
+      } else {
+        this.reportfactory.report.filterType(null);
+        this.reportfactory.report.applyFilter();
+      }
+
+      this.handleFilterApplied(this.reportfactory.report);
+    });
   }
 
   render() {
@@ -180,13 +239,19 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
                 <CategoryTableComponent categories={this.state.categories} />
                 : ''
             }
+
+            {
+              this.shouldObscureTransactions ? <h1>DEMO MODE</h1> : ''
+            }
+
+            <BillFilterBtnComponent onToggle={this.toggleBillsOnly.bind(this)} toggled={this.state.billsOnly} />
+
             {
               this.state.formattedTransactions && this.state.formattedTransactions.length != 0 ?
                 <>
                   <NextBillComponent
                     transactions={this.reportfactory.report.unfilteredTransactions}
                   />
-
                   <TransactionTableComponent transactions={this.state.formattedTransactions}
                   onDelete={ this.onDelete.bind(this) }
                   />
@@ -196,6 +261,9 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
         </div>
       </RequireAuthContainer >
     );
+  }
+  toggleNextBill(): any {
+    throw new Error("Method not implemented.");
   }
 }
 
