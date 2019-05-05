@@ -26,6 +26,8 @@ import { LoadingSpinner } from '../LoadingSpinner';
 import { NextBillComponent } from '../NextBill/NextBillComponent';
 import { BillFilterBtnComponent } from './BillFilterBtnComponent';
 
+import queryString from 'query-string';
+
 interface ReportComponentProps {
   date: Date,
   transactions: Transaction[],
@@ -51,9 +53,13 @@ interface ReportComponentState {
 class ReportComponent extends React.Component<ReportComponentProps, ReportComponentState> {
   reportfactory: ReportFactory;
   categoriser: Categoriser;
+  shouldObscureTransactions: boolean;
 
   constructor(props: ReportComponentProps) {
     super(props);
+
+    const parsed = queryString.parse(location.search);
+    this.shouldObscureTransactions = 'demo' in parsed;
 
     this.state = {
       saving: false,
@@ -133,14 +139,42 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     });
   };
 
-  private handleFilterApplied = (report): void => {
+  private obscureTransactions(transactions: Transaction[]): Transaction[] {
+    const obscured = transactions.map((txn, idx) => {
+      const creditAmount = txn.creditAmount ? 9999 : 0;
+      const debitAmount = txn.debitAmount ? Math.round(Math.random()*50000) / 100 : 0;
+
+      return new Transaction({
+        ...txn,
+        description: `txn ${idx}`,
+        creditAmount,
+        debitAmount,
+        date: moment(txn.date).format('YYYY-MM-DDTHH:mmZ'),
+        accountBalance: 0,
+        accountNumber: 'XXX',
+        accountSortCode: 'XXX',
+      })
+    });
+
+    return obscured;
+  }
+
+  private handleFilterApplied = (report: Report): void => {
       if (this.props.onUpdate) {
         this.props.onUpdate(report.transactions);
       }
 
       report.transactions = report.transactions.sort(function (a, b) { return a.date.getTime() - b.date.getTime() });
-      let txns: FormattedTransaction[] = reportManager.generateWebFrontendReport(report.transactions);
-      let cats = reportManager.generateCategoryAmountsFrontend(this.categoriser, report.transactions, report.transactionsInCalendarMonth);
+
+      let transactions: Transaction[] = report.transactions;
+
+      if (this.shouldObscureTransactions) {
+        transactions = this.obscureTransactions(transactions);
+        this.categoriser.categorise_transactions(transactions);
+      }
+
+      let txns: FormattedTransaction[] = reportManager.generateWebFrontendReport(transactions);
+      let cats = reportManager.generateCategoryAmountsFrontend(this.categoriser, transactions, report.transactionsInCalendarMonth);
 
       this.setState({
         formattedTransactions: txns,
@@ -204,6 +238,10 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
               this.state.categories && Object.keys(this.state.categories).length != 0 ?
                 <CategoryTableComponent categories={this.state.categories} />
                 : ''
+            }
+
+            {
+              this.shouldObscureTransactions ? <h1>DEMO MODE</h1> : ''
             }
 
             <BillFilterBtnComponent onToggle={this.toggleBillsOnly.bind(this)} toggled={this.state.billsOnly} />
