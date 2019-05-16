@@ -102,7 +102,10 @@ class SummaryComponent extends React.Component<SummaryComponentProps, SummaryCom
           <RequireTxnPasswordContainer>
             {
               this.state.categories && Object.keys(this.state.categories).length != 0 ?
-                <CategoriesComponent categories={this.state.categories} />
+                <>
+                  <h3 className='mt10'>Where your money has gone</h3>
+                  <CategoriesComponent categories={this.state.categories} />
+                </>
                 : ''
             }
           </RequireTxnPasswordContainer>

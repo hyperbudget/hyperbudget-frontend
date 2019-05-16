@@ -199,3 +199,7 @@ form {
 .hidden {
   display: none !important;
 }
+
+.mobile.gains {
+  font-size: 150%;
+}
