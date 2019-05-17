@@ -11,6 +11,8 @@ import ResetPasswordComponent from '../ResetPassword/ResetPasswordComponent';
 import CategoryEditorComponent from '../Category/CategoryEditorComponent';
 import VersionComponent from '../VersionComponent/VersionComponent';
 
+import SummaryComponent from '../mobile/Summary/SummaryComponent';
+
 import NavComponent from '../Nav/NavComponent';
 
 import { convertDateStringToDate } from '../../lib/Util/Util';
@@ -39,6 +41,8 @@ export class RouterComponent extends React.Component {
                       token={props.match.params['token']} />
         } />
         <Route path="/reset-password" exact component={RequestResetComponent} />
+
+        <Route path="/mobile" exact component={SummaryComponent} />
       </Switch>
       </>
     );
