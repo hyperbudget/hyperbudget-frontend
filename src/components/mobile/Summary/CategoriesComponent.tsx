@@ -41,7 +41,7 @@ export class CategoriesComponent extends React.Component <CategoryTableProps, {}
       'Expenditure': 'Everything else',
       'Bills': 'Bills',
       'Rent': 'Rent',
-      'Commute': 'Commuting',
+      'Commuting': 'Commuting',
       'In-Out': 'Remaining to spend',
     };
 
@@ -53,8 +53,6 @@ export class CategoriesComponent extends React.Component <CategoryTableProps, {}
           <tbody>
             {
               this.categories.map((cat, idx) => {
-                console.log(cat.name);
-
                 if (!(cat.name in mappings)) {
                   return;
                 }
