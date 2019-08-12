@@ -14,3 +14,5 @@ npm run dev
 For a production build: `npm run build`
 
 You can set the backend url by tweaking the `BACKEND_URL` variable at either `npm run build` or `npm run dev`
+
+e.g. `BACKEND_URL=https://api.hyperbudget.net` - NO trailing space
