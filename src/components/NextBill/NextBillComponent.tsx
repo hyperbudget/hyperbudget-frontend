@@ -30,16 +30,21 @@ const filterOldTransactions = groups => {
   return groups;
 }
 
-const findNextBills = (group, currentTxn: Transaction[]) => (
-  group.transactions.filter((txn: Transaction) => (
-    moment(txn.date).startOf('day').isSame(moment(group.transactions[0].date).startOf('day'))
-  ))
-  .filter((txn: Transaction) => (
+const findNextBills = (group, currentTxn: Transaction[]) => {
+  const filtered = group.transactions.filter((txn: Transaction) => (
     !currentTxn.find((t: Transaction) => (
+      // not already done this month
       t.description.toLowerCase().localeCompare(txn.description.toLowerCase()) === 0
     ))
-  ))
-);
+  ));
+
+  // find only the first closest day that has pending txns
+  const sameDayTxn = filtered.filter((txn: Transaction, _idx: number, txnArr) => (
+    moment(txn.date).startOf('day').isSame(moment(txnArr[0].date).startOf('day'))
+  ));
+
+  return sameDayTxn;
+};
 
 const findCurrent = txns => (
   txns.filter(txn => txn.calculatedMonth === moment().utc().format('YYYYMM'))
@@ -108,3 +113,5 @@ export class NextBillComponent extends React.Component<NextBillComponentProps, N
     );
   }
 }
+
+// vim: set cc=120:
