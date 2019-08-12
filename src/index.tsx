@@ -29,3 +29,5 @@ ReactDOM.render(
     <Provider store={store}><App /></Provider>,
     document.getElementById("hyperbudget-frontend-app")
 );
+
+// vim: set cc=120:
