@@ -31,7 +31,7 @@ import { set_transactions, set_categories } from '../../lib/User/User';
 
 import { State } from '../../lib/State/State';
 
-import { deResponsifyPage, responsifyPage } from '../../lib/Util/Util';
+import { deResponsifyPage, responsifyPage, disableScroll, enableScroll } from '../../lib/Util/Util';
 import { LoadingSpinner } from '../LoadingSpinner';
 
 import queryString from 'query-string';
@@ -241,12 +241,13 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
   private onCategorise (txn: FormattedTransaction): void {
     this.setState({ selectedTxn: txn, showCategorise: true });
     window.scrollTo(0,0);
+    disableScroll();
   }
 
   private onDoneCategorise (): void {
     this.setState({ selectedTxn: null, showCategorise: false });
+    enableScroll();
   }
-
 
   private removeCustomCategory (
     { ...currentCat }: Category,

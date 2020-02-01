@@ -43,3 +43,17 @@ export const responsifyPage = (): void => {
     vp.setAttribute('content', 'width=device-width, initial-scale=1, shrink-to-fit=no');
   }
 }
+
+export const disableScroll = (): void => {
+  const body = document.querySelector('body')
+  if (body) {
+    body.style.overflow = "hidden";
+  }
+}
+
+export const enableScroll = (): void => {
+  const body = document.querySelector('body')
+  if (body) {
+    body.style.overflow = "auto";
+  }
+}

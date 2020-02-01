@@ -86,7 +86,7 @@ export class CategoriseTransactionComponent extends React.Component
             className='btn-outline-primary btn'
             role='button' value="Close"
             onClick={ this.props.onDoneCategorise }
-            style={{ position: 'relative', right: "30px" }}
+            style={{ position: 'relative', right: "30px", "float": "right" }}
         >
           Close
         </button>
