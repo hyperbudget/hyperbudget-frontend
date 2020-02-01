@@ -247,6 +247,42 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     this.setState({ selectedTxn: null, showCategorise: false });
   }
 
+
+  private removeCustomCategory (
+    { ...currentCat }: Category,
+    txn: FormattedTransaction
+  ) {
+    let currentRuleIdx = -1;
+
+    // optional chaining wua
+    // ya i know there's a babel plugin
+    // no i can't be bothered
+    while (
+      currentCat.category_rules.identifier &&
+      currentCat.category_rules.identifier.rules &&
+      (
+        currentRuleIdx = currentCat.category_rules.identifier.rules.findIndex(
+          ([op, identifier]: [string, string]) => (
+            identifier === txn.identifier
+          )
+        )
+      ) != -1
+    ) {
+      currentCat.category_rules.identifier.rules.splice(currentRuleIdx, 1);
+    }
+
+    if (
+      currentCat.category_rules.identifier &&
+      currentCat.category_rules.identifier.rules &&
+      currentCat.category_rules.identifier.rules.length == 0
+    ) {
+      delete currentCat.category_rules.identifier;
+    }
+
+    return currentCat;
+  }
+
+
   private onSaveCustomCategories (
     categoriesForceAdd: Set<string>, categoriesForceRemove: Set<string>
   ): void {
@@ -260,28 +296,12 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     const txn: FormattedTransaction = this.state.selectedTxn;
 
     categoriesForceAdd.forEach(id => {
-      const currentCat = categoriesHash[id];
-      let currentRuleIdx;
+      let currentCat = categoriesHash[id];
 
-      // modifying categoriesHash modifies newCategories because everything
-      // is a reference. Usually I forget this and do it accidentally,
-      // this time it's 100% on purpose. I love js.
-      while (
-        // optional chaining wua
-        // ya i know there's a babel plugin
-        // no i can't be bothered
-        currentCat.category_rules.identifier &&
-        currentCat.category_rules.identifier.rules &&
-        (
-          currentRuleIdx = currentCat.category_rules.identifier.rules.findIndex(
-            ([op, identifier]: [string, string]) => (
-              identifier === txn.identifier
-            )
-          )
-        ) != -1
-      ) {
-        currentCat.category_rules.identifier.splice(currentRuleIdx, 1);
-      }
+      // modifying categoriesHash/currentCat modifies newCategories because
+      // everything is a reference. Usually I forget this and do it
+      // accidentally, this time it's 100% on purpose. I love js.
+      currentCat = this.removeCustomCategory(currentCat, txn);
 
       if (
         currentCat.category_rules.identifier &&
@@ -293,6 +313,13 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
           "rules": [['=', txn.identifier]]
         };
       }
+    });
+
+    // we only support removing ones that were
+    // added manually through this same code at the moment
+    categoriesForceRemove.forEach(id => {
+      let currentCat = categoriesHash[id];
+      currentCat = this.removeCustomCategory(currentCat, txn);
     });
 
     console.log(categoriesHash);
