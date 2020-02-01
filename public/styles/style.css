@@ -203,3 +203,20 @@ form {
 .mobile.gains {
   font-size: 150%;
 }
+
+.categorise_transaction {
+  z-index: 9999;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-color: white;
+}
+
+.categorise_transaction--label {
+  display: block;
+  vertical-align: middle
+}
+
+.categorise_transaction--label > checkbox{
+  height: 500%;
+}
