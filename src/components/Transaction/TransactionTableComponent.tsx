@@ -44,7 +44,7 @@ export class TransactionTableComponent extends React.Component<TransactionTableP
               transaction={txn}
               key={txn.identifier+"-"+idx}
               onDelete={ this.props.onDelete }
-              onCategorise = { this.props.onCategorise }
+              onCategorise={ this.props.onCategorise }
               />
             )
           )
