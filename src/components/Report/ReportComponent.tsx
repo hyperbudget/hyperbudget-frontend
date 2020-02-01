@@ -4,27 +4,35 @@ import moment from 'moment';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { Report, ReportFactory, Category, Categoriser, reportManager, FormattedTransaction, Transaction } from '@hyperbudget/hyperbudget-core';
+import {
+  Report, ReportFactory,
+  Category, Categoriser,
+  reportManager, FormattedTransaction, Transaction
+} from '@hyperbudget/hyperbudget-core';
 
 import { StatementUploaderComponent } from '../StatementUploader/StatementUploaderComponent';
-
 import { StatementMonthSelectorComponent } from '../StatementMonthSelector/StatementMonthSelectorComponent';
 
+
+import { HTMLFileManager } from '../../lib/Manager/HTMLFileManager';
 import { TransactionTableComponent } from '../Transaction/TransactionTableComponent';
 import { NoTransactionsFoundComponent } from '../Transaction/NoTransactionsFoundComponent';
+
+import { CategoriseTransactionComponent } from '../Category/CategoriseTransactionComponent';
+import { CategoryTableComponent } from '../Category/CategoryTableComponent';
+
+import { NextBillComponent } from '../NextBill/NextBillComponent';
+import { BillFilterBtnComponent } from './BillFilterBtnComponent';
 
 import UserDetailsComponent from '../UserDetails/UserDetailsComponent';
 import RequireAuthContainer from '../containers/RequireAuthContainer';
 import RequireTxnPasswordContainer from '../containers/RequireTxnPasswordContainer';
-import { set_transactions } from '../../lib/User/User';
-import { HTMLFileManager } from '../../lib/Manager/HTMLFileManager';
+import { set_transactions, set_categories } from '../../lib/User/User';
+
 import { State } from '../../lib/State/State';
-import { CategoryTableComponent } from '../Category/CategoryTableComponent';
+
 import { deResponsifyPage, responsifyPage } from '../../lib/Util/Util';
 import { LoadingSpinner } from '../LoadingSpinner';
-
-import { NextBillComponent } from '../NextBill/NextBillComponent';
-import { BillFilterBtnComponent } from './BillFilterBtnComponent';
 
 import queryString from 'query-string';
 
@@ -48,6 +56,8 @@ interface ReportComponentState {
   }[];
   saving: boolean,
   billsOnly: boolean,
+  selectedTxn: FormattedTransaction,
+  showCategorise: boolean,
 }
 
 class ReportComponent extends React.Component<ReportComponentProps, ReportComponentState> {
@@ -66,6 +76,8 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       formattedTransactions: [],
       categories: [],
       billsOnly: false,
+      selectedTxn: null,
+      showCategorise: false,
     };
   }
 
@@ -139,6 +151,27 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     });
   };
 
+  private saveCategories = async (categories: Category[])  => {
+    try {
+      this.setState({ saving: true });
+
+      await set_categories({
+        categories,
+        password: this.props.txn_password,
+        email: this.props.email,
+      });
+
+      this.setState({
+        saving: false,
+      });
+
+      this.handleStatementLoaded();
+    }
+    catch (err) {
+      console.error(err);
+    }
+  }
+
   private obscureTransactions(transactions: Transaction[]): Transaction[] {
     const obscured = transactions.map((txn, idx) => {
       const creditAmount = txn.creditAmount ? 9999 : 0;
@@ -199,10 +232,101 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     });
   }
 
-  private onDelete (txnId): void {
+  private onDelete (txnId: string): void {
     this.reportfactory.removeRecords([txnId]);
     this.handleStatementLoaded();
     this.saveTransactions();
+  }
+
+  private onCategorise (txn: FormattedTransaction): void {
+    this.setState({ selectedTxn: txn, showCategorise: true });
+    window.scrollTo(0,0);
+  }
+
+  private onDoneCategorise (): void {
+    this.setState({ selectedTxn: null, showCategorise: false });
+  }
+
+
+  private removeCustomCategory (
+    { ...currentCat }: Category,
+    txn: FormattedTransaction
+  ) {
+    let currentRuleIdx = -1;
+
+    // optional chaining wua
+    // ya i know there's a babel plugin
+    // no i can't be bothered
+    while (
+      currentCat.category_rules.identifier &&
+      currentCat.category_rules.identifier.rules &&
+      (
+        currentRuleIdx = currentCat.category_rules.identifier.rules.findIndex(
+          ([op, identifier]: [string, string]) => (
+            identifier === txn.identifier
+          )
+        )
+      ) != -1
+    ) {
+      currentCat.category_rules.identifier.rules.splice(currentRuleIdx, 1);
+    }
+
+    if (
+      currentCat.category_rules.identifier &&
+      currentCat.category_rules.identifier.rules &&
+      currentCat.category_rules.identifier.rules.length == 0
+    ) {
+      delete currentCat.category_rules.identifier;
+    }
+
+    return currentCat;
+  }
+
+
+  private onSaveCustomCategories (
+    categoriesForceAdd: Set<string>, categoriesForceRemove: Set<string>
+  ): void {
+    console.log(categoriesForceAdd, categoriesForceRemove);
+
+    const newCategories: Category[] = [...this.props.categories];
+    const categoriesHash = newCategories.reduce(
+      (a,b) => (a[b.id] = b, a),
+      {}
+    );
+    const txn: FormattedTransaction = this.state.selectedTxn;
+
+    categoriesForceAdd.forEach(id => {
+      let currentCat = categoriesHash[id];
+
+      // modifying categoriesHash/currentCat modifies newCategories because
+      // everything is a reference. Usually I forget this and do it
+      // accidentally, this time it's 100% on purpose. I love js.
+      currentCat = this.removeCustomCategory(currentCat, txn);
+
+      if (
+        currentCat.category_rules.identifier &&
+        currentCat.category_rules.identifier.rules
+      ) {
+        currentCat.category_rules.identifier.rules.push(['=', txn.identifier]);
+      } else {
+        currentCat.category_rules.identifier = {
+          "rules": [['=', txn.identifier]]
+        };
+      }
+    });
+
+    // we only support removing ones that were
+    // added manually through this same code at the moment
+    categoriesForceRemove.forEach(id => {
+      let currentCat = categoriesHash[id];
+      currentCat = this.removeCustomCategory(currentCat, txn);
+    });
+
+    console.log(categoriesHash);
+    console.log(newCategories);
+
+    this.onDoneCategorise();
+    this.saveCategories(newCategories);
   }
 
   private toggleBillsOnly() {
@@ -229,6 +353,16 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
         <div className='main Report'>
           <UserDetailsComponent />
           <RequireTxnPasswordContainer>
+            {
+              this.state.showCategorise && this.state.selectedTxn ?
+                <CategoriseTransactionComponent
+                  categories={this.props.categories}
+                  transaction={this.state.selectedTxn}
+                  onDoneCategorise={this.onDoneCategorise.bind(this)}
+                  onSaveCustomCategories={this.onSaveCustomCategories.bind(this)}
+                /> : ''
+            }
+
             <div className='mt-3'>
               <StatementUploaderComponent onFileSelected={this.onFileSelected} />
             </div>
@@ -254,6 +388,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
                   />
                   <TransactionTableComponent transactions={this.state.formattedTransactions}
                   onDelete={ this.onDelete.bind(this) }
+                  onCategorise={ this.onCategorise.bind(this) }
                   />
                 </> : <NoTransactionsFoundComponent />
             }
