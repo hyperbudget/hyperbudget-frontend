@@ -45,15 +45,15 @@ export const responsifyPage = (): void => {
 }
 
 export const disableScroll = (): void => {
-  const body = document.querySelector('body')
-  if (body) {
-    body.style.overflow = "hidden";
+  const appContainer = document.querySelector('.App');
+  if (appContainer) {
+    appContainer.style.overflow = "hidden";
   }
 }
 
 export const enableScroll = (): void => {
-  const body = document.querySelector('body')
-  if (body) {
-    body.style.overflow = "auto";
+  const appContainer = document.querySelector('.App');
+  if (appContainer) {
+    appContainer.style.overflow = "auto";
   }
 }
