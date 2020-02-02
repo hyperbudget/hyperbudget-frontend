@@ -6,8 +6,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 import {
   Report, ReportFactory,
-  Category, Categoriser,
-  reportManager, FormattedTransaction, Transaction
+  Category, Categoriser, RuleMatchMode,
+  reportManager, FormattedTransaction, Transaction,
 } from '@hyperbudget/hyperbudget-core';
 
 import { StatementUploaderComponent } from '../StatementUploader/StatementUploaderComponent';
@@ -31,7 +31,11 @@ import { set_transactions, set_categories } from '../../lib/User/User';
 
 import { State } from '../../lib/State/State';
 
-import { deResponsifyPage, responsifyPage, disableScroll, enableScroll } from '../../lib/Util/Util';
+import {
+  deResponsifyPage, responsifyPage,
+  disableScroll, enableScroll,
+  CategorisationType,
+} from '../../lib/Util/Util';
 import { LoadingSpinner } from '../LoadingSpinner';
 
 import queryString from 'query-string';
@@ -285,7 +289,8 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
 
 
   private onSaveCustomCategories (
-    categoriesForceAdd: Set<string>, categoriesForceRemove: Set<string>
+    categoriesForceAdd: Set<string>, categoriesForceRemove: Set<string>,
+    categorisationType: CategorisationType, txnDescriptionMatch: string
   ): void {
     console.log(categoriesForceAdd, categoriesForceRemove);
 
@@ -304,20 +309,36 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       // accidentally, this time it's 100% on purpose. I love js.
       currentCat = this.removeCustomCategory(currentCat, txn);
 
-      if (
-        currentCat.category_rules.identifier &&
-        currentCat.category_rules.identifier.rules
-      ) {
-        currentCat.category_rules.identifier.rules.push(['=', txn.identifier]);
-      } else {
-        currentCat.category_rules.identifier = {
-          "rules": [['=', txn.identifier]]
-        };
+      if (categorisationType === CategorisationType.IDENTIFIER) {
+        if (
+          currentCat.category_rules.identifier &&
+          currentCat.category_rules.identifier.rules
+        ) {
+          currentCat.category_rules.identifier.rules.push(['=', txn.identifier]);
+        } else {
+          currentCat.category_rules.identifier = {
+            "rules": [['=', txn.identifier]]
+          };
+        }
+      } else if (categorisationType === CategorisationType.DESCRIPTION) {
+        if (
+          currentCat.category_rules.description &&
+          currentCat.category_rules.description.rules
+        ) {
+          currentCat.category_rules.description.mode = RuleMatchMode.Flex;
+          currentCat.category_rules.description.rules.push(['=~', txnDescriptionMatch]);
+        } else {
+          currentCat.category_rules.description = {
+            "mode": RuleMatchMode.Flex,
+            "rules": [['=~', txnDescriptionMatch]],
+          };
+        }
       }
     });
 
     // we only support removing ones that were
-    // added manually through this same code at the moment
+    // added manually through this same code
+    // and are identifier matches
     categoriesForceRemove.forEach(id => {
       let currentCat = categoriesHash[id];
       currentCat = this.removeCustomCategory(currentCat, txn);

@@ -4,16 +4,24 @@ import {
   Category, FormattedTransaction
 } from '@hyperbudget/hyperbudget-core';
 
+import { CategorisationType } from '../../lib/Util/Util';
+
 interface CategoriseTransactionState {
-  categoriesForceAdd: Set<string>,
-  categoriesForceRemove: Set<string>,
+  categoriesForceAdd: Set<string>;
+  categoriesForceRemove: Set<string>;
+  categorisationType: CategorisationType;
+  txnDescriptionMatch: string;
 };
 
 interface CategoriseTransactionProps {
   categories: Category[];
   transaction: FormattedTransaction;
   onDoneCategorise: () => void;
-  onSaveCustomCategories: (forceAdd: Set<string>, forceRm: Set<string>) => void;
+  onSaveCustomCategories: (
+    forceAdd: Set<string>, forceRm: Set<string>,
+    categorisationType: CategorisationType,
+    txnDescriptionMatch: string,
+  ) => void;
 };
 
 export class CategoriseTransactionComponent extends React.Component
@@ -53,10 +61,12 @@ export class CategoriseTransactionComponent extends React.Component
     this.state = {
       categoriesForceAdd: new Set(),
       categoriesForceRemove: new Set(),
+      categorisationType: CategorisationType.IDENTIFIER,
+      txnDescriptionMatch: this.props.transaction.description,
     };
   }
 
-  inputChanged(evt): void {
+  selectedCategoriesChanged(evt): void {
     const checkbox = evt.target;
     const catId = checkbox.value;
     console.log(checkbox.checked);
@@ -79,6 +89,24 @@ export class CategoriseTransactionComponent extends React.Component
     }
   }
 
+  selectedTypeChanged(evt): void {
+    const radio = evt.target;
+    const selectedType: CategorisationType = Number(radio.value);
+
+    this.setState({
+      categorisationType: selectedType,
+    })
+  }
+
+  txnDescriptionChanged(evt): void {
+    const text = evt.target;
+    const description = text.value;
+
+    this.setState({
+      txnDescriptionMatch: description,
+    })
+  }
+
   render () {
     return (
       <div className='categorise_transaction'>
@@ -95,7 +123,7 @@ export class CategoriseTransactionComponent extends React.Component
           this.shownCategories.map((category, idx) => (
             <label className='categorise_transaction--label' key={category.name+"-"+idx}>
               <input
-                onChange={this.inputChanged.bind(this)}
+                onChange={this.selectedCategoriesChanged.bind(this)}
                 defaultChecked={this.txnIncludesCat(category)}
                 disabled={this.txnIncludesCat(category) && !this.txnHasCustomCategory(category)}
                 value={category.id}
@@ -103,6 +131,30 @@ export class CategoriseTransactionComponent extends React.Component
             </label>
           ))
         )}
+        <h3>Categorise by</h3>
+        <label className="categorise_transaction--label">
+          <input
+            onChange={this.selectedTypeChanged.bind(this)}
+            value={CategorisationType.IDENTIFIER}
+            checked={this.state.categorisationType === CategorisationType.IDENTIFIER}
+            type="radio" /> This transaction only (transaction identifier)
+        </label>
+         <label className="categorise_transaction--label">
+          <input
+            onChange={this.selectedTypeChanged.bind(this)}
+            value={CategorisationType.DESCRIPTION}
+            checked={this.state.categorisationType === CategorisationType.DESCRIPTION}
+            type="radio" />
+          All transactions matching the following description:
+          <input
+            type="text"
+            value={this.state.txnDescriptionMatch}
+            onChange={this.txnDescriptionChanged.bind(this)}
+            disabled={this.state.categorisationType !== CategorisationType.DESCRIPTION}
+          />
+        </label>
+
+        <hr/>
         <button
             className='btn-primary btn'
             role='button' value="Save"
@@ -110,6 +162,8 @@ export class CategoriseTransactionComponent extends React.Component
               () => this.props.onSaveCustomCategories(
                       this.state.categoriesForceAdd,
                       this.state.categoriesForceRemove,
+                      this.state.categorisationType,
+                      this.state.txnDescriptionMatch
                     )
             }
         >
