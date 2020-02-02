@@ -1,6 +1,7 @@
 const webpack = require('webpack');
 
 module.exports = {
+    context: __dirname,
     entry: ['babel-polyfill', "./src/index.tsx"],
     output: {
         filename: "bundle.js",
@@ -32,9 +33,9 @@ module.exports = {
 
             {
                 test: /\.js$/,
-                include: ['src',  /node_modules\/@hyperbudget\/hyperbudget-core\/dist/ ],
+                include: [__dirname + '/src',  /node_modules\/@hyperbudget\/hyperbudget-core\/dist/ ],
                 loaders: ['babel-loader'],
-                exclude: ['node_modules']
+                exclude: [__dirname + '/node_modules']
             },
             {
                 test: /\.css$/,
