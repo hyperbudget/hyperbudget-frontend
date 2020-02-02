@@ -1,6 +1,6 @@
 {
   "name": "hyperbudget-frontend",
-  "version": "6.6.4",
+  "version": "6.7.0-pre",
   "description": "",
   "main": "src/index.tsx",
   "scripts": {
