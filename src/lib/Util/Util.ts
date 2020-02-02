@@ -57,3 +57,8 @@ export const enableScroll = (): void => {
     appContainer.style.overflow = "auto";
   }
 }
+
+export enum CategorisationType {
+  IDENTIFIER,
+  DESCRIPTION,
+};
