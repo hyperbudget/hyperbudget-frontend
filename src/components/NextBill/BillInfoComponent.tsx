@@ -15,7 +15,7 @@ export const BillInfoComponent = (props: BillInfoComponentProps) => (
     {
       props.transactions.map((transaction, idx) => (
         <li key={idx}>{transaction.description}, taken around
-          {moment(transactions.date).format('Do')}, for about <b>&pound;{transaction.debitAmount}</b></li>
+          {moment(transaction.date).format('Do')}, for about <b>&pound;{transaction.debitAmount}</b></li>
       ))
     }
     </ul>
