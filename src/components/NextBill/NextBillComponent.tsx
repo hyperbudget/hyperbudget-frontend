@@ -38,12 +38,7 @@ const findNextBills = (group, currentTxn: Transaction[]) => {
     ))
   ));
 
-  // find only the first closest day that has pending txns
-  const sameDayTxn = filtered.filter((txn: Transaction, _idx: number, txnArr) => (
-    moment(txn.date).startOf('day').isSame(moment(txnArr[0].date).startOf('day'))
-  ));
-
-  return sameDayTxn;
+  return filtered;
 };
 
 const findCurrent = txns => (

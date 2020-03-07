@@ -10,11 +10,11 @@ interface BillInfoComponentProps {
 
 export const BillInfoComponent = (props: BillInfoComponentProps) => (
   <div>
-    <p>Next {props.type} around the <b>{moment(props.transactions[0].date).format('Do')}</b>:</p>
+    <p>Next {props.type}:</p>
     <ul>
     {
       props.transactions.map((transaction, idx) => (
-        <li key={idx}>{transaction.description}, about <b>&pound;{transaction.debitAmount}</b></li>
+        <li key={idx}>{transaction.description}, taken around the {moment(transaction.date).format('Do')}, for about <b>&pound;{transaction.debitAmount}</b></li>
       ))
     }
     </ul>

@@ -1,6 +1,5 @@
 import * as React from 'react';
 
-import { CategoryAmounts } from '@hyperbudget/hyperbudget-core';
 import { CategoryTableVisibilityComponent } from './CategoryTableVisibilityComponent';
 
 interface CategoryTableProps {

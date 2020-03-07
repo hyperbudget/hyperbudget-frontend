@@ -43,3 +43,22 @@ export const responsifyPage = (): void => {
     vp.setAttribute('content', 'width=device-width, initial-scale=1, shrink-to-fit=no');
   }
 }
+
+export const disableScroll = (): void => {
+  const appContainer:HTMLElement = <HTMLElement>document.querySelector('.App');
+  if (appContainer) {
+    appContainer.style.overflow = "hidden";
+  }
+}
+
+export const enableScroll = (): void => {
+  const appContainer:HTMLElement = <HTMLElement>document.querySelector('.App');
+  if (appContainer) {
+    appContainer.style.overflow = "auto";
+  }
+}
+
+export enum CategorisationType {
+  IDENTIFIER,
+  DESCRIPTION,
+};
