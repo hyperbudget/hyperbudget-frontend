@@ -309,8 +309,6 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
       // accidentally, this time it's 100% on purpose. I love js.
       currentCat = this.removeCustomCategory(currentCat, txn);
 
-      currentCat.category_rules.mode = RuleMatchMode.Flex;
-
       if (categorisationType === CategorisationType.IDENTIFIER) {
         if (
           currentCat.category_rules.identifier &&
