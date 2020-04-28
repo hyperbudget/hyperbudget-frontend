@@ -55,6 +55,10 @@ input.ng-invalid.ng-touched {
     background-color: #FFCCFF;
 }
 
+.cat-food {
+  background-color: #dbb184
+}
+
 .cat-cpt{
     background-color: #000000;
     color: white;
