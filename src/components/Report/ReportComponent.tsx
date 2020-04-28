@@ -92,6 +92,7 @@ class ReportComponent extends React.Component<ReportComponentProps, ReportCompon
     if (this.props.transactions && this.props.transactions.length != 0) {
       this.reportfactory.addRecords(this.props.transactions).then(() => { this.handleStatementLoaded() });
       deResponsifyPage();
+      enableScroll();
     }
   }
 
