@@ -18,5 +18,8 @@ export const BillInfoComponent = (props: BillInfoComponentProps) => (
       ))
     }
     </ul>
+    <p>
+      <b>Estimated total {props.type}</b>: {props.transactions.reduce((a,b) => +a.debitAmount + +b.debitAmount, 0)
+    </p>
   </div>
 );
