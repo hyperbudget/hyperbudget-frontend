@@ -85,6 +85,15 @@ export class NextBillComponent extends React.Component<NextBillComponentProps, N
               current['SO'] ? (current['SO'].transactions || []) : []
           ): [];
 
+    let total = 0;
+
+    for (let i = 0; i < nextSO.length; i++) {
+      total += +nextSO[i].debitAmount;
+    }
+    for (let i = 0; i < nextDD.length; i++) {
+      total += +nextDD[i].debitAmount;
+    }
+
     return (
     <>
       {
@@ -100,7 +109,10 @@ export class NextBillComponent extends React.Component<NextBillComponentProps, N
             <div className='alert alert-info mt10'>
               { !!nextSO.length && <BillInfoComponent transactions={nextSO} type='Standing Orders' />}
               { !!nextDD.length && <BillInfoComponent transactions={nextDD} type='Direct Debits' />}
-              <a id='next-bill-bottom' href='javascript:;' onClick={() => this.toggleNextBill(false)}>Dismiss</a>
+              <p><b>Estimated total</b>: &pound;{total}.</p>
+              <p>
+                <a id='next-bill-bottom' href='javascript:;' onClick={() => this.toggleNextBill(false)}>Dismiss</a>
+              </p>
             </div> : '' }
         </>
       }
