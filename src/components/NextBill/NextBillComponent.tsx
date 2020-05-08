@@ -109,7 +109,7 @@ export class NextBillComponent extends React.Component<NextBillComponentProps, N
             <div className='alert alert-info mt10'>
               { !!nextSO.length && <BillInfoComponent transactions={nextSO} type='Standing Orders' />}
               { !!nextDD.length && <BillInfoComponent transactions={nextDD} type='Direct Debits' />}
-              <p><b>Estimated total</b>: &pound;{total}.</p>
+              <p><b>Estimated total</b>: &pound;{Math.round(total * 100) / 100}.</p>
               <p>
                 <a id='next-bill-bottom' href='javascript:;' onClick={() => this.toggleNextBill(false)}>Dismiss</a>
               </p>

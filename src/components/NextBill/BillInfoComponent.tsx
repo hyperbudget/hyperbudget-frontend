@@ -25,7 +25,7 @@ export const BillInfoComponent = (props: BillInfoComponentProps) => {
       }
       </ul>
       <p>
-        <b>Estimated total {props.type}</b>: &pound;{ total }
+        <b>Estimated total {props.type}</b>: &pound;{ Math.round(total * 100) / 100 }
       </p>
     </div>
   )
