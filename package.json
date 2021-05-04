@@ -65,7 +65,7 @@
     "jest": "^24.5.0",
     "jest-date-mock": "^1.0.5",
     "jsdom": "^11.11.0",
-    "merge": "^1.2.1",
+    "merge": "^2.1.1",
     "parallelshell": "github:darkguy2008/parallelshell#8fd83e2",
     "react-test-renderer": "^16.4.1",
     "redux-mock-store": "^1.5.3",
